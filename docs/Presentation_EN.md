@@ -1,72 +1,71 @@
-# Presentation Plan: Code Generation with AI (Focus on Agents)
+# Presentation Plan: AI-Driven DevOps (From CI/CD to AIOps)
 
-**Topic:** Code Generation with AI: Productivity Booster or Technical Debt?  
+**Topic:** AI-Driven DevOps: From CI/CD to AIOps  
+**Focus:** The evolution of DevOps pipelines through AI and automation.  
 **Timing:** 25 minutes  
-**participants:** Soreen, Viswak, Olga, Lev  
+**Participants:** Soreen, Viswak, Olga, Lev (Roles TBD)
 
 ---
 
 ## Presentation Structure
 
-### 1. Introduction (1-2 minutes)
-*   **Speaker:** (Soreen/Whoever goes first)
-*   **Content:**
-    *   **Key Thesis:** Distinguish concepts. AI Chats (ChatGPT, Claude web) are for ideas, brainstorming, and architectural discussions. **Do not use chats for writing code.**
-    *   Main Presentation Topic: **AI Agents** and integrated tools (Cursor, Claude Code, GitHub Copilot, Codex, IDE extensions).
-    *   Why Agents? Because they see the project context, not just an isolated snippet.
+### 1. Introduction (2-3 minutes)
+*   **Goal:** Set the stage for the evolution of DevOps.
+*   **Key Narrative:**
+    *   Brief history: Manual Operations -> DevOps (Automation) -> AIOps (Intelligence).
+    *   Problem statement: Complexity is growing faster than human ability to manage it manually.
+    *   Thesis: We are moving from tools that *do* what we say, to systems that *understand* what is happening.
 
-### 2. Part 1: From Chats to Agents: A New Level of Productivity
-*   **Speaker:** Soreen Oraibi (presumably)
-*   **Time:** ~5-6 minutes
-*   **Key Points:**
-    *   Why Copy-Paste from ChatGPT is a bad practice (loss of context, outdated libraries).
-    *   What is **Agentic AI** in development: tools that work "inside" the project.
-    *   How Agents accelerate work:
-        *   Understanding dependencies between files.
-        *   Automated refactoring.
-        *   Test generation based on real project code.
+### 2. Part 1: AI in CI/CD Pipelines (Smart Pipelines)
+*   **Focus:** Adding intelligence to the build/test/deploy cycle.
+*   **Current State (Traditional):** 
+    *   "Dumb" execution: Run build -> Run all tests -> Deploy.
+    *   Fails without explanation.
+*   **AI-Driven State:**
+    *   **Smart Test Selection:** AI analyzes changes and past builds to run only relevant tests (saving time).
+    *   **Risk Prediction:** Identifying which commits are likely to break the build before running it.
+    *   **Pipeline Optimization:** Suggesting removal of bottlenecks or redundant steps.
+*   **Key Message:** CI/CD stops being a blind conveyor belt and starts understanding the code.
 
-### 3. Part 2: Risks of the Agentic Approach (Security & Correctness)
-*   **Speaker:** Olga Shomarova (presumably)
-*   **Time:** ~5-6 minutes
-*   **Key Points:**
-    *   **Security:** Agents have access to all code. What if they "leak" private keys or logic?
-    *   **Hallucinations on steroids:** An agent might generate not just one bad function, but create an entire structure with a flaw.
-    *   The "Blind Trust" problem: when the agent does everything itself, the developer stops verifying changes.
+### 3. Part 2: Predictive Monitoring & Incident Detection
+*   **Focus:** Shifting from Reactive to Proactive.
+*   **Traditional Monitoring:**
+    *   Threshold-based (e.g., "CPU > 80%" -> Alert).
+    *   Reactive: You know there's a problem only *after* the service is degrading or down.
+*   **AI-Driven Approach:**
+    *   **Anomaly Detection:** Analyzing behavioral patterns (e.g., subtle latency increases).
+    *   **Prediction:** "Service resembles state before last crash" -> Warning *before* failure.
+    *   **Log Analysis:** Detecting unusual log patterns that humans might miss.
+*   **Key Message:** AI doesn't just react; it predicts problems before users notice.
 
-### 4. Part 3: Technical Debt in the Age of Agents
-*   **Speaker:** Viswak Ggautham (presumably)
-*   **Time:** ~5-6 minutes
-*   **Key Points:**
-    *   Agents can generate code faster than humans can comprehend it.
-    *   Risk of creating "Frankenstein Code": a mix of styles that is hard to maintain.
-    *   Who will fix bugs a year from now? If the code was written by an Agent, does the team know how it works?
+### 4. Part 3: AIOps vs. Traditional DevOps
+*   **Focus:** Managing Noise and Complexity.
+*   **Comparison:**
+    *   **Traditional DevOps:** 
+        *   Thousands of alerts.
+        *   Humans manually correlating logs and metrics.
+        *   High "Mean Time To Resolution" (MTTR) due to manual investigation.
+    *   **AIOps:**
+        *   **Noise Reduction:** Aggregates alerts, filters false positives.
+        *   **Root Cause Analysis:** AI correlates metrics, logs, and traces to point to the exact issue, not just the symptom.
+        *   **Actionable Insights:** "Here is the root cause, not just 50 alerts."
+*   **Key Message:** DevOps automates the process; AIOps automates the understanding.
 
-### 5. Part 4: Real World Experience: Managing Agents (Context & Efficiency)
-*   **Speaker:** Lev Karavanov
-*   **Time:** ~5-6 minutes
-*   **Key Points:**
-    *   **Context is King (Documentation as Fuel):**
-        *   Documentation is not bureaucracy, but context for the agent. Preparing docs *before* coding starts.
-        *   Regular documentation updates to preserve context (otherwise the agent loses the project thread).
-    *   **Technical Stack (Advanced Tooling):**
-        *   Using **MCP (Model Context Protocol)**: connecting agents directly to GitHub, databases.
-        *   Cycle: Generation -> Auto-testing -> Fixes (without human intervention in intermediate stages).
-    *   **Challenges & Problems (Agent Management):**
-        *   **Economics:** API costs and token control (avoiding "mindless burning").
-        *   **Context Hygiene:** The art of context management. Not bloating the prompt with unnecessary info.
-        *   **Model Selection:** Strategy for choosing the model for the task (cheap models for routine vs smart models for architecture).
-    *   **Scope of Application & Role of Juniors (Best Fit):**
-        *   **Where Agents are Essential:** Prototypes, MVPs, Pet-projects. Projects where the path from "Idea -> Deploy" needs to be maximally fast, and where architectural flaws are forgiven.
-        *   **Junior Developers:** They are not disappearing. Building MVPs with agents *is* the new job of a junior. The agent is an "exoskeleton" that allows a junior to deliver middle-level results at the start.
+### 5. Part 4: Human-in-the-loop DevOps Models
+*   **Focus:** Safety, Trust, and Responsibility.
+*   **The Concept:** AI should not be fully autonomous in Production (yet).
+*   **Workflow:**
+    *   AI detects issue -> AI suggests solution (e.g., Rollback or Config Change).
+    *   **Human Engineer** reviews and approves.
+    *   AI learns from the human's decision.
+*   **Importance:**
+    *   Safety vs. Speed.
+    *   Accountability (Human is essential).
+*   **Key Message:** AI is the assistant; the Human is the decision-maker.
 
-### 6. Conclusion: The New Developer Profile (1-2 minutes)
-*   **Speaker:** All or Lev (as closer)
-*   **Content:**
-    *   **Paradigm Shift:** The developer stops being a "Code Writer" and becomes an "Architect" and "Orchestrator".
-    *   **New Hard Skills to Cultivate:**
-        *   **Architecture First:** Ability to design systems, since AI writes code but doesn't build the system.
-        *   **Code Reading:** A critically important skill — being able to quickly read and understand someone else's (generated) code.
-        *   **Tooling & Ops:** Deep understanding of environment setup (IDE, MCP servers, agent configs).
-        *   **DevOps:** AI is still weak in infrastructure, deployment, and "hardware" — this remains on the human.
-    *   **Final Verification:** AI will not replace developers, but developers with AI will replace those without it.
+### 6. Conclusion (2 minutes)
+*   **Summary:**
+    1.  **Was:** CI/CD + Monitoring = Automation without context.
+    2.  **Now:** AI adds analysis, prediction, and context.
+    3.  **Risk:** Blind trust in AI is dangerous.
+    4.  **Solution:** Human-in-the-loop AIOps.
