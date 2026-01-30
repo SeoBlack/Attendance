@@ -21,7 +21,7 @@ CREATE TABLE LECTURE
 (
   LectureID INT NOT NULL,
   Description TEXT,
-  Date DATETIME NOT NULL,
+  LectureDate DATETIME NOT NULL,
   Attribute VARCHAR(50),
   CourseID INT NOT NULL,
   PRIMARY KEY (LectureID),
