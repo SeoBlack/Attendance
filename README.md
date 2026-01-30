@@ -6,7 +6,7 @@ The following SQL script defines the database schema for the Attendance system.
 You can find the raw SQL file at [schema.sql](./schema.sql).
 
 ```sql
-CREATE TABLE USER
+CREATE TABLE USERS
 (
   Role VARCHAR(20) NOT NULL,
   UserID INT NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE ENROLLMENTS
   UserID INT NOT NULL,
   CourseID INT NOT NULL,
   PRIMARY KEY (UserID, CourseID),
-  FOREIGN KEY (UserID) REFERENCES USER(UserID),
+  FOREIGN KEY (UserID) REFERENCES USERS(UserID),
   FOREIGN KEY (CourseID) REFERENCES COURSE(CourseID)
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE ATTENDANCE
   UserID INT NOT NULL,
   LectureID INT NOT NULL,
   PRIMARY KEY (UserID, LectureID),
-  FOREIGN KEY (UserID) REFERENCES USER(UserID),
+  FOREIGN KEY (UserID) REFERENCES USERS(UserID),
   FOREIGN KEY (LectureID) REFERENCES LECTURE(LectureID)
 );
 ```
