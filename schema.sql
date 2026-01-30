@@ -1,11 +1,3 @@
-# Attendance System Database
-
-## SQL Schema
-
-The following SQL script defines the database schema for the Attendance system.
-You can find the raw SQL file at [schema.sql](./schema.sql).
-
-```sql
 CREATE TABLE USER
 (
   Role VARCHAR(20) NOT NULL,
@@ -54,4 +46,3 @@ CREATE TABLE ATTENDANCE
   FOREIGN KEY (UserID) REFERENCES USER(UserID),
   FOREIGN KEY (LectureID) REFERENCES LECTURE(LectureID)
 );
-```
