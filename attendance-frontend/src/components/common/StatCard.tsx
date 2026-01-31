@@ -96,7 +96,6 @@ export default function StatCard({
                 px: 1.25,
                 py: 0.5,
                 borderRadius: 2,
-                backgroundColor: indicatorBg,
               }}
             >
               <Typography
