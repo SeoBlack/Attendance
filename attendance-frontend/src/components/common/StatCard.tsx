@@ -30,11 +30,6 @@ const colorMap: Record<StatCardColor, { bg: string; icon: string }> = {
   info: { bg: '#DBEAFE', icon: '#3B82F6' },
 };
 
-const indicatorBgMap: Record<StatCardIndicatorType, string> = {
-  positive: '#DCFCE7',
-  negative: '#FEE2E2',
-  neutral: '#DBEAFE',
-};
 
 const indicatorTextMap: Record<StatCardIndicatorType, string> = {
   positive: '#22C55E',
@@ -52,7 +47,6 @@ export default function StatCard({
   sx,
 }: StatCardProps) {
   const colors = colorMap[color] ?? colorMap.primary;
-  const indicatorBg = indicatorBgMap[indicatorType];
   const indicatorText = indicatorTextMap[indicatorType];
 
   return (
