@@ -2,7 +2,7 @@ import StoryBookPage from './pages/StoryBook'
 
 function App() {
   return (
-    <StoryBookPage />  
+    <StoryBookPage />
   )
 }
 
