@@ -1,57 +1,19 @@
-# Attendance System Database
+# Attendance System
 
-## SQL Schema
+## Product Vision
+We are building an application for teachers to replace their google excel sheet when marking their students attendance.
 
-The following SQL script defines the database schema for the Attendance system.
-You can find the raw SQL file at [schema.sql](./schema.sql).
+Our vision is to let the teacher focus more on the lectures and less on marking attendance whenever a new student arrives. Also, we want to distribute responsibilities in the class between students and teachers. This will save time and effort for both sides.
 
-```sql
-CREATE TABLE USERS
-(
-  UserID INT NOT NULL AUTO_INCREMENT,
-  Role VARCHAR(20) NOT NULL,
-  FirstName VARCHAR(100) NOT NULL,
-  SecondName VARCHAR(100) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  PRIMARY KEY (UserID)
-);
+## Problem Statement
+Teachers are marking their students attendance using excel sheets and by calling their names one by one, which could be time consuming and the teacher might forget to do it sometimes. We are aiming to fix this by making attendance marking one of the students responsibility by creating an application for the students to mark their attendance at each class, reducing time taken for shouting names one by one as well as marking the students who arrive after the names shouting process.
 
-CREATE TABLE COURSE
-(
-  CourseID INT NOT NULL AUTO_INCREMENT,
-  CourseName VARCHAR(100) NOT NULL,
-  Description TEXT,
-  PRIMARY KEY (CourseID)
-);
+## Key Features
+- Teachers can create a lecture with QR or numeric code.
+- Students can scan or write the code to mark their attendance.
+- Student and teacher accounts must be created and verified.
+- Teachers can view statistics of the lecture such as students attended, time interval, and more.
+- GPS verification to ensure students are at the campus when marking attendance.
 
-CREATE TABLE LECTURE
-(
-  LectureID INT NOT NULL AUTO_INCREMENT,
-  CourseID INT NOT NULL,
-  Description TEXT,
-  LectureDate DATETIME NOT NULL,
-  Attribute VARCHAR(50),
-  PRIMARY KEY (LectureID),
-  FOREIGN KEY (CourseID) REFERENCES COURSE(CourseID) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE ENROLLMENTS
-(
-  UserID INT NOT NULL,
-  CourseID INT NOT NULL,
-  PRIMARY KEY (UserID, CourseID),
-  FOREIGN KEY (UserID) REFERENCES USERS(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (CourseID) REFERENCES COURSE(CourseID) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE ATTENDANCE
-(
-  UserID INT NOT NULL,
-  LectureID INT NOT NULL,
-  ScannedAt DATETIME NOT NULL,
-  PRIMARY KEY (UserID, LectureID),
-  FOREIGN KEY (UserID) REFERENCES USERS(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (LectureID) REFERENCES LECTURE(LectureID) ON DELETE CASCADE ON UPDATE CASCADE
-);
-```
+## Database Schema
+The database schema for the Attendance system is defined in [schema.sql](./schema.sql).
