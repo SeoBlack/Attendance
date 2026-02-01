@@ -1,5 +1,20 @@
 # Attendance System
 
+<p>
+  <a href="../../actions/workflows/maven.yml">
+    <img alt="CI" src="../../actions/workflows/maven.yml/badge.svg" />
+  </a>
+  <a href="https://java.com">
+    <img alt="Java" src="https://img.shields.io/badge/Java-17%2B-ED8B00?logo=openjdk&logoColor=white" />
+  </a>
+  <a href="https://spring.io/projects/spring-boot">
+    <img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=springboot&logoColor=white" />
+  </a>
+  <a href="https://maven.apache.org/">
+    <img alt="Maven" src="https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&logoColor=white" />
+  </a>
+</p>
+
 ## Product Vision
 We are building an application for teachers to replace their google excel sheet when marking their students attendance.
 
