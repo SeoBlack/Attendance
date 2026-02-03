@@ -1,1 +1,9 @@
-services: { }
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=attendance'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_USER=user'
+    ports:
+      - '5432:5432'
