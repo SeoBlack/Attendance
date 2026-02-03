@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   Box,
   Typography,
@@ -42,11 +43,14 @@ export default function StatCard({
     bg: paletteColor?.bg ?? theme.palette.primary.bg ?? '#E6F7F5',
     icon: paletteColor?.main ?? theme.palette.primary.main,
   };
-  const indicatorTextMap: Record<StatCardIndicatorType, string> = {
-    positive: theme.palette.success.main,
-    negative: theme.palette.error.main,
-    neutral: theme.palette.text.secondary,
-  };
+  const indicatorTextMap = useMemo<Record<StatCardIndicatorType, string>>(
+    () => ({
+      positive: theme.palette.success.main,
+      negative: theme.palette.error.main,
+      neutral: theme.palette.text.secondary,
+    }),
+    [theme]
+  );
   const indicatorText = indicatorTextMap[indicatorType];
 
   return (
