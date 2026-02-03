@@ -12,7 +12,8 @@ export type ActionButtonColor =
   | 'success'
   | 'warning'
   | 'error'
-  | 'info';
+  | 'info'
+  | 'brand';
 export type ActionButtonSize = 'small' | 'medium' | 'large';
 
 export interface ActionButtonProps extends Omit<ButtonProps, 'variant' | 'color' | 'size' | 'sx'> {

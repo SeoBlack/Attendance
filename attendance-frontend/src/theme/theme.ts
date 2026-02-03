@@ -2,11 +2,11 @@ import { createTheme, Theme } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface Palette {
-    brand: { main: string; dark: string };
+    brand: { main: string; dark: string; contrastText: string };
     link: { main: string };
   }
   interface PaletteOptions {
-    brand?: { main: string; dark: string };
+    brand?: { main: string; dark: string; contrastText?: string };
     link?: { main: string };
   }
   interface PaletteColor {
@@ -17,6 +17,12 @@ declare module '@mui/material/styles' {
   }
   interface TypeBackground {
     form: string;
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    brand: true;
   }
 }
 
@@ -63,6 +69,7 @@ const theme: Theme = createTheme({
     brand: {
       main: '#367D9C',
       dark: '#2d6a85',
+      contrastText: '#FFFFFF',
     },
     link: {
       main: '#3399FF',

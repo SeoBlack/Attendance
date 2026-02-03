@@ -51,14 +51,14 @@ export default function LoginPage() {
         }}
       >
         <Stack spacing={3} alignItems="center" sx={{ maxWidth: 360 }}>
-          <SchoolIcon sx={{ fontSize: 64, color: 'white' }} />
+          <SchoolIcon sx={{ fontSize: 64, color: 'brand.contrastText' }} />
           <Box sx={{ textAlign: 'center' }}>
             <Typography
               variant="h3"
               component="span"
               sx={{
                 fontWeight: 700,
-                color: 'white',
+                color: 'brand.contrastText',
                 fontFamily: 'inherit',
                 letterSpacing: '-0.02em',
               }}
@@ -68,7 +68,7 @@ export default function LoginPage() {
             <Typography
               variant="body1"
               sx={{
-                color: 'white',
+                color: 'brand.contrastText',
                 mt: 1,
                 opacity: 0.95,
                 fontSize: '1rem',
@@ -87,8 +87,8 @@ export default function LoginPage() {
                   gap: 2,
                 }}
               >
-                <Icon sx={{ fontSize: 24, color: 'white', flexShrink: 0 }} />
-                <Typography sx={{ color: 'white', fontWeight: 500 }}>
+                <Icon sx={{ fontSize: 24, color: 'brand.contrastText', flexShrink: 0 }} />
+                <Typography sx={{ color: 'brand.contrastText', fontWeight: 500 }}>
                   {label}
                 </Typography>
               </Box>
@@ -175,12 +175,6 @@ export default function LoginPage() {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     name="remember"
                     color="primary"
-                    sx={{
-                      color: 'text.secondary',
-                      '&.Mui-checked': {
-                        color: 'brand.main',
-                      },
-                    }}
                   />
                 }
                 label={
@@ -193,10 +187,7 @@ export default function LoginPage() {
                 href="#"
                 variant="body2"
                 underline="hover"
-                sx={{
-                  color: 'link.main',
-                  fontWeight: 500,
-                }}
+                color="link"
               >
                 Forgot password?
               </Link>
@@ -206,13 +197,7 @@ export default function LoginPage() {
               type="submit"
               fullWidth
               size="large"
-              sx={{
-                bgcolor: 'brand.main',
-                color: 'white',
-                '&:hover': {
-                  bgcolor: 'brand.dark',
-                },
-              }}
+              color="brand"
             >
               Sign In
             </ActionButton>
@@ -226,7 +211,7 @@ export default function LoginPage() {
               <Link
                 href="#"
                 underline="hover"
-                sx={{ color: 'link.main', fontWeight: 500 }}
+                color="link"
               >
                 Sign up
               </Link>
