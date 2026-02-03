@@ -1,1 +1,10 @@
-services: { }
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=mypassword
+    container_name: attendance-db
