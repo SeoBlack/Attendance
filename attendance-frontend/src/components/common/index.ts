@@ -1,6 +1,9 @@
 export { default as DisplayPanel } from './DisplayPanel';
 export type { DisplayPanelProps } from './DisplayPanel';
 
+export { default as FormTextField } from './FormTextField';
+export type { FormTextFieldProps } from './FormTextField';
+
 export { default as StatCard } from './StatCard';
 export type {
   StatCardProps,
