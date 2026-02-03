@@ -1,4 +1,10 @@
-import { Box, Typography, type SxProps, type Theme } from '@mui/material';
+import {
+  Box,
+  Typography,
+  type SxProps,
+  type Theme,
+  useTheme,
+} from '@mui/material';
 import DisplayPanel from './DisplayPanel';
 
 export type StatCardColor =
@@ -21,22 +27,6 @@ export interface StatCardProps {
   sx?: SxProps<Theme>;
 }
 
-const colorMap: Record<StatCardColor, { bg: string; icon: string }> = {
-  primary: { bg: '#E6F7F5', icon: '#0D9488' },
-  secondary: { bg: '#F3E8FF', icon: '#7C3AED' },
-  success: { bg: '#DCFCE7', icon: '#22C55E' },
-  warning: { bg: '#FEF3C7', icon: '#F59E0B' },
-  error: { bg: '#FEE2E2', icon: '#EF4444' },
-  info: { bg: '#DBEAFE', icon: '#3B82F6' },
-};
-
-
-const indicatorTextMap: Record<StatCardIndicatorType, string> = {
-  positive: '#22C55E',
-  negative: '#EF4444',
-  neutral: '#6B7280',
-};
-
 export default function StatCard({
   title,
   value,
@@ -46,7 +36,17 @@ export default function StatCard({
   indicatorType = 'neutral',
   sx,
 }: StatCardProps) {
-  const colors = colorMap[color] ?? colorMap.primary;
+  const theme = useTheme();
+  const paletteColor = theme.palette[color];
+  const colors = {
+    bg: paletteColor?.bg ?? theme.palette.primary.bg ?? '#E6F7F5',
+    icon: paletteColor?.main ?? theme.palette.primary.main,
+  };
+  const indicatorTextMap: Record<StatCardIndicatorType, string> = {
+    positive: theme.palette.success.main,
+    negative: theme.palette.error.main,
+    neutral: theme.palette.text.secondary,
+  };
   const indicatorText = indicatorTextMap[indicatorType];
 
   return (

@@ -1,4 +1,10 @@
-import { Paper, type PaperProps, type SxProps, type Theme } from '@mui/material';
+import {
+  Paper,
+  type PaperProps,
+  type SxProps,
+  type Theme,
+  useTheme,
+} from '@mui/material';
 
 export interface DisplayPanelProps extends Omit<PaperProps, 'sx'> {
   children?: React.ReactNode;
@@ -16,14 +22,15 @@ export default function DisplayPanel({
   borderColor,
   ...props
 }: DisplayPanelProps) {
+  const theme = useTheme();
   return (
     <Paper
       elevation={0}
       sx={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: theme.palette.background.paper,
         borderRadius: 2,
         p: padding,
-        border: bordered ? '1px solid #E5E7EB' : 'none',
+        border: bordered ? `1px solid ${theme.palette.divider}` : 'none',
         borderLeft: borderColor ? `4px solid ${borderColor}` : undefined,
         ...sx,
       }}

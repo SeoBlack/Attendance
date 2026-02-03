@@ -1,8 +1,13 @@
+import { Routes, Route } from 'react-router-dom'
+import LoginPage from './pages/LoginPage'
 import StoryBookPage from './pages/StoryBook'
 
 function App() {
   return (
-    <StoryBookPage />
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/storybook" element={<StoryBookPage />} />
+    </Routes>
   )
 }
 
