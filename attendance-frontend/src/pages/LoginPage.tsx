@@ -209,7 +209,7 @@ export default function LoginPage() {
             >
               Don&apos;t have an account?{' '}
               <Link
-                href="#"
+                href="/signup"
                 underline="hover"
                 color="link"
               >
