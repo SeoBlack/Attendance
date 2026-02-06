@@ -33,13 +33,14 @@ Teachers are marking their students attendance using excel sheets and by calling
 ## Current Backend Status (as of 2026-02-06)
 Implemented in the backend:
 - User signup via `POST /signup`.
+- User signin via `POST /signin`.
 - Course endpoints: `GET /courses`, `GET /courses/{id}`, `POST /courses`.
 - Entities: `User`, `Course`.
 - Auth payload format: JSON (`application/json`).
 
 Planned but not yet implemented:
 - Lectures, enrollments, attendance check-in flow.
-- Login endpoint and authentication.
+- Session/token-based authentication.
 - GPS validation and lecture statistics.
 
 ## Database Schema

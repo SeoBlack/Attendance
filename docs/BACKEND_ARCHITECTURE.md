@@ -3,7 +3,7 @@
 This document describes the structure and components of the backend attendance tracking system. The project is developed as an educational assignment, focusing on simplicity of implementation and understanding.
 
 ## Current Implementation Status (as of 2026-02-06)
-The backend currently implements user signup and basic course CRUD. The architecture below reflects what exists in code today, and separates planned components that are not yet implemented.
+The backend currently implements user signup/signin and basic course CRUD. The architecture below reflects what exists in code today, and separates planned components that are not yet implemented.
 
 ## 1. Technology Stack and Principles
 *   **Language**: Java 17+
@@ -43,7 +43,7 @@ Tables defined but not yet mapped in code (present in `schema.sql`):
 ### 3.2. Repositories
 Interfaces in the `repository` package, extending `JpaRepository<Entity, Long>`:
 
-*   `UserRepository`: method `boolean existsByEmail(String email);`
+*   `UserRepository`: methods `boolean existsByEmail(String email);` and `Optional<User> findByEmailIgnoreCase(String email);`
 *   `CourseRepository`
 
 ### 3.3. DTO (Data Transfer Objects)
@@ -57,12 +57,14 @@ Package `service`.
 
 *   **`UserService`**:
     *   `signup(SignupRequest req)`: Validates input, checks duplicate email, hashes password with BCrypt, saves `User`.
+    *   `signin(SigninRequest req)`: Validates input, looks up user by email, verifies password with BCrypt.
 
 ### 3.5. Controllers
 Package `controller`, REST API.
 
 *   **`AuthController`**:
     *   `POST /signup`
+    *   `POST /signin`
 *   **`CourseController`**:
     *   `GET /courses`
     *   `GET /courses/{id}`
@@ -71,8 +73,7 @@ Package `controller`, REST API.
 ## 4. Planned Components (Not Implemented Yet)
 *   Entities and repositories for `Lecture`, `Enrollment`, `Attendance`.
 *   Attendance flow: `POST /api/attendance/check-in`.
-*   Login endpoint and session/auth mechanism.
-*   `POST /signin` with `application/json` request body (`email`, `password`).
+*   Session/token-based authentication mechanism.
 *   API prefixing under `/api/*` and structured DTO responses.
 *   GPS validation and lecture statistics.
 
