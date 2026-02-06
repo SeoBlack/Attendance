@@ -33,12 +33,8 @@ class AuthControllerTest {
     @Test
     void signup_shouldReturn201_whenRequestIsValid() throws Exception {
         mockMvc.perform(post("/signup")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("firstName", "John")
-                        .param("lastName", "Doe")
-                        .param("role", "STUDENT")
-                        .param("email", "john@example.com")
-                        .param("password", "password123"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signupJson("John", "Doe", "STUDENT", "john@example.com", "password123")))
                 .andExpect(status().isCreated());
     }
 
@@ -53,24 +49,23 @@ class AuthControllerTest {
         userRepository.save(existing);
 
         mockMvc.perform(post("/signup")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("firstName", "Jane")
-                        .param("lastName", "Smith")
-                        .param("role", "TEACHER")
-                        .param("email", "jane@example.com")
-                        .param("password", "password123"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signupJson("Jane", "Smith", "TEACHER", "jane@example.com", "password123")))
                 .andExpect(status().isInternalServerError());
     }
 
     @Test
     void signup_shouldReturn500_whenNamesAreEmpty() throws Exception {
         mockMvc.perform(post("/signup")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("firstName", "")
-                        .param("lastName", "")
-                        .param("role", "STUDENT")
-                        .param("email", "empty@example.com")
-                        .param("password", "password123"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signupJson("", "", "STUDENT", "empty@example.com", "password123")))
                 .andExpect(status().isInternalServerError());
+    }
+
+    private String signupJson(String firstName, String lastName, String role, String email, String password) {
+        return String.format(
+                "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"role\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}",
+                firstName, lastName, role, email, password
+        );
     }
 }

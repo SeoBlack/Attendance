@@ -15,8 +15,8 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@ModelAttribute SignupRequest request) {
+    @PostMapping(value = "/signup", consumes = "application/json")
+    public ResponseEntity<String> signup(@RequestBody SignupRequest request) {
         try {
             userService.signup(request);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created");
@@ -24,5 +24,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Signup failed");
         }
     }
-
 }
