@@ -4,6 +4,7 @@ import org.example.attendancebackend.dto.SignupRequest;
 import org.example.attendancebackend.entity.User;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
+import org.example.attendancebackend.dto.SigninRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +31,9 @@ public class UserService {
             throw new RuntimeException("Email, password and role are required");
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        String normalizedEmail = request.getEmail().trim().toLowerCase();
+
+        if (userRepository.existsByEmail(normalizedEmail)) {
             throw new RuntimeException("User already exists");
         }
 
@@ -38,10 +41,29 @@ public class UserService {
         user.setRole(request.getRole());
         user.setFirstName(request.getFirstName().trim());
         user.setLastName(request.getLastName().trim());
-        user.setEmail(request.getEmail().trim().toLowerCase());
+        user.setEmail(normalizedEmail);
         user.setPasswordHash(passwordHasher.hash(request.getPassword()));
 
         userRepository.save(user);
+    }
+
+    public void signin(SigninRequest request) {
+        if (request == null) {
+            throw new RuntimeException("Request is null");
+        }
+
+        if (isBlank(request.getEmail()) || isBlank(request.getPassword())) {
+            throw new RuntimeException("Email and password are required");
+        }
+
+        String email = request.getEmail().trim().toLowerCase();
+
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!passwordHasher.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid credentials");
+        }
     }
 
     private boolean isBlank(String value) {

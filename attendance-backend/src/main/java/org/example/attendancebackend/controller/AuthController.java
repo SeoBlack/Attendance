@@ -1,6 +1,7 @@
 package org.example.attendancebackend.controller;
 
 import org.example.attendancebackend.dto.SignupRequest;
+import org.example.attendancebackend.dto.SigninRequest;
 import org.example.attendancebackend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,4 +25,15 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Signup failed");
         }
     }
+
+    @PostMapping(value = "/signin", consumes = "application/json")
+    public ResponseEntity<String> signin(@RequestBody SigninRequest request) {
+        try {
+            userService.signin(request);
+            return ResponseEntity.ok("Login successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid credentials");
+        }
+    }
+
 }
