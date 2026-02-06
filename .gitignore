@@ -1,2 +1,7 @@
 Presentation.md
 /logs
+.DS_Store
+docs/Backend_Implementation_Plan_RU.md
+docs/Backend_Tasks_GitHub_Issues.md
+docs/Backend_Implementation_Plan.md
+.idea/

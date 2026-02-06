@@ -31,4 +31,4 @@ Teachers are marking their students attendance using excel sheets and by calling
 - GPS verification to ensure students are at the campus when marking attendance.
 
 ## Database Schema
-The database schema for the Attendance system is defined in [schema.sql](./schema.sql).
+The database schema for the Attendance system is defined in [schema.sql](attendance-backend/src/main/resources/schema.sql).
