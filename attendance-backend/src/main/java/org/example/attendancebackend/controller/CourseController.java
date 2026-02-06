@@ -27,7 +27,7 @@ public class CourseController {
         return courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
     }
 
-    @PostMapping("/courses")
+    @PostMapping(path="/courses",consumes = "application/json")
     public Course postCourse(@RequestBody Course course) {
         return courseRepository.save(course);
     }
