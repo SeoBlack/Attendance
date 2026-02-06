@@ -4,6 +4,7 @@ import org.example.attendancebackend.controller.LectureController;
 import org.example.attendancebackend.entity.Lecture;
 import org.example.attendancebackend.repository.CourseRepository;
 import org.example.attendancebackend.repository.LectureRepository;
+import org.example.attendancebackend.service.LectureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +49,8 @@ public class LectureControllerTests {
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
-        mockMvc = MockMvcBuilders.standaloneSetup(new LectureController(lectureRepository, courseRepository))
+        LectureService lectureService = new LectureService(lectureRepository, courseRepository);
+        mockMvc = MockMvcBuilders.standaloneSetup(new LectureController(lectureService))
                 .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
                 .build();
     }
