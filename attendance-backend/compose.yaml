@@ -1,12 +1,12 @@
 services:
   postgres:
-    image: 'postgres:latest'
-    environment:
-      - 'POSTGRES_DB=attendance'
-      - 'POSTGRES_PASSWORD=password'
-      - 'POSTGRES_USER=user'
+    image: postgres:17
     ports:
       - '5432:5432'
     volumes:
       - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=attendance
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
     container_name: attendance-db
