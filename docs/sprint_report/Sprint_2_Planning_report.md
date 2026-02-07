@@ -18,13 +18,20 @@ The following is a part of product backlog. Full product backlog is accessible t
 
 - [**teacher can create a lecture**](https://github.com/SeoBlack/Attendance/issues/4)
 - [**Authorization**](https://github.com/SeoBlack/Attendance/issues/3)
--
 
 ## Planned Tasks / Breakdown
 
 - Design Database Schema
 - Implement designed Database
 - Test implemented Database
+- Implement backend endpoint `POST /signup` for user registration
+- Support signup for both `TEACHER` and `STUDENT` roles
+- Accept signup JSON payload fields: `firstName`, `lastName`, `role`, `email`, `password`
+- Add reusable password hashing utility (hash + verify) for signup/login flow
+- Return HTTP statuses for signup: `201 Created` on success, `500` on server error
+- Add JUnit tests for signup edge cases:
+- user already exists
+- empty first/last name
 
 ## Team Capacity & Assumptions
 
