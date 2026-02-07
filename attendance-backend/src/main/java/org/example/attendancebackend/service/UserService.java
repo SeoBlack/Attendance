@@ -27,11 +27,12 @@ public class UserService {
                 StringValidator.isBlank(request.getFirstName()) ||
                         StringValidator.isBlank(request.getLastName()) ||
                         StringValidator.isBlank(request.getEmail()) ||
-                        StringValidator.isBlank(request.getPassword()) ||
-                        StringValidator.isBlank(request.getRole())
+                        StringValidator.isBlank(request.getPassword())
+//                        || StringValidator.isBlank(request.getRole())
         ) {
             return SignupResult.failure(SignupErrorStatus.INSUFFICIENT_DATA);
         }
+//        if(request.getRole() == "student")
 
         if (userRepository.existsByEmail(request.getEmail())) {
             return SignupResult.failure(SignupErrorStatus.EMAIL_ALREADY_EXISTS);

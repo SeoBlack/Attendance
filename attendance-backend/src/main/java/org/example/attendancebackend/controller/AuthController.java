@@ -18,6 +18,7 @@ public class AuthController {
     }
 
     // TODO: Return value must be JSON
+    @CrossOrigin
     @PostMapping(value = "/signup", consumes = "application/json")
     public ResponseEntity<String> signup(@RequestBody SignupRequest request) {
         try {
@@ -25,7 +26,7 @@ public class AuthController {
             if (!res.success) {
                 String msg = "Bad request";
                 if(res.error == SignupErrorStatus.EMAIL_ALREADY_EXISTS) msg = "Email already exists";
-                if(res.error == SignupErrorStatus.INSUFFICIENT_DATA) msg = "First name and last name are required";
+                if(res.error == SignupErrorStatus.INSUFFICIENT_DATA) msg = "Mandatory fields are not provided";
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
             }
             return ResponseEntity.status(HttpStatus.CREATED).body("User created");

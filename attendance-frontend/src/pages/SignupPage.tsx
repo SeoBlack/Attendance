@@ -9,6 +9,7 @@ import {
 
 import { ActionButton, FormTextField } from '../components/common';
 import {requestSignup, USER_ROLE} from "../api/auth";
+import {redirect} from "react-router-dom";
 
 function PasswordMismatchAlert({isMismatch}: {isMismatch: boolean}) {
   if(isMismatch)
@@ -40,6 +41,7 @@ export default function SignupPage() {
       role: role as USER_ROLE,
       studentId
     }).then(res => {
+      redirect("/login")
       // TODO: Handle failures
       // TODO: Redirect to login with message on success
     }).catch(e => {
