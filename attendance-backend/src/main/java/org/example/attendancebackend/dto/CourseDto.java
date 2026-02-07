@@ -1,10 +1,12 @@
 package org.example.attendancebackend.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Builder
 public class CourseDto {
     private Long id;
     private String courseName;

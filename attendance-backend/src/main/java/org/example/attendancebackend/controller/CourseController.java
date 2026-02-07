@@ -1,48 +1,35 @@
 package org.example.attendancebackend.controller;
 
 import org.example.attendancebackend.dto.CourseDto;
-import org.example.attendancebackend.entity.Course;
-import org.example.attendancebackend.repository.CourseRepository;
+import org.example.attendancebackend.service.CourseService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/courses")
 public class CourseController {
 
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
 
-    public CourseController(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
+    public CourseController(CourseService courseService){
+        this.courseService = courseService;
     }
 
-    @GetMapping("/courses")
-    public List<CourseDto> getCourses() {
-        List<Course> courses = courseRepository.findAll();
-        List<CourseDto> courseDtos = new ArrayList<>();
-        for (Course course : courses) {
-            courseDtos.add(new CourseDto(course.getId(), course.getCourseName(), course.getDescription()));
-        }
-        return courseDtos;
+    @GetMapping()
+    public ResponseEntity<List<CourseDto>> getCourses() {
+        return new ResponseEntity<>(courseService.getCourseDtos(), HttpStatus.OK);
     }
 
-    @GetMapping("/courses/{id}")
-    public CourseDto getCourse(@PathVariable Long id){
-//        return courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
-        Course course = courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
-        return new CourseDto(course.getId(), course.getCourseName(), course.getDescription());
-
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseDto> getCourse(@PathVariable Long id){
+        return new ResponseEntity<>(courseService.getCourseDtoById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/courses")
-    public CourseDto postCourse(@RequestBody CourseDto courseDto) {
-        Course course = new Course();
-        course.setCourseName(courseDto.getCourseName());
-        course.setDescription(courseDto.getDescription());
-        Course savedCourse = courseRepository.save(course);
-        return new CourseDto(savedCourse.getId(), savedCourse.getCourseName(), savedCourse.getDescription());
+    @PostMapping()
+    public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto) {
+        return new ResponseEntity<>(courseService.createCourseDto(courseDto), HttpStatus.CREATED) ;
     }
 }
