@@ -2,8 +2,11 @@ package org.example.attendancebackend.service;
 
 import org.example.attendancebackend.dto.SignupRequest;
 import org.example.attendancebackend.entity.User;
+import org.example.attendancebackend.internal.signup.SignupErrorStatus;
+import org.example.attendancebackend.internal.signup.SignupResult;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
+import org.example.attendancebackend.util.StringValidator;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,21 +20,21 @@ public class UserService {
         this.passwordHasher = passwordHasher;
     }
 
-    public void signup(SignupRequest request) {
-        if (request == null) {
-            throw new RuntimeException("Request is null");
-        }
+    public SignupResult signup(SignupRequest request) {
+        if (request == null) throw new RuntimeException("SignUp request is null");
 
-        if (isBlank(request.getFirstName()) || isBlank(request.getLastName())) {
-            throw new RuntimeException("First name and last name are required");
-        }
-
-        if (isBlank(request.getEmail()) || isBlank(request.getPassword()) || isBlank(request.getRole())) {
-            throw new RuntimeException("Email, password and role are required");
+        if (
+                StringValidator.isBlank(request.getFirstName()) ||
+                        StringValidator.isBlank(request.getLastName()) ||
+                        StringValidator.isBlank(request.getEmail()) ||
+                        StringValidator.isBlank(request.getPassword()) ||
+                        StringValidator.isBlank(request.getRole())
+        ) {
+            return SignupResult.failure(SignupErrorStatus.INSUFFICIENT_DATA);
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("User already exists");
+            return SignupResult.failure(SignupErrorStatus.EMAIL_ALREADY_EXISTS);
         }
 
         User user = new User();
@@ -42,9 +45,7 @@ public class UserService {
         user.setPasswordHash(passwordHasher.hash(request.getPassword()));
 
         userRepository.save(user);
+        return SignupResult.ok();
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.trim().isEmpty();
-    }
 }
