@@ -56,18 +56,6 @@ public class LectureControllerTests {
     }
 
     @Test
-    void getLectures_withoutCourseId_returnsAllLectures() throws Exception {
-        Lecture lecture = buildLecture(10L, 1L, "Intro", timestamp(1_700_000_000_000L), timestamp(1_700_000_360_000L));
-        when(lectureRepository.findAll()).thenReturn(List.of(lecture));
-
-        mockMvc.perform(get("/lectures"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(10))
-                .andExpect(jsonPath("$[0].courseId").value(1))
-                .andExpect(jsonPath("$[0].description").value("Intro"));
-    }
-
-    @Test
     void getLectures_withCourseId_filtersByCourse() throws Exception {
         Lecture lecture = buildLecture(11L, 2L, "Week 2", timestamp(1_700_000_000_000L), timestamp(1_700_000_360_000L));
         when(lectureRepository.findByCourseId(2L)).thenReturn(List.of(lecture));
@@ -116,8 +104,6 @@ public class LectureControllerTests {
 
     @Test
     void createLecture_invalidDates_returnsBadRequest() throws Exception {
-        when(courseRepository.existsById(1L)).thenReturn(true);
-
         String payload = objectMapper.writeValueAsString(Map.of(
                 "courseId", 1L,
                 "description", "Bad dates",
@@ -180,9 +166,6 @@ public class LectureControllerTests {
 
     @Test
     void updateLecture_invalidDates_returnsBadRequest() throws Exception {
-        when(lectureRepository.findById(10L)).thenReturn(Optional.of(buildLecture(10L, 1L, "Old", timestamp(1_700_000_000_000L), timestamp(1_700_000_360_000L))));
-        when(courseRepository.existsById(1L)).thenReturn(true);
-
         String payload = objectMapper.writeValueAsString(Map.of(
                 "courseId", 1L,
                 "description", "Bad dates",

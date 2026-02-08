@@ -3,11 +3,9 @@ package org.example.attendancebackend.service;
 import org.example.attendancebackend.entity.Lecture;
 import org.example.attendancebackend.repository.CourseRepository;
 import org.example.attendancebackend.repository.LectureRepository;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.NoSuchElementException;
 import java.util.List;
 import java.util.Random;
 
@@ -25,62 +23,32 @@ public class LectureService {
     }
 
     public List<Lecture> getLectures(Long courseId) {
-        if (courseId != null) {
-            return lectureRepository.findByCourseId(courseId);
-        }
-        return lectureRepository.findAll();
+
+        return lectureRepository.findByCourseId(courseId);
     }
 
     public Lecture getLecture(Long id) {
         return lectureRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lecture not found"));
+                .orElseThrow(() -> new NoSuchElementException("Lecture not found"));
     }
 
     public Lecture createLecture(Lecture lecture) {
-        if (lecture.getCourseId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing course id");
-        }
-
         // Validate that course exists
         if (!courseRepository.existsById(lecture.getCourseId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
-        }
-
-        // Validate dates
-        if (lecture.getStartDate() == null || lecture.getEndDate() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date and end date are required");
-        }
-
-        if (lecture.getEndDate().before(lecture.getStartDate())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "End date must be after start date");
+            throw new NoSuchElementException("Course not found");
         }
 
         lecture.setJoinCode(generateRandomString());
-        try {
-            return lectureRepository.save(lecture);
-        } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid lecture data: " + e.getMessage());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create lecture");
-        }
+        return lectureRepository.save(lecture);
     }
 
     public Lecture updateLecture(Long id, Lecture lecture) {
         Lecture existingLecture = lectureRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lecture not found"));
+                .orElseThrow(() -> new NoSuchElementException("Lecture not found"));
 
         // Validate that course exists
         if (!courseRepository.existsById(lecture.getCourseId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
-        }
-
-        // Validate dates
-        if (lecture.getStartDate() == null || lecture.getEndDate() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date and end date are required");
-        }
-
-        if (lecture.getEndDate().before(lecture.getStartDate())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "End date must be after start date");
+            throw new NoSuchElementException("Course not found");
         }
 
         // Update fields
@@ -89,18 +57,12 @@ public class LectureService {
         existingLecture.setStartDate(lecture.getStartDate());
         existingLecture.setEndDate(lecture.getEndDate());
 
-        try {
-            return lectureRepository.save(existingLecture);
-        } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid lecture data: " + e.getMessage());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to update lecture");
-        }
+        return lectureRepository.save(existingLecture);
     }
 
     public void deleteLecture(Long id) {
         if (!lectureRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lecture not found");
+            throw new NoSuchElementException("Lecture not found");
         }
         lectureRepository.deleteById(id);
     }
