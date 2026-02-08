@@ -1,5 +1,6 @@
 package org.example.attendancebackend.controller;
 
+import org.example.attendancebackend.dto.SigninRequest;
 import org.example.attendancebackend.dto.signup.SignupRequest;
 import org.example.attendancebackend.dto.signup.SignupResponse;
 import org.example.attendancebackend.entity.UserRole;
@@ -30,6 +31,14 @@ public class AuthController {
 
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity handleTechnicalException(RuntimeException e) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new SignupResponse(false, "Unexpected error occurred. Please try again later"));
+
+    }
+
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SignupResponse> signup(@RequestBody SignupRequest signupRequest) {
         if (StringValidator.isBlank(signupRequest.getFirstName())
@@ -40,9 +49,19 @@ public class AuthController {
                 || (signupRequest.getRole() == UserRole.STUDENT && StringValidator.isBlank(signupRequest.getStudentId()))
         ) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new SignupResponse(false, "Mandatory fields are not provided"));
 
-        // Return value not used on purpose
         userService.signup(signupRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new SignupResponse(true, ""));
 
     }
+
+    @PostMapping(value = "/signin", consumes = "application/json")
+    public ResponseEntity<String> signin(@RequestBody SigninRequest request) {
+        try {
+            userService.signin(request);
+            return ResponseEntity.ok("Login successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid credentials");
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import org.example.attendancebackend.entity.UserRole;
 import org.example.attendancebackend.internal.signup.UserWithEmailExistsException;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
+import org.example.attendancebackend.dto.SigninRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,24 +20,46 @@ public class UserService {
         this.passwordHasher = passwordHasher;
     }
 
-    public User signup(SignupRequest signupRequest) {
+    public void signup(SignupRequest signupRequest) {
         if (signupRequest == null) throw new RuntimeException("SignUp request is null");
 
-        if (userRepository.existsByEmail(signupRequest.getEmail()))
-            throw new UserWithEmailExistsException(signupRequest.getEmail());
+        String normalizedEmail = signupRequest.getEmail().trim().toLowerCase();
+        if (userRepository.existsByEmail(normalizedEmail))
+            throw new UserWithEmailExistsException(normalizedEmail);
 
 
         User user = new User();
         user.setRole(signupRequest.getRole());
         user.setFirstName(signupRequest.getFirstName().trim());
         user.setLastName(signupRequest.getLastName().trim());
-        user.setEmail(signupRequest.getEmail().trim().toLowerCase());
+        user.setEmail(normalizedEmail);
         if (signupRequest.getRole() == UserRole.STUDENT)
             user.setStudentId(signupRequest.getStudentId());
         user.setPasswordHash(passwordHasher.hash(signupRequest.getPassword()));
 
         userRepository.save(user);
-        return user;
     }
 
+    public void signin(SigninRequest request) {
+        if (request == null) {
+            throw new RuntimeException("Request is null");
+        }
+
+        if (isBlank(request.getEmail()) || isBlank(request.getPassword())) {
+            throw new RuntimeException("Email and password are required");
+        }
+
+        String email = request.getEmail().trim().toLowerCase();
+
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!passwordHasher.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
+    }
 }

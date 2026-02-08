@@ -8,7 +8,7 @@
     <img alt="Java" src="https://img.shields.io/badge/Java-17%2B-ED8B00?logo=openjdk&logoColor=white" />
   </a>
   <a href="https://spring.io/projects/spring-boot">
-    <img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=springboot&logoColor=white" />
+    <img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-4.x-6DB33F?logo=springboot&logoColor=white" />
   </a>
   <a href="https://maven.apache.org/">
     <img alt="Maven" src="https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&logoColor=white" />
@@ -29,6 +29,19 @@ Teachers are marking their students attendance using excel sheets and by calling
 - Student and teacher accounts must be created and verified.
 - Teachers can view statistics of the lecture such as students attended, time interval, and more.
 - GPS verification to ensure students are at the campus when marking attendance.
+
+## Current Backend Status (as of 2026-02-06)
+Implemented in the backend:
+- User signup via `POST /signup`.
+- User signin via `POST /signin`.
+- Course endpoints: `GET /courses`, `GET /courses/{id}`, `POST /courses`.
+- Entities: `User`, `Course`.
+- Auth payload format: JSON (`application/json`).
+
+Planned but not yet implemented:
+- Lectures, enrollments, attendance check-in flow.
+- Session/token-based authentication.
+- GPS validation and lecture statistics.
 
 ## Database Schema
 The database schema for the Attendance system is defined in [schema.sql](attendance-backend/src/main/resources/schema.sql).
