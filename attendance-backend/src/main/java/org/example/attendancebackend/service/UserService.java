@@ -2,11 +2,9 @@ package org.example.attendancebackend.service;
 
 import org.example.attendancebackend.dto.signup.SignupRequest;
 import org.example.attendancebackend.entity.User;
-import org.example.attendancebackend.internal.signup.SignupError;
-import org.example.attendancebackend.internal.signup.SignupResult;
+import org.example.attendancebackend.internal.signup.UserWithEmailExistsException;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
-import org.example.attendancebackend.util.StringValidator;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,20 +18,11 @@ public class UserService {
         this.passwordHasher = passwordHasher;
     }
 
-    public SignupResult signup(SignupRequest signupRequest) {
+    public User signup(SignupRequest signupRequest) {
         if (signupRequest == null) throw new RuntimeException("SignUp request is null");
 
-        if (StringValidator.isBlank(signupRequest.getFirstName())
-                || StringValidator.isBlank(signupRequest.getLastName())
-                || StringValidator.isBlank(signupRequest.getEmail())
-                || StringValidator.isBlank(signupRequest.getPassword())
-                || StringValidator.isBlank(signupRequest.getRole())
-                || (signupRequest.getRole().equals("student") && StringValidator.isBlank(signupRequest.getStudentId()))
-        ) return SignupResult.failure(SignupError.INSUFFICIENT_DATA);
-
-
         if (userRepository.existsByEmail(signupRequest.getEmail()))
-            return SignupResult.failure(SignupError.EMAIL_ALREADY_EXISTS);
+            throw new UserWithEmailExistsException(signupRequest.getEmail());
 
 
         User user = new User();
@@ -46,7 +35,7 @@ public class UserService {
         user.setPasswordHash(passwordHasher.hash(signupRequest.getPassword()));
 
         userRepository.save(user);
-        return SignupResult.ok();
+        return user;
     }
 
 }
