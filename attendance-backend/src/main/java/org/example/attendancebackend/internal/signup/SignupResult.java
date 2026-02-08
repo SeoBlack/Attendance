@@ -2,7 +2,7 @@ package org.example.attendancebackend.internal.signup;
 
 public class SignupResult {
     public boolean success;
-    public SignupErrorStatus error;
+    public SignupError errorStatus;
 
     public static SignupResult ok(){
         SignupResult rval = new SignupResult();
@@ -10,10 +10,10 @@ public class SignupResult {
         return rval;
     }
 
-    public static SignupResult failure(SignupErrorStatus error){
+    public static SignupResult failure(SignupError error){
         SignupResult rval = new SignupResult();
         rval.success = false;
-        rval.error = error;
+        rval.errorStatus = error;
         return rval;
     }
 }

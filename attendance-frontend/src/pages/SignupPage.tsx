@@ -48,7 +48,7 @@ export default function SignupPage() {
     setFirstNameValid(firstName.trim() !== "");
     setLastNameValid(lastName.trim() !== "");
     setRoleValid(role !== "" as USER_ROLE);
-    setStudentIdValid(role === USER_ROLE.STUDENT && studentId.trim() !== "");
+    setStudentIdValid(role === USER_ROLE.TEACHER || studentId.trim() !== "");
   }
 
   useEffect(() => {
