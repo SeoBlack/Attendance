@@ -40,6 +40,7 @@ public class AuthController {
                 || (signupRequest.getRole() == UserRole.STUDENT && StringValidator.isBlank(signupRequest.getStudentId()))
         ) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new SignupResponse(false, "Mandatory fields are not provided"));
 
+        // Return value not used on purpose
         userService.signup(signupRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new SignupResponse(true, ""));
 
