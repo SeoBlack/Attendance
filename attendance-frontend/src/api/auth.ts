@@ -1,6 +1,8 @@
+import {pfetch} from "./lib/fetch";
+
 export enum USER_ROLE {
-  STUDENT = 'STUDENT',
-  TEACHER = 'TEACHER',
+  STUDENT = 'student',
+  TEACHER = 'teacher',
 }
 
 export type SignupOptions = {
@@ -12,8 +14,7 @@ export type SignupOptions = {
   studentId?: string;
 }
 export async function requestSignup(options: SignupOptions){
-  // TODO: implement
-  let resp = await fetch('http://localhost:8081/signup', {
+  let resp = await pfetch(`/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
