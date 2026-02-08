@@ -2,6 +2,7 @@ package org.example.attendancebackend.service;
 
 import org.example.attendancebackend.dto.signup.SignupRequest;
 import org.example.attendancebackend.entity.User;
+import org.example.attendancebackend.entity.UserRole;
 import org.example.attendancebackend.internal.signup.UserWithEmailExistsException;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
@@ -30,7 +31,7 @@ public class UserService {
         user.setFirstName(signupRequest.getFirstName().trim());
         user.setLastName(signupRequest.getLastName().trim());
         user.setEmail(signupRequest.getEmail().trim().toLowerCase());
-        if (signupRequest.getRole().equals("student"))
+        if (signupRequest.getRole() == UserRole.STUDENT)
             user.setStudentId(signupRequest.getStudentId());
         user.setPasswordHash(passwordHasher.hash(signupRequest.getPassword()));
 

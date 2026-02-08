@@ -2,6 +2,7 @@ package org.example.attendancebackend.controller;
 
 import org.example.attendancebackend.dto.signup.SignupRequest;
 import org.example.attendancebackend.dto.signup.SignupResponse;
+import org.example.attendancebackend.entity.UserRole;
 import org.example.attendancebackend.internal.signup.UserWithEmailExistsException;
 import org.example.attendancebackend.service.UserService;
 import org.example.attendancebackend.util.StringValidator;
@@ -35,8 +36,8 @@ public class AuthController {
                 || StringValidator.isBlank(signupRequest.getLastName())
                 || StringValidator.isBlank(signupRequest.getEmail())
                 || StringValidator.isBlank(signupRequest.getPassword())
-                || StringValidator.isBlank(signupRequest.getRole())
-                || (signupRequest.getRole().equals("student") && StringValidator.isBlank(signupRequest.getStudentId()))
+                || StringValidator.isBlank(signupRequest.getRole().getValue())
+                || (signupRequest.getRole() == UserRole.STUDENT && StringValidator.isBlank(signupRequest.getStudentId()))
         ) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new SignupResponse(false, "Mandatory fields are not provided"));
 
         userService.signup(signupRequest);

@@ -21,7 +21,7 @@ public class User {
     private Long id;
 
     @Column(name = "role", nullable = false, length = 20)
-    private String role;
+    private UserRole role;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
