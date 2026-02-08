@@ -1,4 +1,4 @@
-package org.example.attendancebackend.dto;
+package org.example.attendancebackend.dto.signup;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,4 +13,5 @@ public class SignupRequest {
     private String role;
     private String email;
     private String password;
+    private String studentId;
 }

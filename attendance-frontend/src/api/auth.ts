@@ -21,5 +21,5 @@ export async function requestSignup(options: SignupOptions){
     },
     body: JSON.stringify(options)
   })
-  console.log(resp)
+  return resp.json();
 }

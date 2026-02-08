@@ -1,5 +1,6 @@
 import {useEffect, useMemo, useState} from 'react';
 import {
+  Alert,
   Box,
   FormControl, InputLabel, MenuItem,
   Select,
@@ -8,12 +9,17 @@ import {
 } from '@mui/material';
 
 import { ActionButton, FormTextField } from '../components/common';
-import {requestSignup, USER_ROLE} from "../api/auth";
-import {redirect} from "react-router-dom";
+import {USER_ROLE} from "../api/auth";
+import {useNavigate} from "react-router-dom";
+import {api} from "../api";
 
 const userRoleOptions = Object.entries(USER_ROLE).map(([rk, role]) => <MenuItem key={rk} value={role}>{role.charAt(0).toUpperCase() + role.slice(1)}</MenuItem>)
-
 export default function SignupPage() {
+  const navigate = useNavigate();
+
+
+  const [signupError, setSignupError] = useState('');
+
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [passwordsMismatch, setPasswordsMismatch] = useState(false);
@@ -51,18 +57,16 @@ export default function SignupPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    requestSignup({
+    api.auth.requestSignup({
       email, password,
       firstName, lastName,
       role: role as USER_ROLE,
       studentId
-    }).then(res => {
-      redirect("/login")
-      // TODO: Handle failures
-      // TODO: Redirect to login with message on success
-    }).catch(e => {
-      // TODO: add toast
-      console.error(e)
+    }).then(resp => {
+      if(!resp.success) setSignupError(resp?.error || "An unknown error occurred. Please try again later.")
+      else navigate("/")
+    }).catch(_ => {
+      setSignupError("An unknown error occurred. Please try again later.")
     })
   };
 
@@ -86,6 +90,7 @@ export default function SignupPage() {
           p: 3,
         }}
       >
+
         <Box
           component="form" onSubmit={handleSubmit}
           sx={{
@@ -100,6 +105,11 @@ export default function SignupPage() {
                 Sign up
               </Typography>
             </Box>
+            {
+              signupError ? (
+                <Alert severity="error">{signupError}</Alert>
+              ): null
+            }
 
             <FormControl fullWidth>
               <InputLabel id="role-select-label">Role</InputLabel>
