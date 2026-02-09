@@ -1,6 +1,5 @@
 package org.example.attendancebackend.service;
 
-import org.example.attendancebackend.dto.CourseDto;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.repository.CourseRepository;
 import org.junit.jupiter.api.Assertions;
@@ -26,41 +25,38 @@ public class CourseServiceTest {
     private CourseService courseService;
 
     Course course;
-    CourseDto courseDto;
     @BeforeEach
     public void init() {
         course = Course.builder().courseName("Math").description("Math is beautiful").build();
-        courseDto = CourseDto.builder().courseName("Math").description("Math is beautiful").build();
     }
 
     @Test
-    void getCourseReturnsCorrectDto() {
+    void getCourseReturnsCorrect() {
         given(courseRepository.findById(1L)).willReturn(Optional.ofNullable(course));
 
-        CourseDto result = courseService.getCourseDtoById(1L);
+        Course result = courseService.getCourseById(1L);
         Assertions.assertNotEquals(null, result);
         Assertions.assertEquals(course.getCourseName(), result.getCourseName());
         Assertions.assertEquals(course.getDescription(), result.getDescription());
     }
 
     @Test
-    void createsCourseAndReturnsDto() {
+    void createsCourseAndReturns() {
         given(courseRepository.save(course)).willReturn(course);
 
-        CourseDto result = courseService.createCourseDto(courseDto);
+        Course result = courseService.createCourse(course);
         Assertions.assertNotEquals(null, result);
-        Assertions.assertEquals(courseDto.getCourseName(), result.getCourseName());
-        Assertions.assertEquals(courseDto.getDescription(), result.getDescription());
+        Assertions.assertEquals(course.getCourseName(), result.getCourseName());
+        Assertions.assertEquals(course.getDescription(), result.getDescription());
     }
 
     @Test
     void getAllCoursesReturns(){
         Course course1 = Course.builder().courseName("Python").description("Python is practice").build();
-        CourseDto courseDto1 = CourseDto.builder().courseName("Python").description("Python is practice").build();
 
         given(courseRepository.findAll()).willReturn(List.of(course, course1));
 
-        List<CourseDto> result = courseService.getCourseDtos();
+        List<Course> result = courseService.getCourses();
 
         Assertions.assertNotEquals(null, result);
         Assertions.assertEquals(2, result.size());

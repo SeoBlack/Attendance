@@ -1,7 +1,7 @@
 package org.example.attendancebackend.controller;
 
 import jakarta.validation.Valid;
-import org.example.attendancebackend.dto.CourseDto;
+import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,17 +37,17 @@ public class CourseController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<CourseDto>> getCourses() {
-        return new ResponseEntity<>(courseService.getCourseDtos(), HttpStatus.OK);
+    public ResponseEntity<List<Course>> getCourses() {
+        return new ResponseEntity<>(courseService.getCourses(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDto> getCourse(@PathVariable Long id){
-        return new ResponseEntity<>(courseService.getCourseDtoById(id), HttpStatus.OK);
+    public ResponseEntity<Course> getCourse(@PathVariable Long id){
+        return new ResponseEntity<>(courseService.getCourseById(id), HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<CourseDto> createCourse(@Valid @RequestBody CourseDto courseDto) {
-        return new ResponseEntity<>(courseService.createCourseDto(courseDto), HttpStatus.CREATED) ;
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
+        return new ResponseEntity<>(courseService.createCourse(course), HttpStatus.CREATED) ;
     }
 }

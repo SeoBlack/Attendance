@@ -1,6 +1,5 @@
 package org.example.attendancebackend.controller;
 
-import org.example.attendancebackend.dto.CourseDto;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,18 +34,16 @@ class CourseControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     Course course;
-    CourseDto courseDto;
 
     @BeforeEach
     public void init() {
         course = Course.builder().courseName("Math").description("Math is beautiful").build();
-        courseDto = CourseDto.builder().courseName("Math").description("Math is beautiful").build();
     }
 
     @Test
     void getCourses() throws Exception {
-        CourseDto course2 = CourseDto.builder().courseName("Python").description("Python is practical").build();
-        given(courseService.getCourseDtos()).willReturn(List.of(courseDto, course2));
+        Course course2 = Course.builder().courseName("Python").description("Python is practical").build();
+        given(courseService.getCourses()).willReturn(List.of(course, course2));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/courses")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -60,7 +57,7 @@ class CourseControllerTest {
     @Test
     void getCourse() throws Exception {
         Long courseId = 1L;
-        given(courseService.getCourseDtoById(courseId)).willReturn(courseDto);
+        given(courseService.getCourseById(courseId)).willReturn(course);
 
         ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/courses/{id}",courseId)
                 .contentType(MediaType.APPLICATION_JSON));
@@ -72,11 +69,11 @@ class CourseControllerTest {
 
     @Test
     void createCourse() throws Exception {
-        given(courseService.createCourseDto(ArgumentMatchers.any())).willReturn(courseDto);
+        given(courseService.createCourse(ArgumentMatchers.any())).willReturn(course);
 
         ResultActions response = mockMvc.perform( MockMvcRequestBuilders.post("/courses")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(courseDto)));
+                        .content(objectMapper.writeValueAsString(course)));
 
         response.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.courseName").value("Math"))
