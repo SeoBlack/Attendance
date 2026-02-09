@@ -1,7 +1,7 @@
 # Team 7 - Sprint 2 Planning Report
 
 **Project:** Attendance Marking Platform
-**Team Members:** Soreen Oraibi, Lev Karavanov, Olga Shomarova, Viswak Ggautham
+**Team Members:** Soreen Oraibi, Lev Karavanov, Olga Shomarova, Viswak Ggautham, Alexey Lebedev
 
 ## Sprint Number & Dates
 
@@ -16,9 +16,11 @@ The goal of Sprint 2 is to begin the development phase of the project, implement
 
 The following is a part of product backlog. Full product backlog is accessible through [this link](https://github.com/users/SeoBlack/projects/7/views/18).
 
+- [**Teacher can sign up**](https://github.com/SeoBlack/Attendance/issues/3)
+- [**Teacher can create a course**](https://github.com/SeoBlack/Attendance/issues/55)
 - [**Teacher can create a lecture**](https://github.com/SeoBlack/Attendance/issues/4)
-- [**Authorization**](https://github.com/SeoBlack/Attendance/issues/3)
-- [**Student sign up**](https://github.com/users/SeoBlack/projects/7?pane=issue&itemId=150912823&issue=SeoBlack%7CAttendance%7C11)
+- [**Student can sign up**](https://github.com/SeoBlack/Attendance/issues/11)
+- [**Student can log in**](https://github.com/SeoBlack/Attendance/issues/12)
 ## Planned Tasks / Breakdown
 
 - Design Database Schema
@@ -39,6 +41,8 @@ The following is a part of product backlog. Full product backlog is accessible t
 - Implement lecture CRUD endpoints (create, read, update, delete)
 - Add JUnit tests for Lecture controller
 - Create common/shared frontend UI components
+- Create login page
+- Create signup page
 
 ## Team Capacity & Assumptions
 
