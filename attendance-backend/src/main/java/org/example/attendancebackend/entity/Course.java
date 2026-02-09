@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "courses")
@@ -18,9 +20,11 @@ public class Course {
     @Column(name = "course_id")
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     @Column(name = "course_name")
     private String courseName;
 
+    @NotNull
     @Column(name = "description")
     private String description;
 }
