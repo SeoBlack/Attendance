@@ -1,9 +1,7 @@
 package org.example.attendancebackend.service;
 
-import org.example.attendancebackend.dto.signup.SignupRequest;
+import org.example.attendancebackend.dto.SignupRequest;
 import org.example.attendancebackend.entity.User;
-import org.example.attendancebackend.entity.UserRole;
-import org.example.attendancebackend.internal.signup.UserWithEmailExistsException;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
 import org.example.attendancebackend.dto.SigninRequest;
@@ -20,22 +18,31 @@ public class UserService {
         this.passwordHasher = passwordHasher;
     }
 
-    public void signup(SignupRequest signupRequest) {
-        if (signupRequest == null) throw new RuntimeException("SignUp request is null");
+    public void signup(SignupRequest request) {
+        if (request == null) {
+            throw new RuntimeException("Request is null");
+        }
 
-        String normalizedEmail = signupRequest.getEmail().trim().toLowerCase();
-        if (userRepository.existsByEmail(normalizedEmail))
-            throw new UserWithEmailExistsException(normalizedEmail);
+        if (isBlank(request.getFirstName()) || isBlank(request.getLastName())) {
+            throw new RuntimeException("First name and last name are required");
+        }
 
+        if (isBlank(request.getEmail()) || isBlank(request.getPassword()) || isBlank(request.getRole().getValue())) {
+            throw new RuntimeException("Email, password and role are required");
+        }
+
+        String normalizedEmail = request.getEmail().trim().toLowerCase();
+
+        if (userRepository.existsByEmail(normalizedEmail)) {
+            throw new RuntimeException("User already exists");
+        }
 
         User user = new User();
-        user.setRole(signupRequest.getRole());
-        user.setFirstName(signupRequest.getFirstName().trim());
-        user.setLastName(signupRequest.getLastName().trim());
+        user.setRole(request.getRole());
+        user.setFirstName(request.getFirstName().trim());
+        user.setLastName(request.getLastName().trim());
         user.setEmail(normalizedEmail);
-        if (signupRequest.getRole() == UserRole.STUDENT)
-            user.setStudentId(signupRequest.getStudentId());
-        user.setPasswordHash(passwordHasher.hash(signupRequest.getPassword()));
+        user.setPasswordHash(passwordHasher.hash(request.getPassword()));
 
         userRepository.save(user);
     }

@@ -5,12 +5,9 @@ CREATE TABLE users
     first_name VARCHAR(100) NOT NULL,
     second_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    student_id VARCHAR(64),
     password_hash VARCHAR(255) NOT NULL,
     PRIMARY KEY (user_id)
 );
-
--- ALTER TABLE users ADD COLUMN student_id VARCHAR(64);
 
 CREATE TABLE courses
 (
