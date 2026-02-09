@@ -16,9 +16,9 @@ The goal of Sprint 2 is to begin the development phase of the project, implement
 
 The following is a part of product backlog. Full product backlog is accessible through [this link](https://github.com/users/SeoBlack/projects/7/views/18).
 
-- [**teacher can create a lecture**](https://github.com/SeoBlack/Attendance/issues/4)
+- [**Teacher can create a lecture**](https://github.com/SeoBlack/Attendance/issues/4)
 - [**Authorization**](https://github.com/SeoBlack/Attendance/issues/3)
-
+- [**Student sign up**](https://github.com/users/SeoBlack/projects/7?pane=issue&itemId=150912823&issue=SeoBlack%7CAttendance%7C11)
 ## Planned Tasks / Breakdown
 
 - Design Database Schema
@@ -32,6 +32,13 @@ The following is a part of product backlog. Full product backlog is accessible t
 - Add JUnit tests for signup edge cases:
 - user already exists
 - empty first/last name
+- Implement Course entity, repository, service, and controller
+- Add validation for course creation
+- Add JUnit tests for Course repository, service, and controller
+- Implement Lecture entity, repository, service, and controller
+- Implement lecture CRUD endpoints (create, read, update, delete)
+- Add JUnit tests for Lecture controller
+- Create common/shared frontend UI components
 
 ## Team Capacity & Assumptions
 
@@ -39,8 +46,7 @@ For Sprint 2, the team members agreed to:
 
 - Meetings are conducted via **Zoom**
 - Working hours are recorded individually in a [**shared Excel file**](https://docs.google.com/spreadsheets/d/1dspZzyTKZQ3gSfYgfqsvOHN0jlBift1EQsPgZXc2vzM/edit?usp=sharing)
-- Add it later
-- Add it later
+- After completing an individual task, request a code review from 2 team members so that the team stays informed about the implemented features and the chosen implementation approaches.
 
 ## Definition of Done
 
