@@ -22,7 +22,9 @@ CREATE TABLE lectures
     lecture_id SERIAL NOT NULL,
     course_id INT NOT NULL,
     description TEXT,
-    lecture_date TIMESTAMP NOT NULL,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP NOT NULL,
+    join_code VARCHAR(6),
     PRIMARY KEY (lecture_id),
     FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
