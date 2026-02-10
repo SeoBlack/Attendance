@@ -28,17 +28,15 @@ export default function SignupPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState(USER_ROLE.STUDENT);
-  const [studentId, setStudentId] = useState('');
 
   const [emailValid, setEmailValid] = useState(true);
   const [firstNameValid, setFirstNameValid] = useState(true);
   const [lastNameValid, setLastNameValid] = useState(true);
   const [roleValid, setRoleValid] = useState(true);
-  const [studentIdValid, setStudentIdValid] = useState(true);
 
   const formValid = useMemo(() => {
-    return emailValid && firstNameValid && lastNameValid && roleValid && studentIdValid && !passwordsMismatch;
-  }, [emailValid, firstNameValid, lastNameValid, roleValid, studentIdValid, passwordsMismatch])
+    return emailValid && firstNameValid && lastNameValid && roleValid && !passwordsMismatch;
+  }, [emailValid, firstNameValid, lastNameValid, roleValid, passwordsMismatch])
 
   useEffect(()=> {
     setPasswordsMismatch((password?.trim() || "") === "" || password !== passwordConfirm);
@@ -48,7 +46,6 @@ export default function SignupPage() {
     setFirstNameValid(firstName.trim() !== "");
     setLastNameValid(lastName.trim() !== "");
     setRoleValid(role !== "" as USER_ROLE);
-    setStudentIdValid(role === USER_ROLE.TEACHER || studentId.trim() !== "");
   }
 
   useEffect(() => {
@@ -61,9 +58,8 @@ export default function SignupPage() {
       email, password,
       firstName, lastName,
       role: role as USER_ROLE,
-      studentId
-    }).then(resp => {
-      if(!resp.success) setSignupError(resp?.error || "An unknown error occurred. Please try again later.")
+    }).then(async resp => {
+      if(!resp.ok) setSignupError(await resp?.text() || "An unknown error occurred. Please try again later.")
       else navigate("/")
     }).catch(_ => {
       setSignupError("An unknown error occurred. Please try again later.")
@@ -118,7 +114,7 @@ export default function SignupPage() {
                 value={role}
                 label="Select role"
                 onChange={e => setRole(e.target.value)}
-                error={!studentIdValid}
+                error={!roleValid}
               >
                 {userRoleOptions}
               </Select>
@@ -137,20 +133,6 @@ export default function SignupPage() {
               error={!lastNameValid}
             />
 
-            {
-              role === USER_ROLE.STUDENT ?
-                (
-                  <FormTextField
-                  label="Student ID" type="text" name="studentId" placeholder="Enter your student ID" value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                  required
-                  error={!studentIdValid}
-                  />
-                )
-                : null
-            }
-
-
             <FormTextField
               label="Email" type="email" name="email" autoComplete="email"
               placeholder="Enter your email"
@@ -164,6 +146,7 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              slotProps={{ htmlInput: {"data-testid": "password" }}}
               error={passwordsMismatch}
             />
             <FormTextField
@@ -171,6 +154,7 @@ export default function SignupPage() {
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
               required
+              slotProps={{ htmlInput: {"data-testid": "password-confirm" }}}
               error={passwordsMismatch}
               helperText={passwordsMismatch ? "Passwords do not match!" : ""}
 

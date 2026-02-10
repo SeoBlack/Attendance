@@ -6,4 +6,5 @@ export default {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
     "^@/(.*)$": "<rootDir>/src/$1",
   },
+  modulePathIgnorePatterns: ["<rootDir>/__tests__/__mocks__/"],
 };

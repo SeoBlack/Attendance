@@ -11,15 +11,13 @@ export type SignupOptions = {
   firstName: string;
   lastName: string;
   role: USER_ROLE;
-  studentId?: string;
 }
 export async function requestSignup(options: SignupOptions){
-  let resp = await pfetch(`/signup`, {
+  return pfetch(`/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(options)
   })
-  return resp.json();
 }
