@@ -1,6 +1,5 @@
-package org.example.attendancebackend.controllerTests;
+package org.example.attendancebackend.controller;
 
-import org.example.attendancebackend.controller.LectureController;
 import org.example.attendancebackend.entity.Lecture;
 import org.example.attendancebackend.repository.CourseRepository;
 import org.example.attendancebackend.repository.LectureRepository;
