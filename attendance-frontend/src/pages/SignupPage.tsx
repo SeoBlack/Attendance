@@ -112,8 +112,8 @@ export default function SignupPage() {
               <Select
                 labelId="role-select-label"
                 value={role}
-                label="Select role"
-                onChange={e => setRole(e.target.value)}
+                label="Role"
+                onChange={e => setRole(e.target.value as USER_ROLE)}
                 error={!roleValid}
               >
                 {userRoleOptions}
