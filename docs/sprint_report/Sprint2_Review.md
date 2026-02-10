@@ -14,22 +14,22 @@ Begin the development phase of the project, implementing core functionality base
 
 ## Completed Tasks
 
-| ID | Task                                                                            | Status   |
-|----|---------------------------------------------------------------------------------|----------|
-| 1  | Design and implement database schema (PostgreSQL + H2 for tests)                | Done     |
-| 2  | Create the initial setup for the project                                        | Done     |
-| 3  | Designe UI with Figma                                                           | Done     |
-| 4  | Designe common frontend components with mui                                     | Done     |
-| 5  | Implement backend endpoint `POST /signup` for user registration                 | Not Done |
-| 6  | Add reusable password hashing utility                                           | Done     |
-| 7  | Add JUnit tests for signup edge cases                                           | Done     |
-| 8  | Implement backend endpoint `POST /signin` for user login                        | Done     |
-| 9  | Add JUnit tests for signin                                                      | Done     |
-| 10 | Implement Course entity, repository, service, and controller and tests for them | Done     |
-| 11 | Create login page                                                               | Done     |
-| 12 | Implement Lecture entity and CRUD endpoints                                     | Not Done |
-| 13 | Create signup page                                                              | Not Done |
-| 14 | Create rabbit integration                                                       | Done     |
+| ID | Task                                                                          | Status |
+|----|-------------------------------------------------------------------------------|------|
+| 1  | Design and implement database schema (PostgreSQL + H2 for tests)              | Done |
+| 2  | Create the initial setup for the project                                      | Done |
+| 3  | Design UI with Figma                                                          | Done |
+| 4  | Design common frontend components with mui                                    | Done |
+| 5  | Implement backend endpoint `POST /signup` for user registration               | Done |
+| 6  | Add reusable password hashing utility                                         | Done |
+| 7  | Add JUnit tests for signup edge cases                                         | Done |
+| 8  | Implement backend endpoint `POST /signin` for user login                      | Done |
+| 9  | Add JUnit tests for signin                                                    | Done |
+| 10 | Implement Course entity, repository, service, and controller and tests for them | Done |
+| 11 | Create login page                                                             | Done |
+| 12 | Implement Lecture entity and CRUD endpoints                                   | Done |
+| 13 | Create signup page                                                            | Done |
+| 14 | Create rabbit integration                                                     | Done |
 
 ---
 
@@ -52,15 +52,16 @@ Begin the development phase of the project, implementing core functionality base
 
 ---
 
-## What Could Be Improved
-
-
+## Test Coverage
+- [**Frontend unit tests**](https://users.metropolia.fi/~olgasho/lcov-report/)
+- [**Backend JaCoCo report**]()
 
 ---
 
-## Next Sprint Focus
+## Database schemas
 
-
+[![DB Diagram]](../diagrams/Attendance_project_db.png)
+[![Relational Schema]](../diagrams/Attendance_project_db-Relational%20Schema.png)
 
 ---
 
