@@ -1,7 +1,7 @@
 # Team 7 - Sprint 2 Planning Report
 
 **Project:** Attendance Marking Platform
-**Team Members:** Soreen Oraibi, Lev Karavanov, Olga Shomarova, Viswak Ggautham
+**Team Members:** Soreen Oraibi, Lev Karavanov, Olga Shomarova, Viswak Ggautham, Alexey Lebedev
 
 ## Sprint Number & Dates
 
@@ -16,9 +16,11 @@ The goal of Sprint 2 is to begin the development phase of the project, implement
 
 The following is a part of product backlog. Full product backlog is accessible through [this link](https://github.com/users/SeoBlack/projects/7/views/18).
 
-- [**teacher can create a lecture**](https://github.com/SeoBlack/Attendance/issues/4)
-- [**Authorization**](https://github.com/SeoBlack/Attendance/issues/3)
-
+- [**Teacher can sign up**](https://github.com/SeoBlack/Attendance/issues/3)
+- [**Teacher can create a course**](https://github.com/SeoBlack/Attendance/issues/55)
+- [**Teacher can create a lecture**](https://github.com/SeoBlack/Attendance/issues/4)
+- [**Student can sign up**](https://github.com/SeoBlack/Attendance/issues/11)
+- [**Student can log in**](https://github.com/SeoBlack/Attendance/issues/12)
 ## Planned Tasks / Breakdown
 
 - Design Database Schema
@@ -32,6 +34,15 @@ The following is a part of product backlog. Full product backlog is accessible t
 - Add JUnit tests for signup edge cases:
 - user already exists
 - empty first/last name
+- Implement Course entity, repository, service, and controller
+- Add validation for course creation
+- Add JUnit tests for Course repository, service, and controller
+- Implement Lecture entity, repository, service, and controller
+- Implement lecture CRUD endpoints (create, read, update, delete)
+- Add JUnit tests for Lecture controller
+- Create common/shared frontend UI components
+- Create login page
+- Create signup page
 
 ## Team Capacity & Assumptions
 
@@ -39,8 +50,7 @@ For Sprint 2, the team members agreed to:
 
 - Meetings are conducted via **Zoom**
 - Working hours are recorded individually in a [**shared Excel file**](https://docs.google.com/spreadsheets/d/1dspZzyTKZQ3gSfYgfqsvOHN0jlBift1EQsPgZXc2vzM/edit?usp=sharing)
-- Add it later
-- Add it later
+- After completing an individual task, request a code review from 2 team members so that the team stays informed about the implemented features and the chosen implementation approaches.
 
 ## Definition of Done
 
