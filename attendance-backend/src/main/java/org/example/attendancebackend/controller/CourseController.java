@@ -1,34 +1,53 @@
 package org.example.attendancebackend.controller;
 
+import jakarta.validation.Valid;
 import org.example.attendancebackend.entity.Course;
-import org.example.attendancebackend.repository.CourseRepository;
+import org.example.attendancebackend.service.CourseService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/courses")
 public class CourseController {
 
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
 
-    public CourseController(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
+    public CourseController(CourseService courseService){
+        this.courseService = courseService;
     }
 
-    @GetMapping("/courses")
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 
-    @GetMapping("/courses/{id}")
-    public Course getCourse(@PathVariable Long id){
-        return courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+    @GetMapping()
+    public ResponseEntity<List<Course>> getCourses() {
+        return new ResponseEntity<>(courseService.getCourses(), HttpStatus.OK);
     }
 
-    @PostMapping("/courses")
-    public Course postCourse(@RequestBody Course course) {
-        return courseRepository.save(course);
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getCourse(@PathVariable Long id){
+        return new ResponseEntity<>(courseService.getCourseById(id), HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
+        return new ResponseEntity<>(courseService.createCourse(course), HttpStatus.CREATED) ;
     }
 }
