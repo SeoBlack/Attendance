@@ -27,7 +27,7 @@ npm install
 
 ### 1. Specify your API url
  
-Copy ``.env`` to ``.env.local`` and change the value of ``VITE_API_URL`` to your API url.
+Copy ``.env.example`` to ``.env.local`` and change the value of ``VITE_API_URL`` to your API url.
 
 ### 2. Start dev
 

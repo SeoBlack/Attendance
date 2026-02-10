@@ -40,7 +40,7 @@ export default function SignupPage() {
 
   useEffect(()=> {
     setPasswordsMismatch((password?.trim() || "") === "" || password !== passwordConfirm);
-  })
+  }, [password, passwordConfirm])
   const validateForm = () => {
     setEmailValid(email.trim() !== "");
     setFirstNameValid(firstName.trim() !== "");
@@ -50,7 +50,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     validateForm()
-  })
+  }, [email, firstName, lastName, role])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,7 +142,7 @@ export default function SignupPage() {
               error={!emailValid}
             />
             <FormTextField
-              label="Password" type="password" name="password" autoComplete="current-password" placeholder="Enter your password"
+              label="Password" type="password" name="password" autoComplete="new-password" placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -150,7 +150,7 @@ export default function SignupPage() {
               error={passwordsMismatch}
             />
             <FormTextField
-              label="Confirm password" type="password" name="password"  placeholder="Enter your password again"
+              label="Confirm password" type="password" name="password-confirm"  placeholder="Enter your password again"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
               required
