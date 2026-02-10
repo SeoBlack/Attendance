@@ -35,7 +35,7 @@ Begin the development phase of the project, implementing core functionality base
 
 ## Demo Summary
 
-- Demonstrated the **signup and sign in flow**: users can register as TEACHER or STUDENT and log in via JSON API endpoints
+- Demonstrated the **signup and sign in flow**: users can register as TEACHER or STUDENT and log in via REST API endpoints
 - Showed **course management backend**: Course entity with repository, service, and controller layers
 - Presented the **login page UI** built with reusable frontend components
 - Walked through **reusable shared UI components** created for consistent frontend design
