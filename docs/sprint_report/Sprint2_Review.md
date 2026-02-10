@@ -54,7 +54,7 @@ Begin the development phase of the project, implementing core functionality base
 
 ## Test Coverage
 - [**Frontend unit tests**](https://users.metropolia.fi/~olgasho/lcov-report/)
-- [**Backend JaCoCo report**]()
+- [**Backend JaCoCo report**](https://users.metropolia.fi/~olgasho/jacoco/)
 
 ---
 
