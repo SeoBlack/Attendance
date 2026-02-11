@@ -27,7 +27,7 @@ public class UserService {
             throw new RuntimeException("First name and last name are required");
         }
 
-        if (isBlank(request.getEmail()) || isBlank(request.getPassword()) || isBlank(request.getRole())) {
+        if (isBlank(request.getEmail()) || isBlank(request.getPassword()) || request.getRole() == null || isBlank(request.getRole().getValue())) {
             throw new RuntimeException("Email, password and role are required");
         }
 

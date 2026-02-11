@@ -1,6 +1,7 @@
 package org.example.attendancebackend.controller;
 
 import org.example.attendancebackend.entity.User;
+import org.example.attendancebackend.entity.UserRole;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,14 +39,14 @@ class AuthControllerTest {
     void signup_shouldReturn201_whenRequestIsValid() throws Exception {
         mockMvc.perform(post("/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(signupJson("John", "Doe", "STUDENT", "john@example.com", "password123")))
+                        .content(signupJson("John", "Doe", UserRole.STUDENT.getValue(), "john@example.com", "password123")))
                 .andExpect(status().isCreated());
     }
 
     @Test
     void signup_shouldReturn500_whenUserAlreadyExists() throws Exception {
         User existing = new User();
-        existing.setRole("TEACHER");
+        existing.setRole(UserRole.TEACHER);
         existing.setFirstName("Jane");
         existing.setLastName("Smith");
         existing.setEmail("jane@example.com");
@@ -54,7 +55,7 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(signupJson("Jane", "Smith", "TEACHER", "jane@example.com", "password123")))
+                        .content(signupJson("Jane", "Smith", UserRole.TEACHER.getValue(), "jane@example.com", "password123")))
                 .andExpect(status().isInternalServerError());
     }
 
@@ -62,14 +63,14 @@ class AuthControllerTest {
     void signup_shouldReturn500_whenNamesAreEmpty() throws Exception {
         mockMvc.perform(post("/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(signupJson("", "", "STUDENT", "empty@example.com", "password123")))
+                        .content(signupJson("", "", UserRole.STUDENT.getValue(), "empty@example.com", "password123")))
                 .andExpect(status().isInternalServerError());
     }
 
     @Test
     void signin_shouldReturn200_whenCredentialsAreValid() throws Exception {
         User existing = new User();
-        existing.setRole("STUDENT");
+        existing.setRole(UserRole.STUDENT);
         existing.setFirstName("John");
         existing.setLastName("Doe");
         existing.setEmail("john@example.com");
@@ -93,7 +94,7 @@ class AuthControllerTest {
     @Test
     void signin_shouldReturn500_whenPasswordIsWrong() throws Exception {
         User existing = new User();
-        existing.setRole("STUDENT");
+        existing.setRole(UserRole.STUDENT);
         existing.setFirstName("John");
         existing.setLastName("Doe");
         existing.setEmail("john@example.com");
