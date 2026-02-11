@@ -1,4 +1,4 @@
-# Team 7 - Sprint 2 Planning Report
+# Team 6 - Sprint 2 Planning Report
 
 **Project:** Attendance Marking Platform
 **Team Members:** Soreen Oraibi, Lev Karavanov, Olga Shomarova, Viswak Ggautham, Alexey Lebedev
