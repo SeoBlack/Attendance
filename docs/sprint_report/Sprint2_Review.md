@@ -65,4 +65,8 @@ Begin the development phase of the project, implementing core functionality base
 
 ---
 
+## Figma design
+
+[**figma link**](https://www.figma.com/proto/sZLcbQrxw2GWL2JwaMqEaD/Untitled?node-id=0-1&t=OogPaavUBnO9jjQV-1)
+
 *Report prepared: 10.02.2026*
