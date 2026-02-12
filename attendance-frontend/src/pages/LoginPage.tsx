@@ -12,6 +12,7 @@ import QrCode2Icon from '@mui/icons-material/QrCode2';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SecurityIcon from '@mui/icons-material/Security';
 import { ActionButton, FormTextField } from '../components/common';
+import {useNavigate} from "react-router-dom";
 
 const FEATURES = [
   { icon: QrCode2Icon, label: 'QR Code Scanning' },
@@ -20,12 +21,14 @@ const FEATURES = [
 ] as const;
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    navigate("/dashboard")
     // TODO: integrate with auth API
   };
 
