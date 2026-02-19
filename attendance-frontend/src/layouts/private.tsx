@@ -1,31 +1,26 @@
-import {  Navigate, Outlet, useLocation } from "react-router-dom";
-import {
-  AppBar,
-  Box,
-  CssBaseline,
-  Drawer,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import {Navigate, Outlet, useLocation} from "react-router-dom";
+import {AppBar, Box, CssBaseline, Drawer, IconButton, Toolbar, Typography,} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
-import {StudentMenu, studentRoutes} from "../components/layout/StudentMenu";
+import {useState} from "react";
+import {Menu} from "../components/layout/Menu";
+import {getMenuElements} from "./menuElements";
+import {USER_ROLE} from "../api/auth";
 
 const drawerWidth = 220;
 
 function PrivateLayout() {
   // NOTE: Replace with real auth check later
   const token = document.cookie || "test"; // TODO: Get actual token
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-
   if (!token) {
     return <Navigate to="/" replace />;
   }
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const menuRoutes = getMenuElements(USER_ROLE.STUDENT) // TODO: Get role from token
+
   const computeTitle = (pathname: string) => {
-    return studentRoutes
+    return menuRoutes
       .filter(p => pathname.startsWith(p.path))
       .sort((a, b) => b.path.length - a.path.length)
       ?.[0]?.label || "N/A";
@@ -39,7 +34,7 @@ function PrivateLayout() {
     setMobileOpen((prev) => !prev);
   };
 
-  const drawer = <StudentMenu currentPath={location.pathname} />
+  const drawer = <Menu currentPath={location.pathname} elements={menuRoutes} />
 
   return (
     <Box sx={{ display: "flex" }}>

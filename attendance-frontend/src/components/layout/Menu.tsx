@@ -10,17 +10,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
-export const studentRoutes = [
-  { path: "/student/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
-  { path: "/student/attendance", label: "Attendance", icon: <PlayCircleOutlineIcon /> },
-]
 
-export function StudentMenu({currentPath}: {currentPath: string}) {
 
-  const menuItems = studentRoutes.map(({ path, label, icon }) => (
+export function Menu({currentPath, elements}: {currentPath: string, elements: Array<any>}) {
+
+  const menuItems = elements.map(({ path, label, icon }) => (
     <ListItem disablePadding key={path}>
       <ListItemButton component={NavLink} to={path} selected={currentPath === path}>
         <ListItemIcon>
