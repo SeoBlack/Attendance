@@ -4,20 +4,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {useState} from "react";
 import {Menu} from "../components/layout/Menu";
 import {getMenuElements} from "./menuElements";
-import {USER_ROLE} from "../api/auth";
+import {checkAuth} from "../auth/checkAuth";
 
 const drawerWidth = 220;
 
 function PrivateLayout() {
-  // NOTE: Replace with real auth check later
-  const token = document.cookie || "test"; // TODO: Get actual token
-  if (!token) {
+  const authData = checkAuth()
+  if (!authData) {
     return <Navigate to="/" replace />;
   }
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const menuRoutes = getMenuElements(USER_ROLE.STUDENT) // TODO: Get role from token
+  const menuRoutes = getMenuElements(authData.role)
 
   const computeTitle = (pathname: string) => {
     return menuRoutes
