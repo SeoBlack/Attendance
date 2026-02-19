@@ -6,6 +6,7 @@ import {USER_ROLE} from "../api/auth";
 const studentRoutes = [
   { path: "/student/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
   { path: "/student/attendance", label: "Attendance", icon: <PlayCircleOutlineIcon /> },
+  { path: "/student/history", label: "History", icon: <PlayCircleOutlineIcon /> },
 ]
 const teacherRoutes = [
   { path: "/teacher/dashboard", label: "Dashboard", icon: <DashboardIcon /> },

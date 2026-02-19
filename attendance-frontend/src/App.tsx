@@ -6,6 +6,7 @@ import PublicLayout from "./layouts/public";
 import PrivateLayout from "./layouts/private";
 import StudentDashboardPage from "./pages/student/DashboardPage";
 import StudentAttendancePage from "./pages/student/AttendancePage";
+import StudentAttendanceHistoryPage from "./pages/student/AttendanceHistoryPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route element={<PrivateLayout />}>
         <Route path="/student/dashboard" element={<StudentDashboardPage />} />
         <Route path="/student/attendance" element={<StudentAttendancePage />} />
+        <Route path="/student/history" element={<StudentAttendanceHistoryPage />} />
       </Route>
     </Routes>
   )
