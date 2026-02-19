@@ -12,9 +12,9 @@ function App() {
   return (
     <Routes>
       <Route element={<PublicLayout />}>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/storybook" element={<StoryBookPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/storybook" element={<StoryBookPage />} />
       </Route>
       <Route element={<PrivateLayout />}>
         <Route path="/student/dashboard" element={<StudentDashboardPage />} />
