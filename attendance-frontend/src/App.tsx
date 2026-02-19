@@ -4,7 +4,8 @@ import StoryBookPage from './pages/StoryBook'
 import SignupPage from "./pages/SignupPage";
 import PublicLayout from "./layouts/public";
 import PrivateLayout from "./layouts/private";
-import DashboardPage from "./pages/DashboardPage";
+import StudentDashboardPage from "./pages/student/DashboardPage";
+import StudentAttendancePage from "./pages/student/AttendancePage";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
       <Route path="/storybook" element={<StoryBookPage />} />
       </Route>
       <Route element={<PrivateLayout />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/student/dashboard" element={<StudentDashboardPage />} />
+        <Route path="/student/attendance" element={<StudentAttendancePage />} />
       </Route>
     </Routes>
   )

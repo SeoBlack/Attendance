@@ -1,4 +1,4 @@
-import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
+import {  Navigate, Outlet, useLocation } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
-import StudentMenu from "./StudentMenu";
+import {StudentMenu, studentRoutes} from "../components/layout/StudentMenu";
 
 const drawerWidth = 220;
 
@@ -24,21 +24,12 @@ function PrivateLayout() {
     return <Navigate to="/" replace />;
   }
 
-  const routeTitles: Record<string, string> = {
-    "/dashboard": "Dashboard",
-    "/courses": "Courses",
-    "/lecture": "Lecture Session",
-    "/statistics": "Statistics",
-    "/profile": "Profile",
-    "/settings": "Settings",
-  };
-
   const computeTitle = (pathname: string) => {
-    if (routeTitles[pathname]) return routeTitles[pathname];
-    const matches = Object.keys(routeTitles)
-      .filter((key) => pathname === key || pathname.startsWith(key + "/"))
-      .sort((a, b) => b.length - a.length);
-    return matches[0] ? routeTitles[matches[0]] : "";
+    return studentRoutes
+      .filter(p => pathname.startsWith(p.path))
+      .sort((a, b) => b.path.length - a.path.length)
+      ?.[0]?.label || "N/A";
+
   };
 
   const headerTitle = computeTitle(location.pathname) || "";
@@ -48,7 +39,8 @@ function PrivateLayout() {
     setMobileOpen((prev) => !prev);
   };
 
-  const drawer = <StudentMenu />
+  const drawer = <StudentMenu currentPath={location.pathname} />
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -59,7 +51,6 @@ function PrivateLayout() {
           bgcolor: "background.paper",
           color: "text.primary",
           boxShadow: 0,
-          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
         }}
@@ -100,7 +91,6 @@ function PrivateLayout() {
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
             width: drawerWidth,
-            borderRight: (theme) => `1px solid ${theme.palette.divider}`,
           },
         }}
         open
@@ -113,7 +103,6 @@ function PrivateLayout() {
         sx={{
           flexGrow: 1,
           p: { xs: 2, sm: 3 },
-          // Shift main content to the right so it doesn't overlap the permanent drawer
           ml: { sm: `${drawerWidth}px` },
         }}
       >
