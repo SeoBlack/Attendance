@@ -25,8 +25,7 @@ public class CourseService {
     }
 
     public Course saveCourse(Course course) {
-        System.out.println(course.toString());
-        return courseRepository.save(course);
+        return courseRepository.saveAndFlush(course);
     }
 
     public void deleteCourseById(Long id) {

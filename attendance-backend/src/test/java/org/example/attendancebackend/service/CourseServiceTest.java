@@ -42,7 +42,7 @@ public class CourseServiceTest {
 
     @Test
     void createsCourseAndReturns() {
-        given(courseRepository.save(course)).willReturn(course);
+        given(courseRepository.saveAndFlush(course)).willReturn(course);
 
         Course result = courseService.saveCourse(course);
         Assertions.assertNotEquals(null, result);
