@@ -9,7 +9,6 @@ import {checkAuth} from "../auth/checkAuth";
 const drawerWidth = 220;
 
 function PrivateLayout() {
-
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
