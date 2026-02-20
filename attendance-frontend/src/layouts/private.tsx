@@ -23,7 +23,7 @@ function PrivateLayout() {
 
   const computeTitle = (pathname: string) => {
     return menuRoutes
-      .filter(p => pathname.startsWith(p.path + "/"))
+      .filter(p => pathname === p.path || pathname.startsWith(p.path + "/"))
       .sort((a, b) => b.path.length - a.path.length)
       ?.[0]?.label || "N/A";
   };
