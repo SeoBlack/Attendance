@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {
   Box,
   Stack,
@@ -11,21 +11,27 @@ import SchoolIcon from '@mui/icons-material/School';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SecurityIcon from '@mui/icons-material/Security';
-import { ActionButton, FormTextField } from '../components/common';
+import {ActionButton, FormTextField} from '../components/common';
+import {useNavigate} from "react-router-dom";
+import {checkAuth} from "../auth/checkAuth";
 
 const FEATURES = [
-  { icon: QrCode2Icon, label: 'QR Code Scanning' },
-  { icon: TrendingUpIcon, label: 'Real-time Analytics' },
-  { icon: SecurityIcon, label: 'Secure & Reliable' },
+  {icon: QrCode2Icon, label: 'QR Code Scanning'},
+  {icon: TrendingUpIcon, label: 'Real-time Analytics'},
+  {icon: SecurityIcon, label: 'Secure & Reliable'},
 ] as const;
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    let user = checkAuth()
+    if (!user) return
+    navigate(`/${user.role}/dashboard`)
     // TODO: integrate with auth API
   };
 
@@ -34,25 +40,25 @@ export default function LoginPage() {
       sx={{
         minHeight: '100vh',
         display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' },
+        flexDirection: {xs: 'column', md: 'row'},
       }}
     >
       <Box
         sx={{
-          flex: { md: '1 1 50%' },
-          minHeight: { xs: 'auto', md: '100vh' },
+          flex: {md: '1 1 50%'},
+          minHeight: {xs: 'auto', md: '100vh'},
           bgcolor: 'brand.main',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           p: 4,
-          py: { xs: 4, md: 6 },
+          py: {xs: 4, md: 6},
         }}
       >
-        <Stack spacing={3} alignItems="center" sx={{ maxWidth: 360 }}>
-          <SchoolIcon sx={{ fontSize: 64, color: 'brand.contrastText' }} />
-          <Box sx={{ textAlign: 'center' }}>
+        <Stack spacing={3} alignItems="center" sx={{maxWidth: 360}}>
+          <SchoolIcon sx={{fontSize: 64, color: 'brand.contrastText'}}/>
+          <Box sx={{textAlign: 'center'}}>
             <Typography
               variant="h3"
               component="span"
@@ -77,8 +83,8 @@ export default function LoginPage() {
               Smart Attendance Management
             </Typography>
           </Box>
-          <Stack spacing={2} sx={{ width: '100%', mt: 2 }}>
-            {FEATURES.map(({ icon: Icon, label }) => (
+          <Stack spacing={2} sx={{width: '100%', mt: 2}}>
+            {FEATURES.map(({icon: Icon, label}) => (
               <Box
                 key={label}
                 sx={{
@@ -87,8 +93,8 @@ export default function LoginPage() {
                   gap: 2,
                 }}
               >
-                <Icon sx={{ fontSize: 24, color: 'brand.contrastText', flexShrink: 0 }} />
-                <Typography sx={{ color: 'brand.contrastText', fontWeight: 500 }}>
+                <Icon sx={{fontSize: 24, color: 'brand.contrastText', flexShrink: 0}}/>
+                <Typography sx={{color: 'brand.contrastText', fontWeight: 500}}>
                   {label}
                 </Typography>
               </Box>
@@ -99,8 +105,8 @@ export default function LoginPage() {
 
       <Box
         sx={{
-          flex: { md: '1 1 50%' },
-          minHeight: { xs: '100vh', md: 'auto' },
+          flex: {md: '1 1 50%'},
+          minHeight: {xs: '100vh', md: 'auto'},
           bgcolor: 'background.form',
           display: 'flex',
           alignItems: 'center',
@@ -124,14 +130,14 @@ export default function LoginPage() {
                 component="h1"
                 fontWeight={700}
                 color="text.primary"
-                sx={{ fontFamily: 'inherit' }}
+                sx={{fontFamily: 'inherit'}}
               >
                 Welcome Back
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{ mt: 1 }}
+                sx={{mt: 1}}
               >
                 Sign in to your account
               </Typography>
