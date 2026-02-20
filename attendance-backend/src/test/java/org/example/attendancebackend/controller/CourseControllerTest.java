@@ -69,7 +69,7 @@ class CourseControllerTest {
 
     @Test
     void createCourse() throws Exception {
-        given(courseService.createCourse(ArgumentMatchers.any())).willReturn(course);
+        given(courseService.saveCourse(ArgumentMatchers.any())).willReturn(course);
 
         ResultActions response = mockMvc.perform( MockMvcRequestBuilders.post("/courses")
                         .contentType(MediaType.APPLICATION_JSON)

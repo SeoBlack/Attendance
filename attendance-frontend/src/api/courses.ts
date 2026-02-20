@@ -15,8 +15,7 @@ export async function getCourse(id: number): Promise<Response> {
 
 export async function saveCourse(course: Course): Promise<Response> {
   const isUpdate = !!course?.id;
-  const url = isUpdate ? `/courses/${course.id}` : `/courses`;
-  return pfetch(url, {
+  return pfetch(`/courses`, {
     method: isUpdate ? 'PUT' : 'POST',
     headers: {
       'Content-Type': 'application/json',

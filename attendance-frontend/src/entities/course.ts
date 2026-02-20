@@ -1,6 +1,6 @@
 export type Course = {
-  id: number;
-  name: string;
+  id: number | undefined;
+  courseName: string;
   description: string;
 }
 

@@ -88,13 +88,13 @@ function CoursesPage() {
               courses.map((course) => (
                 <TableRow key={course.id} hover>
                   <TableCell>{course.id}</TableCell>
-                  <TableCell>{course.name}</TableCell>
+                  <TableCell>{course.courseName}</TableCell>
                   <TableCell>{course.description}</TableCell>
                   <TableCell align="right">
-                    <IconButton aria-label="edit" onClick={() => handleEdit(course.id)}>
+                    <IconButton aria-label="edit" onClick={() => handleEdit(course.id!)}>
                       <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="delete" color="error" onClick={() => handleDelete(course.id)}>
+                    <IconButton aria-label="delete" color="error" onClick={() => handleDelete(course.id!)}>
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
