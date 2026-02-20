@@ -9,24 +9,26 @@ import {checkAuth} from "../auth/checkAuth";
 const drawerWidth = 220;
 
 function PrivateLayout() {
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+
   const authData = checkAuth()
   if (!authData) {
     return <Navigate to="/" replace />;
   }
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
+
   const menuRoutes = getMenuElements(authData.role)
 
   const computeTitle = (pathname: string) => {
     return menuRoutes
-      .filter(p => pathname.startsWith(p.path))
+      .filter(p => pathname.startsWith(p.path + "/"))
       .sort((a, b) => b.path.length - a.path.length)
       ?.[0]?.label || "N/A";
-
   };
 
-  const headerTitle = computeTitle(location.pathname) || "";
+  const headerTitle = computeTitle(location.pathname);
 
 
   const handleDrawerToggle = () => {

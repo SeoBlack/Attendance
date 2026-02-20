@@ -31,7 +31,7 @@ export default function LoginPage() {
     e.preventDefault();
     let user = checkAuth()
     if (!user) return
-    navigate(`${user.role}/dashboard`)
+    navigate(`/${user.role}/dashboard`)
     // TODO: integrate with auth API
   };
 
