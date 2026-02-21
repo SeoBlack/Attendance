@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/courses")
+@CrossOrigin
 public class CourseController {
 
     private final CourseService courseService;
@@ -48,6 +49,22 @@ public class CourseController {
 
     @PostMapping()
     public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
-        return new ResponseEntity<>(courseService.createCourse(course), HttpStatus.CREATED) ;
+        course.setId(null);
+        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
+    }
+
+    @PutMapping()
+    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course) {
+        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id){
+        if(id == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        courseService.deleteCourseById(id);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 }
