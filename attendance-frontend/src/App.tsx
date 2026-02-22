@@ -13,6 +13,8 @@ import StudentAttendanceHistoryPage from "./pages/student/AttendanceHistoryPage"
 import TeacherDashboardPage from "./pages/teacher/DashboardPage";
 import TeacherCoursesPage from "./pages/teacher/courses/CoursesPage";
 import TeacherCreateCoursePage from "./pages/teacher/courses/CreateCoursePage";
+import TeacherLecturesPage from "./pages/teacher/lectures/LecturesPage";
+import TeacherLectureDashboardPage from "./pages/teacher/lectures/LectureDashboardPage";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
         <Route path="/teacher/dashboard" element={<TeacherDashboardPage />} />
         <Route path="/teacher/courses" element={<TeacherCoursesPage />} />
         <Route path="/teacher/courses/create" element={<TeacherCreateCoursePage />} />
+        <Route path="/teacher/lectures" element={<TeacherLecturesPage />} />
+        <Route path="/teacher/lectures/:id" element={<TeacherLectureDashboardPage />} />
       </Route>
     </Routes>
   )

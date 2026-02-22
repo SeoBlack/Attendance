@@ -10,6 +10,6 @@ export function checkAuth() : AuthenticatedUser | null {
 
   return {
     id: "1",
-    role: USER_ROLE.STUDENT // TODO: Get role from token
+    role: USER_ROLE.TEACHER // TODO: Get role from token
   }
 }
