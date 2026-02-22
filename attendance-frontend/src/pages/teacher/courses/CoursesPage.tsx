@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -17,15 +17,18 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { api } from '../../../api';
-import type { Course } from '../../../entities/course';
-import { ActionButton } from '../../../components/common';
+import UploadIcon from '@mui/icons-material/Upload';
+
+import {api} from '../../../api';
+import type {Course} from '../../../entities/course';
+import {ActionButton} from '../../../components/common';
 
 function CoursesPage() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [uploadingCourseId, setUploadingCourseId] = useState<number | null>(null);
 
   const loadCourses = () => {
     setLoading(true);
@@ -56,14 +59,35 @@ function CoursesPage() {
       .catch((e: any) => setError(e?.message || 'Failed to delete course'))
   }
 
+  const triggerFileDialog = (courseId: number) => {
+    const el = document.getElementById(`enrollments-file-${courseId}`) as HTMLInputElement | null;
+    el?.click();
+  }
+
+  const handleFileSelected = async (courseId: number, ev: React.ChangeEvent<HTMLInputElement>) => {
+    const file = ev.target.files?.[0];
+    ev.target.value = '';
+    if (!file) return;
+    setError('');
+    setUploadingCourseId(courseId);
+    try {
+      const resp = await api.courses.uploadEnrollments(courseId, file);
+      if (!resp.ok) throw new Error(await resp.text() || 'Failed to upload enrollments');
+    } catch (e: any) {
+      setError(e?.message || 'Failed to upload enrollments');
+    } finally {
+      setUploadingCourseId(null);
+    }
+  }
+
   return (
     <Box>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{mb: 2}}>
         <Typography variant="h5" component="h1">Courses</Typography>
-        <ActionButton startIcon={<AddIcon />} color="brand" onClick={handleCreate}>Create Course</ActionButton>
+        <ActionButton startIcon={<AddIcon/>} color="brand" onClick={handleCreate}>Create Course</ActionButton>
       </Stack>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{mb: 2}}>{error}</Alert>}
 
       <TableContainer component={Paper}>
         <Table>
@@ -91,11 +115,28 @@ function CoursesPage() {
                   <TableCell>{course.courseName}</TableCell>
                   <TableCell>{course.description}</TableCell>
                   <TableCell align="right">
+                    <Box component="form" sx={{display: 'inline'}}>
+                      <input
+                        id={`enrollments-file-${course.id}`}
+                        type="file"
+                        accept=".xml, application/xml"
+                        style={{ display: 'none' }}
+                        onChange={(ev) => handleFileSelected(course.id!, ev)}
+                      />
+                      <IconButton
+                        aria-label="upload-enrollments"
+                        onClick={() => triggerFileDialog(course.id!)}
+                        disabled={uploadingCourseId === course.id}
+                        title="Upload enrollments"
+                      >
+                        <UploadIcon/>
+                      </IconButton>
+                    </Box>
                     <IconButton aria-label="edit" onClick={() => handleEdit(course.id!)}>
-                      <EditIcon />
+                      <EditIcon/>
                     </IconButton>
                     <IconButton aria-label="delete" color="error" onClick={() => handleDelete(course.id!)}>
-                      <DeleteIcon />
+                      <DeleteIcon/>
                     </IconButton>
                   </TableCell>
                 </TableRow>
