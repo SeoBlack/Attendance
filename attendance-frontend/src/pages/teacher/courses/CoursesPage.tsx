@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -13,21 +13,27 @@ import {
   IconButton,
   Stack,
   Alert,
+  Tooltip,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import UploadIcon from '@mui/icons-material/Upload';
 
-import {api} from '../../../api';
-import type {Course} from '../../../entities/course';
-import {ActionButton} from '../../../components/common';
+import { api } from '../../../api';
+import type { Course } from '../../../entities/course';
+import type { Lecture } from '../../../entities/lecture';
+import { ActionButton } from '../../../components/common';
+import CreateLectureDialog from '../../../components/lectures/CreateLectureDialog';
 
 function CoursesPage() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [lectureDialogOpen, setLectureDialogOpen] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
   const [uploadingCourseId, setUploadingCourseId] = useState<number | null>(null);
 
   const loadCourses = () => {
@@ -49,6 +55,15 @@ function CoursesPage() {
 
   const handleCreate = () => navigate('/teacher/courses/create');
   const handleEdit = (id: number) => navigate(`/teacher/courses/create?id=${id}`);
+  const handleStartLecture = (courseId: number) => {
+    setSelectedCourseId(courseId);
+    setLectureDialogOpen(true);
+  };
+  const handleLectureCreated = (lecture: Lecture) => {
+    setLectureDialogOpen(false);
+    setSelectedCourseId(null);
+    navigate(`/teacher/lectures/${lecture.id}`);
+  };
   const handleDelete = (id: number) => {
     if (!confirm('Are you sure you want to delete this course?')) return;
     api.courses.deleteCourse(id)
@@ -115,6 +130,11 @@ function CoursesPage() {
                   <TableCell>{course.courseName}</TableCell>
                   <TableCell>{course.description}</TableCell>
                   <TableCell align="right">
+                    <Tooltip title="Start Lecture">
+                      <IconButton aria-label="start lecture" color="primary" onClick={() => handleStartLecture(course.id!)}>
+                        <PlayArrowIcon />
+                      </IconButton>
+                    </Tooltip>
                     <Box component="form" sx={{display: 'inline'}}>
                       <input
                         id={`enrollments-file-${course.id}`}
@@ -145,6 +165,18 @@ function CoursesPage() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {selectedCourseId != null && (
+        <CreateLectureDialog
+          open={lectureDialogOpen}
+          courseId={selectedCourseId}
+          onClose={() => {
+            setLectureDialogOpen(false);
+            setSelectedCourseId(null);
+          }}
+          onCreated={handleLectureCreated}
+        />
+      )}
     </Box>
   )
 }
