@@ -3,11 +3,13 @@ package org.example.attendancebackend.controller;
 import jakarta.validation.Valid;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
+import org.example.attendancebackend.service.EnrollmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +20,12 @@ import java.util.Map;
 public class CourseController {
 
     private final CourseService courseService;
+    private final EnrollmentService enrollmentService;
 
-    public CourseController(CourseService courseService){
+    public CourseController(CourseService courseService,  EnrollmentService enrollmentService) {
+
         this.courseService = courseService;
+        this.enrollmentService = enrollmentService;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -51,6 +56,14 @@ public class CourseController {
         course.setId(null);
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
     }
+
+    @PostMapping("/enrollments")
+    public ResponseEntity<EnrollmentResultDto> uploadEnrollments(
+            @RequestParam("course_id") Long courseId,
+            @RequestPart("file") MultipartFile file) {
+        return ResponseEntity.ok(enrollmentService.enrollFromXml(courseId, file));
+    }
+
 
     @PutMapping()
     public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course) {
