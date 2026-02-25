@@ -13,7 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -118,6 +120,30 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signinJson("john@example.com", "")))
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void signout_shouldReturn200() throws Exception {
+        mockMvc.perform(post("/signout"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void signout_shouldClearSessionCookie() throws Exception {
+        mockMvc.perform(post("/signout"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Set-Cookie", containsString("JSESSIONID=")))
+                .andExpect(header().string("Set-Cookie", containsString("Max-Age=0")))
+                .andExpect(header().string("Set-Cookie", containsString("Path=/")));
+    }
+
+    @Test
+    void signout_shouldReturn200_whenCalledMultipleTimes() throws Exception {
+        mockMvc.perform(post("/signout"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/signout"))
+                .andExpect(status().isOk());
     }
 
     private String signupJson(String firstName, String lastName, String role, String email, String password) {

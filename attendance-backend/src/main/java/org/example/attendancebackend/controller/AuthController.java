@@ -1,5 +1,9 @@
 package org.example.attendancebackend.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.attendancebackend.dto.SignupRequest;
 import org.example.attendancebackend.dto.SigninRequest;
 import org.example.attendancebackend.service.UserService;
@@ -36,4 +40,23 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/signout")
+    public ResponseEntity<Void> signout(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+        } catch (Exception ignored) {
+
+        }
+
+        Cookie cookie = new Cookie("JSESSIONID", "");
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().build();
+    }
 }
