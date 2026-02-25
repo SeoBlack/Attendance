@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.NoSuchElementException;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 public class LectureController {
 
