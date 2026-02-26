@@ -86,15 +86,15 @@ class AuthControllerTest {
     }
 
     @Test
-    void signin_shouldReturn500_whenUserNotFound() throws Exception {
+    void signin_shouldReturn401_whenUserNotFound() throws Exception {
         mockMvc.perform(post("/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signinJson("missing@example.com", "password123")))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    void signin_shouldReturn500_whenPasswordIsWrong() throws Exception {
+    void signin_shouldReturn401_whenPasswordIsWrong() throws Exception {
         User existing = new User();
         existing.setRole(UserRole.STUDENT);
         existing.setFirstName("John");
@@ -106,20 +106,20 @@ class AuthControllerTest {
         mockMvc.perform(post("/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signinJson("john@example.com", "wrong_password")))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    void signin_shouldReturn500_whenEmailOrPasswordIsEmpty() throws Exception {
+    void signin_shouldReturn401_whenEmailOrPasswordIsEmpty() throws Exception {
         mockMvc.perform(post("/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signinJson("", "password123")))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isUnauthorized());
 
         mockMvc.perform(post("/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signinJson("john@example.com", "")))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
