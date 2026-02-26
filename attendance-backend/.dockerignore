@@ -1,0 +1,33 @@
+# Exclude Maven build artifacts except the final JAR
+target/*
+!target/attendance-backend.jar
+
+# Exclude data directory
+data/
+
+# Exclude IDE files
+.idea/
+*.iml
+.vscode/
+
+# Exclude git
+.git/
+.gitignore
+
+# Exclude Docker files
+Dockerfile
+.dockerignore
+compose.yaml
+
+# Exclude documentation
+README.md
+HELP.md
+
+# Exclude Maven wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+# Exclude test resources
+src/test/
+
