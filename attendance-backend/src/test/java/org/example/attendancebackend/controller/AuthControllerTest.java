@@ -14,8 +14,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -82,7 +86,8 @@ class AuthControllerTest {
         mockMvc.perform(post("/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signinJson("john@example.com", "password123")))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token", not(emptyOrNullString())));
     }
 
     @Test
@@ -146,6 +151,49 @@ class AuthControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void me_shouldReturn401_withoutToken() throws Exception {
+        mockMvc.perform(get("/me"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void me_shouldReturn200_withValidToken() throws Exception {
+        User existing = new User();
+        existing.setRole(UserRole.STUDENT);
+        existing.setFirstName("John");
+        existing.setLastName("Doe");
+        existing.setEmail("john@example.com");
+        existing.setPasswordHash(passwordHasher.hash("password123"));
+        userRepository.save(existing);
+
+        String body = mockMvc.perform(post("/signin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signinJson("john@example.com", "password123")))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String token = extractTokenFromSigninResponse(body);
+
+        mockMvc.perform(get("/me")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(existing.getId()))
+                .andExpect(jsonPath("$.email").value("john@example.com"))
+                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.lastName").value("Doe"))
+                .andExpect(jsonPath("$.role").value(UserRole.STUDENT.getValue()));
+    }
+
+    @Test
+    void me_shouldReturn401_withInvalidToken() throws Exception {
+        mockMvc.perform(get("/me")
+                        .header("Authorization", "Bearer invalid-token"))
+                .andExpect(status().isUnauthorized());
+    }
+
     private String signupJson(String firstName, String lastName, String role, String email, String password) {
         return String.format(
                 "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"role\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}",
@@ -158,5 +206,20 @@ class AuthControllerTest {
                 "{\"email\":\"%s\",\"password\":\"%s\"}",
                 email, password
         );
+    }
+
+    private String extractTokenFromSigninResponse(String body) {
+        int keyIndex = body.indexOf("\"token\":\"");
+        if (keyIndex < 0) {
+            throw new IllegalStateException("Token field is missing in /signin response");
+        }
+
+        int valueStart = keyIndex + "\"token\":\"".length();
+        int valueEnd = body.indexOf('"', valueStart);
+        if (valueEnd < 0) {
+            throw new IllegalStateException("Token field format is invalid in /signin response");
+        }
+
+        return body.substring(valueStart, valueEnd);
     }
 }

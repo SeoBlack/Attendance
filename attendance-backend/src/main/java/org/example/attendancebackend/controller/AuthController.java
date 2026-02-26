@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpSession;
 import org.example.attendancebackend.dto.SigninRequest;
 import org.example.attendancebackend.dto.SigninResponse;
 import org.example.attendancebackend.dto.SignupRequest;
+import org.example.attendancebackend.dto.MeResponse;
 import org.example.attendancebackend.entity.User;
+import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.service.JwtService;
 import org.example.attendancebackend.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -22,10 +24,12 @@ public class AuthController {
 
     private final UserService userService;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
-    public AuthController(UserService userService, JwtService jwtService) {
+    public AuthController(UserService userService, JwtService jwtService, UserRepository userRepository) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping(value = "/signup", consumes = "application/json")
@@ -71,5 +75,34 @@ public class AuthController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(HttpServletRequest request) {
+        Object userIdAttr = request.getAttribute("authUserId");
+        Object emailAttr = request.getAttribute("authEmail");
+
+        if (userIdAttr == null || emailAttr == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Unauthorized"));
+        }
+
+        Long userId = (Long) userIdAttr;
+        String email = String.valueOf(emailAttr);
+
+        User user = userRepository.findById(userId)
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Unauthorized"));
+        }
+
+        return ResponseEntity.ok(new MeResponse(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getRole().getValue()
+        ));
     }
 }
