@@ -58,7 +58,7 @@ public class CourseController {
     }
 
     @PostMapping("/enrollments")
-    public ResponseEntity<EnrollmentResultDto> uploadEnrollments(
+    public ResponseEntity<String> uploadEnrollments(
             @RequestParam("course_id") Long courseId,
             @RequestPart("file") MultipartFile file) {
         return ResponseEntity.ok(enrollmentService.enrollFromXml(courseId, file));
