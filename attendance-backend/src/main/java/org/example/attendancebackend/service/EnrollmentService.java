@@ -1,5 +1,6 @@
 package org.example.attendancebackend.service;
 
+import org.example.attendancebackend.dto.EnrollmentUploadResult;
 import org.example.attendancebackend.entity.Enrollment;
 import org.example.attendancebackend.entity.EnrollmentId;
 import org.example.attendancebackend.entity.User;
@@ -12,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -31,8 +31,9 @@ public class EnrollmentService {
         this.userRepository = userRepository;
     }
 
-    public void enrollFromXml(Long courseId, MultipartFile file) {
+    public EnrollmentUploadResult enrollFromXml(Long courseId, MultipartFile file) {
         Document doc;
+        int newEnrollments=0, newUsers=0;
         try {
             doc= DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder().parse(file.getInputStream());
@@ -55,8 +56,14 @@ public class EnrollmentService {
                 newUser.setEmail(email);
                 newUser.setRole(UserRole.STUDENT);
                 existingUser = Optional.of(userRepository.save(newUser));
+                newUsers ++;
             }
-            enrollmentRepository.save(new Enrollment(new EnrollmentId(existingUser.get().getId(), courseId)));
+            if (!enrollmentRepository.existsById(new EnrollmentId(existingUser.get().getId(), courseId))){
+                enrollmentRepository.save(new Enrollment(new EnrollmentId(existingUser.get().getId(), courseId)));
+                newEnrollments++;
+            }
+
         }
+        return new EnrollmentUploadResult(newEnrollments, newUsers);
     }
 }
