@@ -33,7 +33,7 @@ export async function deleteCourse(id: number): Promise<Response> {
 export async function uploadEnrollments(courseId: number, file: File): Promise<Response> {
   const form = new FormData();
   form.append('file', file);
-  return pfetch(`/enrolments?course_id=${encodeURIComponent(courseId)}`, {
+  return pfetch(`/enrollments?course_id=${encodeURIComponent(courseId)}`, {
     method: 'POST',
     body: form,
   });
