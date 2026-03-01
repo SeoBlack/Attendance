@@ -35,13 +35,14 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     api.auth.signIn({ email, password }).then(async resp => {
+      setSigninError("")
       if(!resp.ok) setSigninError(await resp?.text() || "An unknown error occurred. Please try again later.")
       else{
         let jresp = await resp.json()
         if(!jresp.token) return setSigninError("An unknown error occurred. Please try again later.")
         setToken(jresp.token)
         let user = checkAuth()
-        if (!user) return
+        if (!user) return setSigninError("An unknown error occurred. Please try again later.")
         navigate(`/${user.role}/dashboard`)
       }
     }).catch(_ => {
