@@ -1,20 +1,15 @@
-import {useEffect, useMemo, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import {Box, Stack, Typography, Alert} from '@mui/material';
 import {api} from '../../../api';
 import type {Course} from '../../../entities/course';
 import {ActionButton, FormTextField} from '../../../components/common';
 
-function useQuery() {
-    const {search} = useLocation();
-    return useMemo(() => new URLSearchParams(search), [search]);
-}
-
 function CreateCoursePage() {
     const navigate = useNavigate();
-    const query = useQuery();
-    const idParam = query.get('id');
+    const { id: idParam } = useParams<{ id: string }>();
     const courseId = idParam ? parseInt(idParam, 10) : undefined;
+
 
     const isEdit = !!courseId;
 
