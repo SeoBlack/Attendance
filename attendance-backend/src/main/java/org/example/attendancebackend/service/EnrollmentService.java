@@ -98,4 +98,8 @@ public class EnrollmentService {
         }
         return new EnrollmentUploadResult(newEnrollments, newUsers);
     }
+
+    public void deleteById(EnrollmentId id) {
+        enrollmentRepository.deleteById(id);
+    }
 }

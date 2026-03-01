@@ -3,6 +3,7 @@ package org.example.attendancebackend.controller;
 import org.example.attendancebackend.dto.EnrolledUser;
 import org.example.attendancebackend.dto.EnrollmentUploadResult;
 import org.example.attendancebackend.dto.OneStudentEnrollment;
+import org.example.attendancebackend.entity.EnrollmentId;
 import org.example.attendancebackend.service.EnrollmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,14 @@ public class EnrollmentController {
             @RequestBody OneStudentEnrollment studentinfo
             ){
         return new ResponseEntity<>(enrollmentService.enrollOneStudent(courseId, studentinfo), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{course_id}")
+    public ResponseEntity<String> deleteOneEnrollment(
+            @PathVariable Long course_id,
+            @RequestParam("user_id") Long userId
+    ){
+        enrollmentService.deleteById(new EnrollmentId(userId, course_id));
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 }
