@@ -1,5 +1,6 @@
 package org.example.attendancebackend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
@@ -47,23 +48,25 @@ public class CourseController {
     }
 
     @PostMapping()
-    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
         course.setId(null);
+        course.setTeacherId((Long) request.getAttribute("authUserId"));
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
     }
 
     @PutMapping()
-    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course) {
+    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
+        course.setTeacherId((Long) request.getAttribute("authUserId"));
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable Long id){
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id, HttpServletRequest request){
         if(id == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        courseService.deleteCourseById(id);
+        courseService.deleteCourseById(id, (Long) request.getAttribute("authUserId"));
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 }

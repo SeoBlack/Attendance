@@ -28,7 +28,11 @@ public class CourseService {
         return courseRepository.saveAndFlush(course);
     }
 
-    public void deleteCourseById(Long id) {
+    public void deleteCourseById(Long id, Long teacherId) {
+        Course course = courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+        if (course.getTeacherId() != teacherId) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this course");
+        }
         courseRepository.deleteById(id);
     }
 }

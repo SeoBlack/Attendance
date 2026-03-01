@@ -27,4 +27,8 @@ public class Course {
     @NotNull
     @Column(name = "description")
     private String description;
+
+
+    @Column(name = "teacher_id")
+    private Long teacherId;
 }
