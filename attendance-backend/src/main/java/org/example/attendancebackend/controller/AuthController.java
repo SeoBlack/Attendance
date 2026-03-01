@@ -1,19 +1,35 @@
 package org.example.attendancebackend.controller;
 
-import org.example.attendancebackend.dto.SignupRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.attendancebackend.dto.SigninRequest;
+import org.example.attendancebackend.dto.SigninResponse;
+import org.example.attendancebackend.dto.SignupRequest;
+import org.example.attendancebackend.dto.MeResponse;
+import org.example.attendancebackend.entity.User;
+import org.example.attendancebackend.repository.UserRepository;
+import org.example.attendancebackend.service.JwtService;
 import org.example.attendancebackend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+
 @RestController
 public class AuthController {
 
     private final UserService userService;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtService jwtService, UserRepository userRepository) {
         this.userService = userService;
+        this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping(value = "/signup", consumes = "application/json")
@@ -26,14 +42,67 @@ public class AuthController {
         }
     }
 
-    @PostMapping(value = "/signin", consumes = "application/json")
-    public ResponseEntity<String> signin(@RequestBody SigninRequest request) {
+    @PostMapping(
+            value = "/signin",
+            consumes = "application/json",
+            produces = "application/json"
+    )
+    public ResponseEntity<?> signin(@RequestBody SigninRequest request) {
         try {
-            userService.signin(request);
-            return ResponseEntity.ok("Login successful");
+            User user = userService.authenticate(request);
+            String token = jwtService.generateToken(user);
+            return ResponseEntity.ok(new SigninResponse(token));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid credentials"));
         }
     }
 
+    @PostMapping("/signout")
+    public ResponseEntity<Void> signout(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+        } catch (Exception ignored) {
+
+        }
+
+        Cookie cookie = new Cookie("JSESSIONID", "");
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(HttpServletRequest request) {
+        Object userIdAttr = request.getAttribute("authUserId");
+        Object emailAttr = request.getAttribute("authEmail");
+
+        if (userIdAttr == null || emailAttr == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Unauthorized"));
+        }
+
+        Long userId = (Long) userIdAttr;
+        String email = String.valueOf(emailAttr);
+
+        User user = userRepository.findById(userId)
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Unauthorized"));
+        }
+
+        return ResponseEntity.ok(new MeResponse(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getRole().getValue()
+        ));
+    }
 }
