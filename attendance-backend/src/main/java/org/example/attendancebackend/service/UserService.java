@@ -66,7 +66,28 @@ public class UserService {
         }
     }
 
-    private boolean isBlank(String value) {
+    public User authenticate(SigninRequest request) {
+        if (request == null) {
+            throw new RuntimeException("Request is null");
+        }
+
+        if (isBlank(request.getEmail()) || isBlank(request.getPassword())) {
+            throw new RuntimeException("Email and password are required");
+        }
+
+        String email = request.getEmail().trim().toLowerCase();
+
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!passwordHasher.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        return user;
+    }
+
+        private boolean isBlank(String value) {
         return value == null || value.trim().isEmpty();
     }
 }
