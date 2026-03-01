@@ -15,6 +15,7 @@ import TeacherCoursesPage from "./pages/teacher/courses/CoursesPage";
 import TeacherCreateCoursePage from "./pages/teacher/courses/CreateCoursePage";
 import TeacherLecturesPage from "./pages/teacher/lectures/LecturesPage";
 import TeacherLectureDashboardPage from "./pages/teacher/lectures/LectureDashboardPage";
+import {USER_ROLE} from "./api/auth";
 
 function App() {
   return (
@@ -24,17 +25,18 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/storybook" element={<StoryBookPage />} />
       </Route>
-      <Route element={<PrivateLayout />}>
-        <Route path="/student/dashboard" element={<StudentDashboardPage />} />
-        <Route path="/student/attendance" element={<StudentAttendancePage />} />
-        <Route path="/student/history" element={<StudentAttendanceHistoryPage />} />
-
-        <Route path="/teacher/dashboard" element={<TeacherDashboardPage />} />
-        <Route path="/teacher/courses" element={<TeacherCoursesPage />} />
-        <Route path="/teacher/courses/create" element={<TeacherCreateCoursePage />} />
-        <Route path="/teacher/courses/update/:id" element={<TeacherCreateCoursePage />} />
-        <Route path="/teacher/lectures" element={<TeacherLecturesPage />} />
-        <Route path="/teacher/lectures/:id" element={<TeacherLectureDashboardPage />} />
+      <Route element={<PrivateLayout requiresRole={USER_ROLE.STUDENT} />} path="student" >
+        <Route path="dashboard" element={<StudentDashboardPage />} />
+        <Route path="attendance" element={<StudentAttendancePage />} />
+        <Route path="history" element={<StudentAttendanceHistoryPage />} />
+      </Route>
+      <Route element={<PrivateLayout requiresRole={USER_ROLE.TEACHER} />} path="teacher">
+        <Route path="dashboard" element={<TeacherDashboardPage />} />
+        <Route path="courses" element={<TeacherCoursesPage />} />
+        <Route path="courses/create" element={<TeacherCreateCoursePage />} />
+        <Route path="courses/update/:id" element={<TeacherCreateCoursePage />} />
+        <Route path="lectures" element={<TeacherLecturesPage />} />
+        <Route path="lectures/:id" element={<TeacherLectureDashboardPage />} />
       </Route>
     </Routes>
   )
