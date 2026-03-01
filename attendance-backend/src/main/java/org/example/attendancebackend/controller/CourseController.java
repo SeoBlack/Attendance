@@ -51,9 +51,8 @@ public class CourseController {
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable Long id, @Valid @RequestBody Course course) {
-        course.setId(id);
+    @PutMapping()
+    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course) {
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.OK) ;
     }
 
