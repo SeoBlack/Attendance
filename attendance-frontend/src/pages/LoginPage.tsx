@@ -5,7 +5,7 @@ import {
   Typography,
   Link,
   Checkbox,
-  FormControlLabel,
+  FormControlLabel, Alert,
 } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
@@ -14,6 +14,8 @@ import SecurityIcon from '@mui/icons-material/Security';
 import {ActionButton, FormTextField} from '../components/common';
 import {useNavigate} from "react-router-dom";
 import {checkAuth} from "../auth/checkAuth";
+import {api} from "../api";
+import {setToken} from "../auth/token";
 
 const FEATURES = [
   {icon: QrCode2Icon, label: 'QR Code Scanning'},
@@ -23,16 +25,32 @@ const FEATURES = [
 
 export default function LoginPage() {
   const navigate = useNavigate();
+
+  const [signinError, setSigninError] = useState('');
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    let user = checkAuth()
-    if (!user) return
-    navigate(`/${user.role}/dashboard`)
-    // TODO: integrate with auth API
+    api.auth.signIn({ email, password }).then(async resp => {
+      if(!resp.ok) setSigninError(await resp?.text() || "An unknown error occurred. Please try again later.")
+      else{
+        let jresp = await resp.json()
+        if(!jresp.token) return setSigninError("An unknown error occurred. Please try again later.")
+        setToken(jresp.token)
+        let user = checkAuth()
+        if (!user) return
+        navigate(`/${user.role}/dashboard`)
+      }
+    }).catch(_ => {
+      setSigninError("An unknown error occurred. Please try again later.")
+    })
+    // let user = checkAuth()
+    // if (!user) return
+    // navigate(`/${user.role}/dashboard`)
+    // // TODO: integrate with auth API
   };
 
   return (
@@ -124,6 +142,11 @@ export default function LoginPage() {
           }}
         >
           <Stack spacing={3}>
+            {
+              signinError ? (
+                <Alert severity="error">{signinError}</Alert>
+              ): null
+            }
             <Box>
               <Typography
                 variant="h4"
