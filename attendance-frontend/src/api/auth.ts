@@ -1,8 +1,8 @@
 import {pfetch} from "./lib/fetch";
 
 export enum USER_ROLE {
-  STUDENT = 'student',
   TEACHER = 'teacher',
+  STUDENT = 'student',
 }
 
 export type SignupOptions = {
@@ -12,6 +12,11 @@ export type SignupOptions = {
   lastName: string;
   role: USER_ROLE;
 }
+
+export type SignInPayload = {
+  email: string;
+  password: string;
+}
 export async function requestSignup(options: SignupOptions){
   return pfetch(`/signup`, {
     method: 'POST',
@@ -19,5 +24,15 @@ export async function requestSignup(options: SignupOptions){
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(options)
+  })
+}
+
+export async function signIn(authPayload: SignInPayload){
+  return pfetch(`/signin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(authPayload)
   })
 }
