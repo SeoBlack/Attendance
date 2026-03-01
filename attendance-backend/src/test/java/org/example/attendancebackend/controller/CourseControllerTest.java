@@ -77,6 +77,21 @@ class CourseControllerTest {
 
         response.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.courseName").value("Math"))
-                .andExpect(jsonPath("$.description").value("Math is beautiful"));;
+                .andExpect(jsonPath("$.description").value("Math is beautiful"));
+    }
+
+    @Test
+    void deleteCourse() throws Exception {}
+
+    @Test
+    void updateCourse() throws Exception {
+        given(courseService.saveCourse(ArgumentMatchers.any())).willReturn(course);
+        ResultActions response = mockMvc.perform( MockMvcRequestBuilders.post("/courses")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(course)));
+
+        response.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.courseName").value("Math"))
+                .andExpect(jsonPath("$.description").value("Math is beautiful"));
     }
 }

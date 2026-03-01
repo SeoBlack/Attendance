@@ -1,6 +1,8 @@
 package org.example.attendancebackend.service;
 
+import org.example.attendancebackend.dto.EnrolledUser;
 import org.example.attendancebackend.dto.EnrollmentUploadResult;
+import org.example.attendancebackend.dto.OneStudentEnrollment;
 import org.example.attendancebackend.entity.Enrollment;
 import org.example.attendancebackend.entity.EnrollmentId;
 import org.example.attendancebackend.entity.User;
@@ -9,6 +11,7 @@ import org.example.attendancebackend.repository.EnrollmentRepository;
 import org.example.attendancebackend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.w3c.dom.Document;
@@ -19,7 +22,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,14 +52,10 @@ public class EnrollmentService {
             String lastName = studentEl.getElementsByTagName("last_name").item(0).getTextContent();
             String email = studentEl.getElementsByTagName("email").item(0).getTextContent();
 
+
             Optional<User> existingUser = userRepository.findByEmailIgnoreCase(email);
             if (existingUser.isEmpty()) {
-                User newUser = new User();
-                newUser.setFirstName(firstName);
-                newUser.setLastName(lastName);
-                newUser.setEmail(email);
-                newUser.setRole(UserRole.STUDENT);
-                existingUser = Optional.of(userRepository.save(newUser));
+                existingUser = Optional.ofNullable(addNewStudent(firstName, lastName, email));
                 newUsers ++;
             }
             if (!enrollmentRepository.existsById(new EnrollmentId(existingUser.get().getId(), courseId))){
@@ -69,7 +67,35 @@ public class EnrollmentService {
         return new EnrollmentUploadResult(newEnrollments, newUsers);
     }
 
-    public List<User> getCourseEnrollments(Long courseId) {
+    public List<EnrolledUser> getCourseEnrollments(Long courseId) {
         return enrollmentRepository.findUsersByCourseId(courseId);
+    }
+
+    @Transactional
+    public void deleteCourseEnrollments(Long courseId) {
+        enrollmentRepository.deleteByCourseId(courseId);
+    }
+
+    private User addNewStudent(String firstName, String lastName, String email) {
+        User newUser = new User();
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setRole(UserRole.STUDENT);
+        return userRepository.save(newUser);
+    }
+
+    public EnrollmentUploadResult enrollOneStudent(Long courseId, OneStudentEnrollment student) {
+        int newEnrollments=0, newUsers=0;
+        Optional<User> existingUser = userRepository.findByEmailIgnoreCase(student.getEmail());
+        if (existingUser.isEmpty()) {
+            existingUser = Optional.ofNullable(addNewStudent(student.getFirstName(), student.getLastName(), student.getEmail()));
+            newUsers ++;
+        }
+        if (!enrollmentRepository.existsById(new EnrollmentId(existingUser.get().getId(), courseId))){
+            enrollmentRepository.save(new Enrollment(new EnrollmentId(existingUser.get().getId(), courseId)));
+            newEnrollments ++;
+        }
+        return new EnrollmentUploadResult(newEnrollments, newUsers);
     }
 }

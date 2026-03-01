@@ -1,7 +1,8 @@
 package org.example.attendancebackend.controller;
 
+import org.example.attendancebackend.dto.EnrolledUser;
 import org.example.attendancebackend.dto.EnrollmentUploadResult;
-import org.example.attendancebackend.entity.User;
+import org.example.attendancebackend.dto.OneStudentEnrollment;
 import org.example.attendancebackend.service.EnrollmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +20,33 @@ public class EnrollmentController {
         this.enrollmentService = enrollmentService;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<EnrollmentUploadResult> uploadEnrollments(
             @RequestParam("course_id") Long courseId,
             @RequestPart("file") MultipartFile file) {
         return new ResponseEntity<>(enrollmentService.enrollFromXml(courseId, file), HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<User>> getCourseEnrollments(
+    @GetMapping()
+    public ResponseEntity<List<EnrolledUser>> getCourseEnrollments(
             @RequestParam("course_id") Long courseId
     ){
         return new ResponseEntity<>(enrollmentService.getCourseEnrollments(courseId), HttpStatus.OK);
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<String> deleteEnrollments(
+            @RequestParam("course_id") Long courseId
+    ){
+        enrollmentService.deleteCourseEnrollments(courseId);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @PutMapping()
+    public ResponseEntity<EnrollmentUploadResult> updateEnrollments(
+            @RequestParam("course_id") Long courseId,
+            @RequestBody OneStudentEnrollment studentinfo
+            ){
+        return new ResponseEntity<>(enrollmentService.enrollOneStudent(courseId, studentinfo), HttpStatus.OK);
     }
 }
