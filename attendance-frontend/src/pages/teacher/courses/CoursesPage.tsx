@@ -54,7 +54,7 @@ function CoursesPage() {
   }, []);
 
   const handleCreate = () => navigate('/teacher/courses/create');
-  const handleEdit = (id: number) => navigate(`/teacher/courses/create?id=${id}`);
+  const handleEdit = (id: number) => navigate(`/teacher/courses/update/${id}`);
   const handleStartLecture = (courseId: number) => {
     setSelectedCourseId(courseId);
     setLectureDialogOpen(true);
