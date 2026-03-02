@@ -1,13 +1,19 @@
 package org.example.attendancebackend.controller;
 
+import org.example.attendancebackend.config.JwtAuthInterceptor;
+import org.example.attendancebackend.config.WebConfig;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,10 +24,18 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = CourseController.class)
+@WebMvcTest(
+        controllers = CourseController.class,
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthInterceptor.class)
+        }
+)
 @AutoConfigureMockMvc(addFilters = false)
 class CourseControllerTest {
 
@@ -77,6 +91,32 @@ class CourseControllerTest {
 
         response.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.courseName").value("Math"))
-                .andExpect(jsonPath("$.description").value("Math is beautiful"));;
+                .andExpect(jsonPath("$.description").value("Math is beautiful"));
+    }
+
+    @Test
+    void updateCourse() throws Exception {
+        course.setId(5L);
+        given(courseService.saveCourse(ArgumentMatchers.any())).willReturn(course);
+
+        ArgumentCaptor<Course> captor = ArgumentCaptor.forClass(Course.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/courses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(course)))
+                .andExpect(status().isOk());
+
+        verify(courseService).saveCourse(captor.capture());
+        Assertions.assertEquals(5L, captor.getValue().getId());
+    }
+
+    @Test
+    void deleteCourse() throws Exception {
+        Long courseId = 1L;
+        // deleteCourseById returns void, so willDoNothing() is correct
+        willDoNothing().given(courseService).deleteCourseById(courseId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/courses/{id}", courseId))
+                .andExpect(status().isOk());
     }
 }

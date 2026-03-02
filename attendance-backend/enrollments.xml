@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enrollments>
+    <student>
+        <first_name>Alice</first_name>
+        <last_name>Johnson</last_name>
+        <email>alice.johnson@example.com</email>
+    </student>
+    <student>
+        <first_name>Bob</first_name>
+        <last_name>Smith</last_name>
+        <email>bob.smith@example.com</email>
+    </student>
+    <student>
+        <first_name>Carol</first_name>
+        <last_name>Williams</last_name>
+        <email>carol.williams@example.com</email>
+    </student>
+</enrollments>

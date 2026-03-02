@@ -16,10 +16,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
-
     private final CourseService courseService;
 
-    public CourseController(CourseService courseService){
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
@@ -54,9 +53,8 @@ public class CourseController {
 
     @PutMapping()
     public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course) {
-        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
+        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.OK) ;
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id){

@@ -1,4 +1,4 @@
-import { NavLink} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Box,
   Divider,
@@ -10,10 +10,13 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { resetToken } from "../../auth/token";
 
 
 
 export function Menu({currentPath, elements}: {currentPath: string, elements: Array<any>}) {
+  const navigate = useNavigate();
 
   const menuItems = elements.map(({ path, label, icon }) => (
     <ListItem disablePadding key={path}>
@@ -37,6 +40,22 @@ export function Menu({currentPath, elements}: {currentPath: string, elements: Ar
       <List sx={{ flex: 1 }}>
         {menuItems}
       </List>
+      <Divider />
+      <Box sx={{ p: 1 }}>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              resetToken();
+              navigate("/");
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Sign out" />
+          </ListItemButton>
+        </ListItem>
+      </Box>
     </Box>
   );
 
