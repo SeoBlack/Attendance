@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
@@ -60,12 +61,21 @@ public class AttendanceControllerTest {
         );
     }
 
+    /** Sets the authenticated user id on the request so the controller does not return 401. */
+    private static RequestPostProcessor authUserId(long userId) {
+        return request -> {
+            request.setAttribute("authUserId", userId);
+            return request;
+        };
+    }
+
     @Test
     void markAttendance_withValidJoinCode_returnsCreatedAndAttendance() throws Exception {
         Attendance attendance = buildAttendance(testUser.getId(), testLecture.getId());
         when(attendanceService.MarkAttendance(anyLong(), eq(TEST_JOIN_CODE))).thenReturn(attendance);
 
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
                 .andExpect(status().isCreated())
@@ -76,6 +86,7 @@ public class AttendanceControllerTest {
     @Test
     void markAttendance_withNullJoinCode_returnsBadRequest() throws Exception {
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest());
@@ -84,6 +95,7 @@ public class AttendanceControllerTest {
     @Test
     void markAttendance_withBlankJoinCode_returnsBadRequest() throws Exception {
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"\"}"))
                 .andExpect(status().isBadRequest());
@@ -92,6 +104,7 @@ public class AttendanceControllerTest {
     @Test
     void markAttendance_withWhitespaceJoinCode_returnsBadRequest() throws Exception {
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"   \"}"))
                 .andExpect(status().isBadRequest());
@@ -103,6 +116,7 @@ public class AttendanceControllerTest {
                 .thenThrow(new java.util.NoSuchElementException("Lecture not found"));
 
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"INVALID\"}"))
                 .andExpect(status().isNotFound());
@@ -114,6 +128,7 @@ public class AttendanceControllerTest {
                 .thenThrow(new IllegalAccessException("student not enrolled in the course"));
 
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
                 .andExpect(status().isForbidden());
@@ -125,6 +140,7 @@ public class AttendanceControllerTest {
                 .thenThrow(new IllegalArgumentException("Invalid"));
 
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
                 .andExpect(status().isForbidden());
@@ -136,6 +152,7 @@ public class AttendanceControllerTest {
                 .thenThrow(new java.rmi.AlreadyBoundException("student already marked"));
 
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
                 .andExpect(status().isAlreadyReported());
@@ -147,6 +164,7 @@ public class AttendanceControllerTest {
                 .thenThrow(new RuntimeException("Unexpected error"));
 
         mockMvc.perform(post("/attendance/")
+                        .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
                 .andExpect(status().isInternalServerError());

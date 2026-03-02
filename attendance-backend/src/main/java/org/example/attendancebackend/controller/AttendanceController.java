@@ -1,6 +1,7 @@
 package org.example.attendancebackend.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.tomcat.util.json.JSONParser;
 import org.example.attendancebackend.entity.Attendance;
 import org.example.attendancebackend.service.AttendanceService;
@@ -23,13 +24,17 @@ public class AttendanceController {
     //i guess this should receive the lecture joinCode from frontend, then the user Id from session, then do the logic
     @PostMapping(value = "/", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Attendance MarkAttendance(@RequestBody Map<String, String> body) {
+    public Attendance MarkAttendance(@RequestBody Map<String, String> body, HttpServletRequest request) {
 
         String joinCode = body.get("joinCode");
         System.out.println("joinCode:" + joinCode);
 
-        //fake the user ID, This should be replaced with actual user ID when implemented in the session.
-        Long userId = Long.parseLong("1");
+        Long userId = (Long) request.getAttribute("authUserId");
+
+        if (userId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
 
         if (joinCode == null || joinCode.isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lecture Code is invalid");
