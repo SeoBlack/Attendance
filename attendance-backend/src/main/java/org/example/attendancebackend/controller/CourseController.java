@@ -38,13 +38,14 @@ public class CourseController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Course>> getCourses() {
-        return new ResponseEntity<>(courseService.getCourses(), HttpStatus.OK);
+    public ResponseEntity<List<Course>> getCourses(HttpServletRequest request) {
+        System.out.println(request.getAttribute("authUserId"));
+        return new ResponseEntity<>(courseService.getCourses((Long) request.getAttribute("authUserId")), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourse(@PathVariable Long id){
-        return new ResponseEntity<>(courseService.getCourseById(id), HttpStatus.OK);
+    public ResponseEntity<Course> getCourse(@PathVariable Long id, HttpServletRequest request){
+        return new ResponseEntity<>(courseService.getCourseById(id, (Long) request.getAttribute("authUserId")), HttpStatus.OK);
     }
 
     @PostMapping()

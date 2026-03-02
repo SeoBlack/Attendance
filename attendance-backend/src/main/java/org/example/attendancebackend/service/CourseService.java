@@ -16,12 +16,12 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public Course getCourseById(Long id) {
-        return courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+    public Course getCourseById(Long id, Long teacherId) {
+        return courseRepository.findByIdAndTeacherId(id, teacherId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
     }
 
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    public List<Course> getCourses(Long teacherId) {
+        return courseRepository.findByTeacherId(teacherId);
     }
 
     public Course saveCourse(Course course) {
@@ -29,10 +29,6 @@ public class CourseService {
     }
 
     public void deleteCourseById(Long id, Long teacherId) {
-        Course course = courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
-        if (course.getTeacherId() != teacherId) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this course");
-        }
-        courseRepository.deleteById(id);
+        courseRepository.deleteByIdAndTeacherId(id, teacherId);
     }
 }
