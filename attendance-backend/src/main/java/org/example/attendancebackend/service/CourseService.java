@@ -16,19 +16,19 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public Course getCourseById(Long id) {
-        return courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+    public Course getCourseById(Long id, Long teacherId) {
+        return courseRepository.findByIdAndTeacherId(id, teacherId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
     }
 
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    public List<Course> getCourses(Long teacherId) {
+        return courseRepository.findByTeacherId(teacherId);
     }
 
     public Course saveCourse(Course course) {
         return courseRepository.saveAndFlush(course);
     }
 
-    public void deleteCourseById(Long id) {
-        courseRepository.deleteById(id);
+    public void deleteCourseById(Long id, Long teacherId) {
+        courseRepository.deleteByIdAndTeacherId(id, teacherId);
     }
 }

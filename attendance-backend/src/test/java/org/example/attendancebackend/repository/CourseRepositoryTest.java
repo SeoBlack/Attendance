@@ -23,7 +23,7 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     public void init() {
-        course = Course.builder().courseName("Math").description("Math is beautiful").build();
+        course = Course.builder().courseName("Math").description("Math is beautiful").teacherId(0L).build();
         savedCourse = courseRepository.save(course);
     }
 
@@ -35,7 +35,7 @@ public class CourseRepositoryTest {
 
     @Test
     public void CourseRepository_GetAll_ReturnsMoreThanOne(){
-        Course course2 = Course.builder().courseName("Python").description("Python is practical").build();
+        Course course2 = Course.builder().courseName("Python").description("Python is practical").teacherId(0L).build();
         courseRepository.save(course2);
 
         List<Course> courses = courseRepository.findAll();
