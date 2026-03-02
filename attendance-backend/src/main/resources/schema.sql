@@ -5,9 +5,11 @@ CREATE TABLE users
     first_name VARCHAR(100) NOT NULL,
     second_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255),
     PRIMARY KEY (user_id)
 );
+
+-- ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 
 CREATE TABLE courses
 (

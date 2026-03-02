@@ -20,10 +20,9 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (!isProtectedEndpoint(request)) {
+        if (isPublicEndpoint(request) || request.getMethod().equals("OPTIONS")) {
             return true;
         }
-
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || authHeader.isBlank() || !authHeader.startsWith("Bearer ")) {
@@ -38,6 +37,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
+
         request.setAttribute("authUserId", jwtService.extractUserId(token));
         request.setAttribute("authEmail", jwtService.extractEmail(token));
         return true;
@@ -50,14 +50,9 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         response.getWriter().write("{\"message\":\"" + message + "\"}");
     }
 
-    private boolean isProtectedEndpoint(HttpServletRequest request) {
-        String method = request.getMethod();
+    private boolean isPublicEndpoint(HttpServletRequest request) {
         String path = request.getRequestURI();
-
-        return ("POST".equals(method) && "/courses".equals(path))
-                || ("POST".equals(method) && "/lectures".equals(path))
-                || ("PUT".equals(method) && path.matches("^/lectures/\\d+$"))
-                || ("DELETE".equals(method) && path.matches("^/lectures/\\d+$"))
-                || ("GET".equals(method) && "/me".equals(path));
+        return "/signin".equals(path) || "/signup".equals(path);
     }
+
 }

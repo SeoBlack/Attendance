@@ -38,7 +38,6 @@ public class CourseController {
 
     @GetMapping()
     public ResponseEntity<List<Course>> getCourses(HttpServletRequest request) {
-        System.out.println(request.getAttribute("authUserId"));
         return new ResponseEntity<>(courseService.getCourses((Long) request.getAttribute("authUserId")), HttpStatus.OK);
     }
 
