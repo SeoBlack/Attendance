@@ -23,8 +23,10 @@ public class LectureService {
     }
 
     public List<Lecture> getLectures(Long courseId) {
-
-        return lectureRepository.findByCourseId(courseId);
+        if (courseId != null) {
+            return lectureRepository.findByCourseId(courseId);
+        }
+        return lectureRepository.findAll();
     }
 
     public Lecture getLecture(Long id) {

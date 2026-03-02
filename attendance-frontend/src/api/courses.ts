@@ -29,3 +29,12 @@ export async function deleteCourse(id: number): Promise<Response> {
     method: 'DELETE',
   });
 }
+
+export async function uploadEnrollments(courseId: number, file: File): Promise<Response> {
+  const form = new FormData();
+  form.append('file', file);
+  return pfetch(`/courses/enrollments?course_id=${encodeURIComponent(courseId)}`, {
+    method: 'POST',
+    body: form,
+  });
+}
