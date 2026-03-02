@@ -20,6 +20,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import UploadIcon from '@mui/icons-material/Upload';
+import GroupIcon from '@mui/icons-material/Group';
 
 import { api } from '../../../api';
 import type { Course } from '../../../entities/course';
@@ -55,6 +56,7 @@ function CoursesPage() {
 
   const handleCreate = () => navigate('/teacher/courses/create');
   const handleEdit = (id: number) => navigate(`/teacher/courses/update/${id}`);
+  const handleViewEnrollments = (id: number) => navigate(`/teacher/courses/${id}/enrollments`);
   const handleStartLecture = (courseId: number) => {
     setSelectedCourseId(courseId);
     setLectureDialogOpen(true);
@@ -152,6 +154,11 @@ function CoursesPage() {
                         <UploadIcon/>
                       </IconButton>
                     </Box>
+                    <Tooltip title="Enrollments">
+                      <IconButton aria-label="enrollments" onClick={() => handleViewEnrollments(course.id!)}>
+                        <GroupIcon />
+                      </IconButton>
+                    </Tooltip>
                     <IconButton aria-label="edit" onClick={() => handleEdit(course.id!)}>
                       <EditIcon/>
                     </IconButton>
