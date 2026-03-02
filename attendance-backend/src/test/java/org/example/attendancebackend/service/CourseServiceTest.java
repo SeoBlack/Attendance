@@ -32,9 +32,9 @@ public class CourseServiceTest {
 
     @Test
     void getCourseReturnsCorrect() {
-        given(courseRepository.findById(1L)).willReturn(Optional.ofNullable(course));
+        given(courseRepository.findByIdAndTeacherId(1L, 0L)).willReturn(Optional.ofNullable(course));
 
-        Course result = courseService.getCourseById(1L);
+        Course result = courseService.getCourseById(1L, 0L);
         Assertions.assertNotEquals(null, result);
         Assertions.assertEquals(course.getCourseName(), result.getCourseName());
         Assertions.assertEquals(course.getDescription(), result.getDescription());
@@ -54,9 +54,9 @@ public class CourseServiceTest {
     void getAllCoursesReturns(){
         Course course1 = Course.builder().courseName("Python").description("Python is practice").build();
 
-        given(courseRepository.findAll()).willReturn(List.of(course, course1));
+        given(courseRepository.findByTeacherId(0L )).willReturn(List.of(course, course1));
 
-        List<Course> result = courseService.getCourses();
+        List<Course> result = courseService.getCourses(0L);
 
         Assertions.assertNotEquals(null, result);
         Assertions.assertEquals(2, result.size());
