@@ -37,7 +37,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-
         request.setAttribute("authUserId", jwtService.extractUserId(token));
         request.setAttribute("authEmail", jwtService.extractEmail(token));
         return true;

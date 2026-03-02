@@ -226,6 +226,7 @@ class JwtProtectedEndpointsTest {
         Course course = new Course();
         course.setCourseName(name);
         course.setDescription("Course description");
+        course.setTeacherId(0L);
         return course;
     }
 

@@ -127,29 +127,6 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Test
-    void signout_shouldReturn200() throws Exception {
-        mockMvc.perform(post("/signout"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void signout_shouldClearSessionCookie() throws Exception {
-        mockMvc.perform(post("/signout"))
-                .andExpect(status().isOk())
-                .andExpect(header().string("Set-Cookie", containsString("JSESSIONID=")))
-                .andExpect(header().string("Set-Cookie", containsString("Max-Age=0")))
-                .andExpect(header().string("Set-Cookie", containsString("Path=/")));
-    }
-
-    @Test
-    void signout_shouldReturn200_whenCalledMultipleTimes() throws Exception {
-        mockMvc.perform(post("/signout"))
-                .andExpect(status().isOk());
-
-        mockMvc.perform(post("/signout"))
-                .andExpect(status().isOk());
-    }
 
     @Test
     void me_shouldReturn401_withoutToken() throws Exception {

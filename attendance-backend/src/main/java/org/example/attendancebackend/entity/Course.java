@@ -28,7 +28,6 @@ public class Course {
     @Column(name = "description")
     private String description;
 
-    @NotNull
     @Column(name = "teacher_id")
     private Long teacherId;
 }
