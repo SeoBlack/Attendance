@@ -57,26 +57,6 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signout")
-    public ResponseEntity<Void> signout(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                session.invalidate();
-            }
-        } catch (Exception ignored) {
-
-        }
-
-        Cookie cookie = new Cookie("JSESSIONID", "");
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/me")
     public ResponseEntity<?> me(HttpServletRequest request) {
         Object userIdAttr = request.getAttribute("authUserId");

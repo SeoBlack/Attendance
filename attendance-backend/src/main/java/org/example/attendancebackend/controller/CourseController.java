@@ -1,5 +1,6 @@
 package org.example.attendancebackend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
@@ -16,10 +17,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
-
     private final CourseService courseService;
 
-    public CourseController(CourseService courseService){
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
@@ -37,33 +37,35 @@ public class CourseController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Course>> getCourses() {
-        return new ResponseEntity<>(courseService.getCourses(), HttpStatus.OK);
+    public ResponseEntity<List<Course>> getCourses(HttpServletRequest request) {
+        return new ResponseEntity<>(courseService.getCourses((Long) request.getAttribute("authUserId")), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourse(@PathVariable Long id){
-        return new ResponseEntity<>(courseService.getCourseById(id), HttpStatus.OK);
+    public ResponseEntity<Course> getCourse(@PathVariable Long id, HttpServletRequest request){
+        return new ResponseEntity<>(courseService.getCourseById(id, (Long) request.getAttribute("authUserId")), HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
+        System.out.println("Teacher id " + (Long) request.getAttribute("authUserId"));
         course.setId(null);
+        course.setTeacherId((Long) request.getAttribute("authUserId"));
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
     }
 
     @PutMapping()
-    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course) {
-        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
+    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
+        course.setTeacherId((Long) request.getAttribute("authUserId"));
+        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.OK) ;
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable Long id){
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id, HttpServletRequest request){
         if(id == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        courseService.deleteCourseById(id);
+        courseService.deleteCourseById(id, (Long) request.getAttribute("authUserId"));
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 }

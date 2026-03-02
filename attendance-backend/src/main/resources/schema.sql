@@ -5,17 +5,24 @@ CREATE TABLE users
     first_name VARCHAR(100) NOT NULL,
     second_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255),
     PRIMARY KEY (user_id)
 );
+
+-- ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 
 CREATE TABLE courses
 (
     course_id SERIAL NOT NULL,
+    teacher_id INT NOT NULL,
     course_name VARCHAR(100) NOT NULL,
     description TEXT,
-    PRIMARY KEY (course_id)
+    PRIMARY KEY (course_id),
+    FOREIGN KEY (teacher_id) REFERENCES users(user_id)
 );
+
+-- ALTER TABLE courses ADD COLUMN teacher_id INT NOT NULL DEFAULT -1;
+-- ALTER TABLE courses ADD CONSTRAINT courses_teacher_id_fkey FOREIGN KEY(teacher_id) REFERENCES users(user_id);
 
 CREATE TABLE lectures
 (

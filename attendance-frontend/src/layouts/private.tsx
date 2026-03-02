@@ -5,15 +5,16 @@ import {useState} from "react";
 import {Menu} from "../components/layout/Menu";
 import {getMenuElements} from "./menuElements";
 import {checkAuth} from "../auth/checkAuth";
+import {USER_ROLE} from "../api/auth";
 
 const drawerWidth = 220;
 
-function PrivateLayout() {
+function PrivateLayout({requiresRole}: { requiresRole: USER_ROLE}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   const authData = checkAuth()
-  if (!authData) {
+  if (!authData || authData.role !== requiresRole) {
     return <Navigate to="/" replace />;
   }
 
