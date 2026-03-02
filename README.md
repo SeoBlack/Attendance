@@ -45,3 +45,37 @@ Planned but not yet implemented:
 
 ## Database Schema
 The database schema for the Attendance system is defined in [schema.sql](attendance-backend/src/main/resources/schema.sql).
+
+
+---
+
+# Run localy
+
+## 0. Database
+
+```shell
+PG_LOCAL_DATA=PATH_TO_DATA_DIR docker compose -f compose.yaml up -d postgres
+```
+
+## 1. Backend
+Check backend readme for reference
+
+## 2. Frontend
+Check frontend readme for reference
+
+
+---
+
+# Build and run Docker
+
+```shell
+cd attendance-frontend
+docker build -t attendance-frontend:latest .
+
+cd ../attendance-backend
+docker build -t attendance-backend:latest .
+
+cd ..
+PG_LOCAL_DATA=PATH_TO_DATA_DIR docker compose -f compose.yaml up -d
+
+```
