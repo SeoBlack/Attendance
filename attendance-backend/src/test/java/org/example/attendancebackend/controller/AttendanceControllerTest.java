@@ -155,7 +155,7 @@ public class AttendanceControllerTest {
                         .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
-                .andExpect(status().isAlreadyReported());
+                .andExpect(status().isConflict());
     }
 
     @Test

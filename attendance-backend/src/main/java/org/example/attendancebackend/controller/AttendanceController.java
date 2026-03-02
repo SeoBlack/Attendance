@@ -52,7 +52,7 @@ public class AttendanceController {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
             }
             else if(e instanceof AlreadyBoundException){
-                throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED);
+                throw new ResponseStatusException(HttpStatus.CONFLICT);
             }
             else{
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
