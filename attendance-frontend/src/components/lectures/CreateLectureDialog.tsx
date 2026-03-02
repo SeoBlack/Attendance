@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -27,9 +27,24 @@ export default function CreateLectureDialog({
   onCreated,
 }: CreateLectureDialogProps) {
   const { addLecture } = useLectureContext();
+
+  const toDatetimeLocal = (date: Date) => {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  };
+
   const [description, setDescription] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+
+  useEffect(() => {
+    if (open) {
+      const now = new Date();
+      const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+      setStartDate(toDatetimeLocal(now));
+      setEndDate(toDatetimeLocal(oneHourLater));
+    }
+  }, [open]);
   const [saving, setSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
