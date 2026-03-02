@@ -173,23 +173,9 @@ function LectureDashboardPage() {
         </Grid>
       </Grid>
 
-      {/* Two Panels */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        {/* QR Code Panel */}
-        <Grid size={{ xs: 12, md: 7 }}>
-          <DisplayPanel bordered sx={{ height: '100%' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-              QR Code Attendance
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Are we still doing this?
-            </Typography>
-          </DisplayPanel>
-        </Grid>
-
-        {/* Numeric Code Panel */}
-        <Grid size={{ xs: 12, md: 5 }}>
-          <DisplayPanel bordered sx={{ height: '100%' }}>
+      {/* Numeric Code Panel */}
+      <Box sx={{ mb: 3 }}>
+          <DisplayPanel bordered>
             <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
               Numeric Code
             </Typography>
@@ -300,8 +286,7 @@ function LectureDashboardPage() {
               </Box>
             </Stack>
           </DisplayPanel>
-        </Grid>
-      </Grid>
+      </Box>
 
       {/* Recent Activity */}
       {/* TODO: Replace with real attendance activity once attendance API is implemented */}
