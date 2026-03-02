@@ -19,7 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import UploadIcon from '@mui/icons-material/Upload';
+import GroupIcon from '@mui/icons-material/Group';
 
 import { api } from '../../../api';
 import type { Course } from '../../../entities/course';
@@ -34,7 +34,7 @@ function CoursesPage() {
   const [error, setError] = useState<string>('');
   const [lectureDialogOpen, setLectureDialogOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
-  const [uploadingCourseId, setUploadingCourseId] = useState<number | null>(null);
+  // upload state moved into UploadEnrollmentsButton component
 
   const loadCourses = () => {
     setLoading(true);
@@ -55,6 +55,7 @@ function CoursesPage() {
 
   const handleCreate = () => navigate('/teacher/courses/create');
   const handleEdit = (id: number) => navigate(`/teacher/courses/update/${id}`);
+  const handleViewEnrollments = (id: number) => navigate(`/teacher/courses/${id}/enrollments`);
   const handleStartLecture = (courseId: number) => {
     setSelectedCourseId(courseId);
     setLectureDialogOpen(true);
@@ -74,26 +75,6 @@ function CoursesPage() {
       .catch((e: any) => setError(e?.message || 'Failed to delete course'))
   }
 
-  const triggerFileDialog = (courseId: number) => {
-    const el = document.getElementById(`enrollments-file-${courseId}`) as HTMLInputElement | null;
-    el?.click();
-  }
-
-  const handleFileSelected = async (courseId: number, ev: React.ChangeEvent<HTMLInputElement>) => {
-    const file = ev.target.files?.[0];
-    ev.target.value = '';
-    if (!file) return;
-    setError('');
-    setUploadingCourseId(courseId);
-    try {
-      const resp = await api.courses.uploadEnrollments(courseId, file);
-      if (!resp.ok) throw new Error(await resp.text() || 'Failed to upload enrollments');
-    } catch (e: any) {
-      setError(e?.message || 'Failed to upload enrollments');
-    } finally {
-      setUploadingCourseId(null);
-    }
-  }
 
   return (
     <Box>
@@ -135,23 +116,11 @@ function CoursesPage() {
                         <PlayArrowIcon />
                       </IconButton>
                     </Tooltip>
-                    <Box component="form" sx={{display: 'inline'}}>
-                      <input
-                        id={`enrollments-file-${course.id}`}
-                        type="file"
-                        accept=".xml, application/xml"
-                        style={{ display: 'none' }}
-                        onChange={(ev) => handleFileSelected(course.id!, ev)}
-                      />
-                      <IconButton
-                        aria-label="upload-enrollments"
-                        onClick={() => triggerFileDialog(course.id!)}
-                        disabled={uploadingCourseId === course.id}
-                        title="Upload enrollments"
-                      >
-                        <UploadIcon/>
+                    <Tooltip title="Enrollments">
+                      <IconButton aria-label="enrollments" onClick={() => handleViewEnrollments(course.id!)}>
+                        <GroupIcon />
                       </IconButton>
-                    </Box>
+                    </Tooltip>
                     <IconButton aria-label="edit" onClick={() => handleEdit(course.id!)}>
                       <EditIcon/>
                     </IconButton>
