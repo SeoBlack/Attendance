@@ -5,3 +5,9 @@ export async function getEnrollments(courseId: number): Promise<Response> {
     method: 'GET',
   });
 }
+
+export async function deleteEnrollment(courseId: number, userId: number): Promise<Response> {
+  return pfetch(`/enrollments/${encodeURIComponent(courseId)}?user_id=${encodeURIComponent(userId)}`, {
+    method: 'DELETE',
+  });
+}

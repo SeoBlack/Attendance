@@ -13,8 +13,11 @@ import {
   Alert,
   Stack,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UploadEnrollmentsButton from '../../../components/enrollments/UploadEnrollmentsButton';
 
 import { api } from '../../../api';
 import type { Course } from '../../../entities/course';
@@ -30,7 +33,7 @@ function EnrollmentsPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  useEffect(() => {
+  const loadData = () => {
     if (!courseId || Number.isNaN(courseId)) return;
     setLoading(true);
     setError('');
@@ -48,17 +51,45 @@ function EnrollmentsPage() {
       })
       .catch((e: any) => setError(e?.message || 'Failed to load data'))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
   }, [courseId]);
+
+  const handleRemove = async (enrollmentId: number) => {
+    if (!courseId || Number.isNaN(courseId)) return;
+    if (!confirm('Remove this enrollment from the course?')) return;
+    setError('');
+    try {
+      const resp = await api.enrollments.deleteEnrollment(courseId, enrollmentId);
+      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to remove enrollment');
+      // reload list
+      loadData();
+    } catch (e: any) {
+      setError(e?.message || 'Failed to remove enrollment');
+    }
+  }
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-        <IconButton aria-label="back" onClick={() => navigate('/teacher/courses')}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography variant="h5" component="h1">
-          {course ? `Enrollments · ${course.courseName}` : 'Enrollments'}
-        </Typography>
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }} justifyContent="space-between">
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <IconButton aria-label="back" onClick={() => navigate('/teacher/courses')}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h5" component="h1">
+            {course ? `Enrollments · ${course.courseName}` : 'Enrollments'}
+          </Typography>
+        </Stack>
+        {courseId ? (
+          <UploadEnrollmentsButton
+            courseId={courseId}
+            onUploaded={loadData}
+            onError={(msg) => setError(msg)}
+            title="Upload enrollments"
+          />
+        ) : null}
       </Stack>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -71,24 +102,32 @@ function EnrollmentsPage() {
               <TableCell>First name</TableCell>
               <TableCell>Second name</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4}>Loading...</TableCell>
+                <TableCell colSpan={5}>Loading...</TableCell>
               </TableRow>
             ) : enrollments.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4}>No enrollments found.</TableCell>
+                <TableCell colSpan={5}>No enrollments found.</TableCell>
               </TableRow>
             ) : (
               enrollments.map((e) => (
                 <TableRow key={e.id} hover>
                   <TableCell>{e.id}</TableCell>
-                  <TableCell>{e.first_name}</TableCell>
-                  <TableCell>{e.second_name}</TableCell>
+                  <TableCell>{e.firstName}</TableCell>
+                  <TableCell>{e.lastName}</TableCell>
                   <TableCell>{e.email}</TableCell>
+                  <TableCell align="right">
+                    <Tooltip title="Remove">
+                      <IconButton aria-label="remove" color="error" onClick={() => handleRemove(e.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
                 </TableRow>
               ))
             )}
