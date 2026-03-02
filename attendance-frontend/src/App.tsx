@@ -13,6 +13,7 @@ import StudentAttendanceHistoryPage from "./pages/student/AttendanceHistoryPage"
 import TeacherDashboardPage from "./pages/teacher/DashboardPage";
 import TeacherCoursesPage from "./pages/teacher/courses/CoursesPage";
 import TeacherCreateCoursePage from "./pages/teacher/courses/CreateCoursePage";
+import TeacherEnrollmentsPage from "./pages/teacher/courses/EnrollmentsPage";
 import TeacherLecturesPage from "./pages/teacher/lectures/LecturesPage";
 import TeacherLectureDashboardPage from "./pages/teacher/lectures/LectureDashboardPage";
 import {USER_ROLE} from "./api/auth";
@@ -35,6 +36,7 @@ function App() {
         <Route path="courses" element={<TeacherCoursesPage />} />
         <Route path="courses/create" element={<TeacherCreateCoursePage />} />
         <Route path="courses/update/:id" element={<TeacherCreateCoursePage />} />
+        <Route path="courses/:id/enrollments" element={<TeacherEnrollmentsPage />} />
         <Route path="lectures" element={<TeacherLecturesPage />} />
         <Route path="lectures/:id" element={<TeacherLectureDashboardPage />} />
       </Route>
