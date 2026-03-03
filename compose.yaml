@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:17
+    ports:
+      - '5432:5432'
+    volumes:
+      - ${PG_LOCAL_DATA}:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=attendance
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    container_name: attendance-db
+  backend:
+    image: attendance-backend:latest
+    ports:
+      - '8081:8081'
+    environment:
+      - spring_application_name=attendance-backend
+      - spring_datasource_url=jdbc:postgresql://postgres:5432/attendance
+      - spring_datasource_username=user
+      - spring_datasource_password=password
+      - server_port=8081  
+  frontend:
+    image: attendance-frontend:latest
+    ports:
+      - '8080:8080'
