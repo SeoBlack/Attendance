@@ -49,6 +49,12 @@
 ## Demo Summary
 
 - Demonstrated the most important features of the application working end-to-end
+  - Signup
+  - Authorization & Authentication
+  - Courses creation
+  - Enrollments upload & managemenet
+  - Lecture start
+  - Attendance registration (only DB view as of now)
 - Demonstrated working Jenkins pipeline
 - Demonstrated working Docker containerization layer
 
