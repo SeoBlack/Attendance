@@ -48,7 +48,6 @@ public class CourseController {
 
     @PostMapping()
     public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
-        System.out.println("Teacher id " + (Long) request.getAttribute("authUserId"));
         course.setId(null);
         course.setTeacherId((Long) request.getAttribute("authUserId"));
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
