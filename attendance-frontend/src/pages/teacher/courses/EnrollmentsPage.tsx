@@ -14,9 +14,17 @@ import {
   Stack,
   IconButton,
   Tooltip,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  CircularProgress,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import UploadEnrollmentsButton from '../../../components/enrollments/UploadEnrollmentsButton';
 
 import { api } from '../../../api';
@@ -32,6 +40,11 @@ function EnrollmentsPage() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ firstName: '', lastName: '', email: '' });
+  const [addLoading, setAddLoading] = useState(false);
+  const [addError, setAddError] = useState('');
 
   const loadData = () => {
     if (!courseId || Number.isNaN(courseId)) return;
@@ -71,6 +84,23 @@ function EnrollmentsPage() {
     }
   }
 
+  const handleAddStudent = async () => {
+    if (!addForm.firstName.trim() || !addForm.lastName.trim() || !addForm.email.trim()) return;
+    setAddLoading(true);
+    setAddError('');
+    try {
+      const resp = await api.enrollments.enrollOneStudent(courseId, addForm);
+      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to add student');
+      setAddDialogOpen(false);
+      setAddForm({ firstName: '', lastName: '', email: '' });
+      loadData();
+    } catch (e: any) {
+      setAddError(e?.message || 'Failed to add student');
+    } finally {
+      setAddLoading(false);
+    }
+  };
+
   return (
     <Box>
       <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }} justifyContent="space-between">
@@ -83,12 +113,21 @@ function EnrollmentsPage() {
           </Typography>
         </Stack>
         {courseId ? (
-          <UploadEnrollmentsButton
-            courseId={courseId}
-            onUploaded={loadData}
-            onError={(msg) => setError(msg)}
-            title="Upload enrollments"
-          />
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              startIcon={<PersonAddIcon />}
+              onClick={() => setAddDialogOpen(true)}
+            >
+              Add Student
+            </Button>
+            <UploadEnrollmentsButton
+              courseId={courseId}
+              onUploaded={loadData}
+              onError={(msg) => setError(msg)}
+              title="Upload enrollments"
+            />
+          </Stack>
         ) : null}
       </Stack>
 
@@ -134,6 +173,50 @@ function EnrollmentsPage() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={addDialogOpen} onClose={() => { setAddDialogOpen(false); setAddError(''); }} fullWidth maxWidth="sm">
+        <DialogTitle>Add Student</DialogTitle>
+        <DialogContent>
+          {addError && <Alert severity="error" sx={{ mb: 2 }}>{addError}</Alert>}
+          <TextField
+            label="First Name"
+            value={addForm.firstName}
+            onChange={(e) => setAddForm((f) => ({ ...f, firstName: e.target.value }))}
+            fullWidth
+            margin="dense"
+            disabled={addLoading}
+          />
+          <TextField
+            label="Last Name"
+            value={addForm.lastName}
+            onChange={(e) => setAddForm((f) => ({ ...f, lastName: e.target.value }))}
+            fullWidth
+            margin="dense"
+            disabled={addLoading}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            value={addForm.email}
+            onChange={(e) => setAddForm((f) => ({ ...f, email: e.target.value }))}
+            fullWidth
+            margin="dense"
+            disabled={addLoading}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => { setAddDialogOpen(false); setAddError(''); }} disabled={addLoading}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleAddStudent}
+            disabled={addLoading || !addForm.firstName.trim() || !addForm.lastName.trim() || !addForm.email.trim()}
+          >
+            {addLoading ? <CircularProgress size={20} color="inherit" /> : 'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

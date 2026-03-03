@@ -11,3 +11,13 @@ export async function deleteEnrollment(courseId: number, userId: number): Promis
     method: 'DELETE',
   });
 }
+
+export async function enrollOneStudent(courseId: number, student: { firstName: string; lastName: string; email: string }): Promise<Response> {
+  return pfetch(`/enrollments?course_id=${encodeURIComponent(courseId)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(student),
+  });
+}
