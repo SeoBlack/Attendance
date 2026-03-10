@@ -9,3 +9,9 @@ export async function markAttendance(joinCode: string): Promise<Response> {
     body: JSON.stringify({ joinCode }),
   });
 }
+
+export async function getAttendances(lectureId: number): Promise<Response> {
+  return pfetch(`/attendance/lecture/${encodeURIComponent(lectureId)}`, {
+    method: 'GET',
+  })
+}
