@@ -1,12 +1,12 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import HistoryIcon from "@mui/icons-material/History";
 import {USER_ROLE} from "../api/auth";
 
 
 const studentRoutes = [
   { path: "/student/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
-  { path: "/student/attendance", label: "Attendance", icon: <PlayCircleOutlineIcon /> },
-  { path: "/student/history", label: "History", icon: <PlayCircleOutlineIcon /> },
+  { path: "/student/history", label: "History", icon: <HistoryIcon /> },
 ]
 const teacherRoutes = [
   { path: "/teacher/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
