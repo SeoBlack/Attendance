@@ -1,21 +1,14 @@
-# Use OpenJDK 17 as base image
-#FROM eclipse-temurin:17
-FROM maven:3.9-eclipse-temurin-17
-
-# Set working directory
+# Stage 1: Build
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package -DskipTests
 
-# Copy the pom.xml file to the container
-COPY pom.xml /app/
-
-# Copy the JAR file from target directory
-COPY . /app
-
-# Expose the port your Spring Boot app runs on (usually 8080)
-#EXPOSE 8081
-
-# Package your application
-RUN mvn package
-
-# Run the main class (assuming your application has a main class)
-CMD ["java", "-jar", "target/attendance-backend.jar"]
+# Stage 2: Run
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/attendance-backend.jar app.jar
+EXPOSE 8081
+CMD ["java", "-jar", "app.jar"]

@@ -13,8 +13,8 @@ export function pfetch(url: string, ...args: any[]): Promise<Response> {
   else if(typeof args[0] === 'object' && !args[0].headers?.Authorization)
     args[0].headers = {...args[0].headers || {}, ...defaultAuthHeader()}
 
-  const urlTest = `${import.meta.env.VITE_API_URL}${url}`
+  const urlTest = `${import.meta.env.VITE_API_URL}/api${url}`
   console.log('urlTest', urlTest)
 
-  return fetch(`${import.meta.env.VITE_API_URL}${url}`, ...args)
+  return fetch(`${import.meta.env.VITE_API_URL}/api${url}`, ...args)
 }
