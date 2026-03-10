@@ -1,6 +1,7 @@
 package org.example.attendancebackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.attendancebackend.dto.EnrolledUser;
 import org.example.attendancebackend.entity.*;
 import org.example.attendancebackend.service.AttendanceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +16,12 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -167,6 +170,43 @@ public class AttendanceControllerTest {
                         .with(authUserId(testUser.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"joinCode\":\"" + TEST_JOIN_CODE + "\"}"))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void getPresentStudents_withValidLectureId_returnsOkAndListOfEnrolledUsers() throws Exception {
+        EnrolledUser enrolledUser = new EnrolledUser(
+                testUser.getId(),
+                testUser.getFirstName(),
+                testUser.getLastName(),
+                testUser.getEmail()
+        );
+
+        when(attendanceService.getPresentUsers(testLecture.getId()))
+                .thenReturn(List.of(enrolledUser));
+
+        mockMvc.perform(get("/attendance/{id}", testLecture.getId())
+                        .with(authUserId(testUser.getId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(testUser.getId()))
+                .andExpect(jsonPath("$[0].firstName").value(testUser.getFirstName()))
+                .andExpect(jsonPath("$[0].lastName").value(testUser.getLastName()))
+                .andExpect(jsonPath("$[0].email").value(testUser.getEmail()));
+    }
+
+    @Test
+    void getPresentStudents_withoutAuthenticatedUser_returnsUnauthorized() throws Exception {
+        mockMvc.perform(get("/attendance/{id}", testLecture.getId()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getPresentStudents_whenServiceThrowsException_returnsInternalServerError() throws Exception {
+        when(attendanceService.getPresentUsers(testLecture.getId()))
+                .thenThrow(new RuntimeException("Unexpected error"));
+
+        mockMvc.perform(get("/attendance/{id}", testLecture.getId())
+                        .with(authUserId(testUser.getId())))
                 .andExpect(status().isInternalServerError());
     }
 

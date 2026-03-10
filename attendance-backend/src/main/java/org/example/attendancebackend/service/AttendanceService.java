@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.rmi.AlreadyBoundException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -61,6 +62,23 @@ public class AttendanceService {
             throw e;
         }
 
+    }
+    public List<EnrolledUser> getPresentUsers(Long lectureId){
+        try{
+            //get attendances by lecture ID
+            List<Attendance> list =  attendanceRepository.findByAttendanceIdLectureId(lectureId);
+            List<EnrolledUser> users = new ArrayList<>();
+            //for each attendance, get the user of that attendance
+            for(Attendance attendance : list){
+                Long userId = attendance.getAttendanceId().getUserId();
+                User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+                users.add(new EnrolledUser(user.getId(), user.getFirstName(), user.getLastName(),  user.getEmail()));
+            }
+            return users;
+        }
+        catch (Exception e){
+            throw e;
+        }
     }
 
 }
