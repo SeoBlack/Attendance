@@ -111,6 +111,10 @@ cd ../attendance-backend
 docker build -t attendance-backend:latest .
 
 cd ..
+Windows:
+$env:PG_LOCAL_DATA="./attendance-backend/data"; docker compose -f compose.yaml up -d postgres
+
+Linux, Mac:
 PG_LOCAL_DATA=/this/is/your/path docker compose -f compose.yaml up -d
 
 ```

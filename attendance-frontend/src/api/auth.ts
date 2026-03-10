@@ -18,6 +18,7 @@ export type SignInPayload = {
   password: string;
 }
 export async function requestSignup(options: SignupOptions){
+  console.log(options)
   return pfetch(`/signup`, {
     method: 'POST',
     headers: {
