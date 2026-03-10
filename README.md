@@ -73,6 +73,8 @@ The database schema for the Attendance system is defined in [schema.sql](attenda
 
 # Design samples
 
+[Figma link](https://www.figma.com/design/sZLcbQrxw2GWL2JwaMqEaD/Untitled?node-id=3-4&t=LgzHsbRGwN9KeBQI-0)
+
 ## Lecture view
 ![Lecture view](docs/design/lecture_view.png)
 
