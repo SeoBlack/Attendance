@@ -30,6 +30,7 @@ import UploadEnrollmentsButton from '../../../components/enrollments/UploadEnrol
 import { api } from '../../../api';
 import type { Course } from '../../../entities/course';
 import type { Enrollment } from '../../../entities/enrollment';
+import DeleteEnrollmentsButton from "../../../components/enrollments/DeleteEnrollmentsButton.";
 
 function EnrollmentsPage() {
   const navigate = useNavigate();
@@ -101,6 +102,19 @@ function EnrollmentsPage() {
     }
   };
 
+  const handleDeleteEnrollments = async () => {
+    if (!confirm('Remove all enrollments from the course?')) return;
+    try{
+      const resp = await api.enrollments.deleteAllEnrollments(courseId);
+      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to remove enrollment');
+      loadData();
+    }catch (e: any) {
+      setError(e?.message || 'Failed to remove enrollments');
+    }
+  }
+
+  const deleteButtonDisabled = enrollments.length === 0;
+
   return (
     <Box>
       <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }} justifyContent="space-between">
@@ -127,6 +141,7 @@ function EnrollmentsPage() {
               onError={(msg) => setError(msg)}
               title="Upload enrollments"
             />
+            <DeleteEnrollmentsButton onClick={handleDeleteEnrollments} disabled={deleteButtonDisabled} />
           </Stack>
         ) : null}
       </Stack>
