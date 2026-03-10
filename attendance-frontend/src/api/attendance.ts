@@ -11,7 +11,7 @@ export async function markAttendance(joinCode: string): Promise<Response> {
 }
 
 export async function getAttendances(lectureId: number): Promise<Response> {
-  return pfetch(`/attendance/lecture/${encodeURIComponent(lectureId)}`, {
+  return pfetch(`/attendance/${encodeURIComponent(lectureId)}`, {
     method: 'GET',
   })
 }

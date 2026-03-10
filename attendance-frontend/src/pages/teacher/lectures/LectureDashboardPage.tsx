@@ -6,7 +6,7 @@ import {
     Stack,
     Alert,
     Grid,
-    useTheme,
+    useTheme, Divider,
 } from '@mui/material';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import StopIcon from '@mui/icons-material/Stop';
@@ -22,7 +22,8 @@ import {useLectureContext} from '../../../context/LectureContext';
 import {ActionButton, StatCard, DisplayPanel} from '../../../components/common';
 import type {Lecture} from '../../../entities/lecture';
 import type {Course} from '../../../entities/course';
-import Attendance from "../../../entities/attendance";
+import PresentUser from "../../../entities/PresentUser";
+import {PresentUserItem} from "./PresentUserItem";
 
 
 function LectureDashboardPage() {
@@ -36,7 +37,7 @@ function LectureDashboardPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [totalStudents, setTotalStudents] = useState<number | null>(null);
-    const [attendances, setAttendances] = useState<Attendance[] | null>(null);
+    const [attendances, setAttendances] = useState<PresentUser[] | null>(null);
     const [timeLeft, setTimeLeft] = useState<string>('--:--');
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -125,38 +126,20 @@ function LectureDashboardPage() {
     };
 
     const loadAttendances = async (lectureId: number) => {
-        // api.attendance.getAttendances(lectureId).then(async (resp) => {
-        //     if (!resp.ok) return;
-        //     const data: Attendance[] = await resp.json();
-        //     setAttendances(data)
-        // }).catch(() => {});
-
-        const attendances: Attendance[] = [
-            {
-                attendanceId: {
-                    userId: 5,
-                    lectureId: lectureId
-                },
-                scannedAt: "2026-03-10 13:07:03.490000"
-            },
-            {
-                attendanceId: {
-                    userId: 3,
-                    lectureId: lectureId
-                },
-                scannedAt: "2026-03-10 13:07:03.490000"
-            }
-        ]
-
-        setAttendances(attendances);
+        api.attendance.getAttendances(lectureId).then(async (resp) => {
+            if (!resp.ok) return;
+            const data: PresentUser[] = await resp.json();
+            setAttendances(data)
+        }).catch(() => {
+        });
     }
 
     const totalPresent = attendances?.length
     let totalAbsent = null;
     let attendanceRate = null;
-    if (totalPresent && totalStudents!== null) {
-        totalAbsent = totalStudents  - totalPresent;
-        attendanceRate = totalPresent*100/totalStudents;
+    if (totalPresent && totalStudents !== null) {
+        totalAbsent = totalStudents - totalPresent;
+        attendanceRate = totalPresent * 100 / totalStudents;
     }
 
     const handleEndSession = () => {
@@ -239,7 +222,8 @@ function LectureDashboardPage() {
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title="Attendance Rate" value={attendanceRate ? `${Math.round(attendanceRate)} %` : "--%"} icon={<TrendingUpIcon/>} color="info"/>
+                    <StatCard title="Attendance Rate" value={attendanceRate ? `${Math.round(attendanceRate)} %` : "--%"}
+                              icon={<TrendingUpIcon/>} color="info"/>
                 </Grid>
             </Grid>
 
@@ -367,13 +351,11 @@ function LectureDashboardPage() {
             {/* Recent Activity — requires GET /attendance?lecture_id endpoint */}
             <DisplayPanel bordered>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 2}}>
-                    <Typography variant="h6" sx={{fontWeight: 600}}>Recent Activity</Typography>
+                    <Typography variant="h6" sx={{fontWeight: 600}}>Present students</Typography>
                 </Stack>
-                <Typography variant="body2" color="text.secondary">
-                    {/* TODO: Add a backend endpoint to fetch attendance records by lecture */}
-                    No attendance data available yet. A backend endpoint to fetch attendance records by lecture is
-                    needed.
-                </Typography>
+                <Stack direction="column" spacing={2} divider={<Divider />}>
+                {attendances?.map(a => <PresentUserItem key={a.id} name={`${a.firstName} ${a.lastName}`} email={a.email}/>)}
+                </Stack>
             </DisplayPanel>
         </Box>
     );
