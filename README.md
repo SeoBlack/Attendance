@@ -30,22 +30,57 @@ Teachers are marking their students attendance using excel sheets and by calling
 - Teachers can view statistics of the lecture such as students attended, time interval, and more.
 - GPS verification to ensure students are at the campus when marking attendance.
 
-## Current Backend Status (as of 2026-02-06)
-Implemented in the backend:
-- User signup via `POST /signup`.
-- User signin via `POST /signin`.
-- Course endpoints: `GET /courses`, `GET /courses/{id}`, `POST /courses`.
-- Entities: `User`, `Course`.
-- Auth payload format: JSON (`application/json`).
+## Current Status (as of 2026-03-10)
 
-Planned but not yet implemented:
-- Lectures, enrollments, attendance check-in flow.
-- Session/token-based authentication.
-- GPS validation and lecture statistics.
+### Critical functionality completed:
+- Authentication and authorization.
+- Courses management
+- Enrollments management
+- Lectures management
+- Attendance registration and view (teacher side)
 
-## Database Schema
+### Planned but not yet implemented:
+- Student can see own attendance statistics & history
+- GPS validation and lecture statistics (for teachers).
+- Teacher can manipulate attendance records.
+
+# Technologies used
+## Backend
+- Java 17
+- Spring Boot 4.x
+- PostgreSQL 17.x
+- Docker
+- Docker Compose
+
+## Frontend
+- React 19
+- Typescript 5.x
+- Tailwind CSS 3.x
+- Vite 7.x
+
+
+
+# Use-case diagram
+![Use-case diagram](docs/diagrams/usecase_diagram.png)
+
+# ER diagram
+![ER diagram](docs/diagrams/Attendance_project_db.png)
+
+
+# Database Schema
 The database schema for the Attendance system is defined in [schema.sql](attendance-backend/src/main/resources/schema.sql).
+![DB schema](docs/diagrams/Attendance_project_db-Relational%20Schema.png)
 
+# Design samples
+
+## Lecture view
+![Lecture view](docs/design/lecture_view.png)
+
+## Student dashboard
+![Student dashboard](docs/design/student_dashboard.png)
+
+## Teacher dashboard
+![Teacher dashboard](docs/design/teacher_dashboard.png)
 
 ---
 
@@ -76,6 +111,6 @@ cd ../attendance-backend
 docker build -t attendance-backend:latest .
 
 cd ..
-PG_LOCAL_DATA=PATH_TO_DATA_DIR docker compose -f compose.yaml up -d
+PG_LOCAL_DATA=/this/is/your/path docker compose -f compose.yaml up -d
 
 ```
