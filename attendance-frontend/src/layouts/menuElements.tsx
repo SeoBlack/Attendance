@@ -9,7 +9,7 @@ const studentRoutes = [
   { path: "/student/history", label: "History", icon: <HistoryIcon /> },
 ]
 const teacherRoutes = [
-  { path: "/teacher/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
+  // { path: "/teacher/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
   { path: "/teacher/courses", label: "Courses", icon: <PlayCircleOutlineIcon /> },
   { path: "/teacher/lectures", label: "Lectures", icon: <PlayCircleOutlineIcon /> },
 ]

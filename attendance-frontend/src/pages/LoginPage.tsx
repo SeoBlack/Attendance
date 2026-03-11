@@ -43,7 +43,8 @@ export default function LoginPage() {
         setToken(jresp.token)
         let user = checkAuth()
         if (!user) return setSigninError("An unknown error occurred. Please try again later.")
-        navigate(`/${user.role}/dashboard`)
+        const landingPage = user.role === 'teacher' ? 'courses' : 'dashboard'
+        navigate(`/${user.role}/${landingPage}`)
       }
     }).catch(_ => {
       setSigninError("An unknown error occurred. Please try again later.")
