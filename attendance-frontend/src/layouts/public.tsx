@@ -1,9 +1,14 @@
-import { Outlet } from "react-router-dom"
+import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import LanguageSelector from "../components/common/LanguageSelector";
 
 function PublicLayout() {
   return (
-    <Outlet/>
-  )
+    <Box>
+      <LanguageSelector />
+      <Outlet />
+    </Box>
+  );
 }
 
-export default PublicLayout
+export default PublicLayout;
