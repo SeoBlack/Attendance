@@ -18,12 +18,18 @@ export default function LanguageSelector() {
 
   const handleChangeLanguage = (language: string) => {
     i18n.changeLanguage(language);
+    //add to local storage
+    localStorage.setItem("language", language);
     handleCloseMenu();
   };
 
   return (
     <Box>
-      <IconButton color="inherit" onClick={handleOpenMenu} aria-label="change language">
+      <IconButton
+        color="inherit"
+        onClick={handleOpenMenu}
+        aria-label="change language"
+      >
         <LanguageSharp />
       </IconButton>
       <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleCloseMenu}>

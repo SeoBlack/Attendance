@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme/theme";
 import { LectureProvider } from "./context/LectureContext";
 import App from "./App";
-import "./i18n";
+import i18n from "./i18n";
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider theme={theme}>

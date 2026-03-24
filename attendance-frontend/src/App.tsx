@@ -1,10 +1,9 @@
-import { Routes, Route } from 'react-router-dom'
-import LoginPage from './pages/LoginPage'
-import StoryBookPage from './pages/StoryBook'
+import { Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import StoryBookPage from "./pages/StoryBook";
 import SignupPage from "./pages/SignupPage";
 import PublicLayout from "./layouts/public";
 import PrivateLayout from "./layouts/private";
-
 
 import StudentDashboardPage from "./pages/student/DashboardPage";
 import StudentAttendancePage from "./pages/student/AttendancePage";
@@ -16,9 +15,14 @@ import TeacherCreateCoursePage from "./pages/teacher/courses/CreateCoursePage";
 import TeacherEnrollmentsPage from "./pages/teacher/courses/EnrollmentsPage";
 import TeacherLecturesPage from "./pages/teacher/lectures/LecturesPage";
 import TeacherLectureDashboardPage from "./pages/teacher/lectures/LectureDashboardPage";
-import {USER_ROLE} from "./api/auth";
+import { USER_ROLE } from "./api/auth";
+import { useEffect } from "react";
+import i18n from "./i18n";
 
 function App() {
+  useEffect(() => {
+    i18n.changeLanguage(localStorage.getItem("language") || "en");
+  }, []);
   return (
     <Routes>
       <Route element={<PublicLayout />}>
@@ -26,22 +30,34 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/storybook" element={<StoryBookPage />} />
       </Route>
-      <Route element={<PrivateLayout requiresRole={USER_ROLE.STUDENT} />} path="student" >
+      <Route
+        element={<PrivateLayout requiresRole={USER_ROLE.STUDENT} />}
+        path="student"
+      >
         <Route path="dashboard" element={<StudentDashboardPage />} />
         <Route path="attendance" element={<StudentAttendancePage />} />
         <Route path="history" element={<StudentAttendanceHistoryPage />} />
       </Route>
-      <Route element={<PrivateLayout requiresRole={USER_ROLE.TEACHER} />} path="teacher">
+      <Route
+        element={<PrivateLayout requiresRole={USER_ROLE.TEACHER} />}
+        path="teacher"
+      >
         <Route path="dashboard" element={<TeacherDashboardPage />} />
         <Route path="courses" element={<TeacherCoursesPage />} />
         <Route path="courses/create" element={<TeacherCreateCoursePage />} />
-        <Route path="courses/update/:id" element={<TeacherCreateCoursePage />} />
-        <Route path="courses/:id/enrollments" element={<TeacherEnrollmentsPage />} />
+        <Route
+          path="courses/update/:id"
+          element={<TeacherCreateCoursePage />}
+        />
+        <Route
+          path="courses/:id/enrollments"
+          element={<TeacherEnrollmentsPage />}
+        />
         <Route path="lectures" element={<TeacherLecturesPage />} />
         <Route path="lectures/:id" element={<TeacherLectureDashboardPage />} />
       </Route>
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
