@@ -1,3 +1,55 @@
 {
-  "productDescription": "Smart Attendance Management  testtesttesttest"
+  "productDescription": "Smart attendance management for modern classrooms.",
+  "login": {
+    "featureQr": "QR code scanning",
+    "featureAnalytics": "Real-time analytics",
+    "featureSecurity": "Secure and reliable",
+    "welcomeBack": "Welcome back",
+    "signInSubtitle": "Sign in to your account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign in",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "signup": {
+    "title": "Sign up",
+    "role": "Role",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Your last name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Enter your password again",
+    "passwordsMismatch": "Passwords do not match!",
+    "createAccount": "Create account"
+  },
+  "role": {
+    "student": "Student",
+    "teacher": "Teacher"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "history": "History",
+    "courses": "Courses",
+    "lectures": "Lectures",
+    "signOut": "Sign out"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "Arabic",
+    "russian": "Russian",
+    "changeLanguage": "Change language"
+  },
+  "errors": {
+    "unknown": "An unknown error occurred. Please try again later."
+  }
 }

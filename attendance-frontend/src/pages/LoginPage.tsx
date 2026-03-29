@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Stack,
@@ -19,21 +19,23 @@ import { api } from "../api";
 import { setToken } from "../auth/token";
 import { useTranslation } from "react-i18next";
 
-const FEATURES = [
-  { icon: QrCode2Icon, label: "QR Code Scanning" },
-  { icon: TrendingUpIcon, label: "Real-time Analytics" },
-  { icon: SecurityIcon, label: "Secure & Reliable" },
+const FEATURE_KEYS = [
+  { icon: QrCode2Icon, labelKey: "login.featureQr" as const },
+  { icon: TrendingUpIcon, labelKey: "login.featureAnalytics" as const },
+  { icon: SecurityIcon, labelKey: "login.featureSecurity" as const },
 ] as const;
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
   const [signinError, setSigninError] = useState("");
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+
+  const unknownError = () => t("errors.unknown");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,36 +44,20 @@ export default function LoginPage() {
       .then(async (resp) => {
         setSigninError("");
         if (!resp.ok)
-          setSigninError(
-            (await resp?.text()) ||
-              "An unknown error occurred. Please try again later.",
-          );
+          setSigninError((await resp?.text()) || unknownError());
         else {
           let jresp = await resp.json();
-          if (!jresp.token)
-            return setSigninError(
-              "An unknown error occurred. Please try again later.",
-            );
+          if (!jresp.token) return setSigninError(unknownError());
           setToken(jresp.token);
           let user = checkAuth();
-          if (!user)
-            return setSigninError(
-              "An unknown error occurred. Please try again later.",
-            );
+          if (!user) return setSigninError(unknownError());
           navigate(`/${user.role}/dashboard`);
         }
       })
       .catch((_) => {
-        setSigninError("An unknown error occurred. Please try again later.");
+        setSigninError(unknownError());
       });
-    // let user = checkAuth()
-    // if (!user) return
-    // navigate(`/${user.role}/dashboard`)
-    // // TODO: integrate with auth API
   };
-  useEffect(() => {
-    i18n.changeLanguage("hi");
-  }, []);
 
   return (
     <Box
@@ -122,9 +108,9 @@ export default function LoginPage() {
             </Typography>
           </Box>
           <Stack spacing={2} sx={{ width: "100%", mt: 2 }}>
-            {FEATURES.map(({ icon: Icon, label }) => (
+            {FEATURE_KEYS.map(({ icon: Icon, labelKey }) => (
               <Box
-                key={label}
+                key={labelKey}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -141,7 +127,7 @@ export default function LoginPage() {
                 <Typography
                   sx={{ color: "brand.contrastText", fontWeight: 500 }}
                 >
-                  {label}
+                  {t(labelKey)}
                 </Typography>
               </Box>
             ))}
@@ -179,30 +165,30 @@ export default function LoginPage() {
                 color="text.primary"
                 sx={{ fontFamily: "inherit" }}
               >
-                Welcome Back
+                {t("login.welcomeBack")}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Sign in to your account
+                {t("login.signInSubtitle")}
               </Typography>
             </Box>
 
             <FormTextField
-              label="Email"
+              label={t("login.email")}
               type="email"
               name="email"
               autoComplete="email"
-              placeholder="Enter your email"
+              placeholder={t("login.emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
 
             <FormTextField
-              label="Password"
+              label={t("login.password")}
               type="password"
               name="password"
               autoComplete="current-password"
-              placeholder="Enter your password"
+              placeholder={t("login.passwordPlaceholder")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -228,17 +214,17 @@ export default function LoginPage() {
                 }
                 label={
                   <Typography variant="body2" color="text.primary">
-                    Remember me
+                    {t("login.rememberMe")}
                   </Typography>
                 }
               />
               <Link href="#" variant="body2" underline="hover" color="link">
-                Forgot password?
+                {t("login.forgotPassword")}
               </Link>
             </Box>
 
             <ActionButton type="submit" fullWidth size="large" color="brand">
-              Sign In
+              {t("login.signIn")}
             </ActionButton>
 
             <Typography
@@ -246,9 +232,9 @@ export default function LoginPage() {
               color="text.secondary"
               textAlign="center"
             >
-              Don&apos;t have an account?{" "}
+              {t("login.noAccount")}{" "}
               <Link href="/signup" underline="hover" color="link">
-                Sign up
+                {t("login.signUp")}
               </Link>
             </Typography>
           </Stack>

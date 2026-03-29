@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function LanguageSelector() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -18,7 +18,6 @@ export default function LanguageSelector() {
 
   const handleChangeLanguage = (language: string) => {
     i18n.changeLanguage(language);
-    //add to local storage
     localStorage.setItem("language", language);
     handleCloseMenu();
   };
@@ -28,14 +27,20 @@ export default function LanguageSelector() {
       <IconButton
         color="inherit"
         onClick={handleOpenMenu}
-        aria-label="change language"
+        aria-label={t("language.changeLanguage")}
       >
         <LanguageSharp />
       </IconButton>
       <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleCloseMenu}>
-        <MenuItem onClick={() => handleChangeLanguage("en")}>English</MenuItem>
-        <MenuItem onClick={() => handleChangeLanguage("hi")}>Hindi</MenuItem>
-        <MenuItem onClick={() => handleChangeLanguage("ru")}>Russian</MenuItem>
+        <MenuItem onClick={() => handleChangeLanguage("en")}>
+          {t("language.english")}
+        </MenuItem>
+        <MenuItem onClick={() => handleChangeLanguage("ar")}>
+          {t("language.arabic")}
+        </MenuItem>
+        <MenuItem onClick={() => handleChangeLanguage("ru")}>
+          {t("language.russian")}
+        </MenuItem>
       </Menu>
     </Box>
   );
