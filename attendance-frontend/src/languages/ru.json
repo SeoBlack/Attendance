@@ -1,1 +1,55 @@
-{}
+{
+  "productDescription": "Умное управление посещаемостью для современных классов.",
+  "login": {
+    "featureQr": "Сканирование QR-кода",
+    "featureAnalytics": "Аналитика в реальном времени",
+    "featureSecurity": "Надёжно и безопасно",
+    "welcomeBack": "С возвращением",
+    "signInSubtitle": "Войдите в свой аккаунт",
+    "email": "Электронная почта",
+    "emailPlaceholder": "Введите email",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "rememberMe": "Запомнить меня",
+    "forgotPassword": "Забыли пароль?",
+    "signIn": "Войти",
+    "noAccount": "Нет аккаунта?",
+    "signUp": "Регистрация"
+  },
+  "signup": {
+    "title": "Регистрация",
+    "role": "Роль",
+    "firstName": "Имя",
+    "firstNamePlaceholder": "Ваше имя",
+    "lastName": "Фамилия",
+    "lastNamePlaceholder": "Ваша фамилия",
+    "email": "Электронная почта",
+    "emailPlaceholder": "Введите email",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "confirmPasswordPlaceholder": "Повторите пароль",
+    "passwordsMismatch": "Пароли не совпадают!",
+    "createAccount": "Создать аккаунт"
+  },
+  "role": {
+    "student": "Студент",
+    "teacher": "Преподаватель"
+  },
+  "menu": {
+    "dashboard": "Панель",
+    "history": "История",
+    "courses": "Курсы",
+    "lectures": "Лекции",
+    "signOut": "Выйти"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "العربية",
+    "russian": "Русский",
+    "changeLanguage": "Сменить язык"
+  },
+  "errors": {
+    "unknown": "Произошла неизвестная ошибка. Попробуйте позже."
+  }
+}

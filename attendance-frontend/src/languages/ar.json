@@ -1,0 +1,55 @@
+{
+  "productDescription": "إدارة حضور ذكية للفصول الدراسية الحديثة.",
+  "login": {
+    "featureQr": "مسح رمز الاستجابة السريعة",
+    "featureAnalytics": "تحليلات فورية",
+    "featureSecurity": "آمن وموثوق",
+    "welcomeBack": "مرحباً بعودتك",
+    "signInSubtitle": "سجّل الدخول إلى حسابك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "signIn": "تسجيل الدخول",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب"
+  },
+  "signup": {
+    "title": "إنشاء حساب",
+    "role": "الدور",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "اسمك الأول",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "اسم عائلتك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
+    "passwordsMismatch": "كلمات المرور غير متطابقة!",
+    "createAccount": "إنشاء الحساب"
+  },
+  "role": {
+    "student": "طالب",
+    "teacher": "معلم"
+  },
+  "menu": {
+    "dashboard": "لوحة التحكم",
+    "history": "السجل",
+    "courses": "المقررات",
+    "lectures": "المحاضرات",
+    "signOut": "تسجيل الخروج"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "العربية",
+    "russian": "Русский",
+    "changeLanguage": "تغيير اللغة"
+  },
+  "errors": {
+    "unknown": "حدث خطأ غير متوقع. يُرجى المحاولة لاحقاً."
+  }
+}

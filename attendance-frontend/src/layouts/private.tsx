@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Menu } from "../components/layout/Menu";
 import { getMenuElements } from "./menuElements";
 import { checkAuth } from "../auth/checkAuth";
@@ -21,6 +22,7 @@ const drawerWidth = 220;
 function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const authData = checkAuth();
   if (!authData || authData.role !== requiresRole) {
@@ -32,18 +34,23 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
   const computeTitle = (pathname: string) => {
     return (
       menuRoutes
-        .filter((p) => pathname === p.path || pathname.startsWith(p.path + "/"))
-        .sort((a, b) => b.path.length - a.path.length)?.[0]?.label || "N/A"
+        .filter(
+          (p) => pathname === p.path || pathname.startsWith(p.path + "/"),
+        )
+        .sort((a, b) => b.path.length - a.path.length)?.[0]?.labelKey || null
     );
   };
 
-  const headerTitle = computeTitle(location.pathname);
+  const titleKey = computeTitle(location.pathname);
+  const headerTitle = titleKey ? t(titleKey) : "N/A";
 
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
   };
 
-  const drawer = <Menu currentPath={location.pathname} elements={menuRoutes} />;
+  const drawer = (
+    <Menu currentPath={location.pathname} elements={menuRoutes} />
+  );
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -56,20 +63,20 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
           color: "text.primary",
           boxShadow: 0,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          marginInlineStart: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ gap: 1 }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ flex: 1 }}>
             {headerTitle}
           </Typography>
           <LanguageSelector />
@@ -83,7 +90,10 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
         ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
         }}
       >
         {drawer}
@@ -108,7 +118,7 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
         sx={{
           flexGrow: 1,
           p: { xs: 2, sm: 3 },
-          ml: { sm: `${drawerWidth}px` },
+          marginInlineStart: { sm: `${drawerWidth}px` },
         }}
       >
         <Toolbar />

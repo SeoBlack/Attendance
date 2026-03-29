@@ -4,8 +4,17 @@ import LanguageSelector from "../components/common/LanguageSelector";
 
 function PublicLayout() {
   return (
-    <Box>
-      <LanguageSelector />
+    <Box sx={{ position: "relative", minHeight: "100vh" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          insetInlineEnd: 16,
+          zIndex: 1,
+        }}
+      >
+        <LanguageSelector />
+      </Box>
       <Outlet />
     </Box>
   );
