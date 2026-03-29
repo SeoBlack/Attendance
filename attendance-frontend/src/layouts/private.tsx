@@ -1,41 +1,49 @@
-import {Navigate, Outlet, useLocation} from "react-router-dom";
-import {AppBar, Box, CssBaseline, Drawer, IconButton, Toolbar, Typography,} from "@mui/material";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {useState} from "react";
-import {Menu} from "../components/layout/Menu";
-import {getMenuElements} from "./menuElements";
-import {checkAuth} from "../auth/checkAuth";
-import {USER_ROLE} from "../api/auth";
+import { useState } from "react";
+import { Menu } from "../components/layout/Menu";
+import { getMenuElements } from "./menuElements";
+import { checkAuth } from "../auth/checkAuth";
+import { USER_ROLE } from "../api/auth";
+import LanguageSelector from "../components/common/LanguageSelector";
 
 const drawerWidth = 220;
 
-function PrivateLayout({requiresRole}: { requiresRole: USER_ROLE}) {
+function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  const authData = checkAuth()
+  const authData = checkAuth();
   if (!authData || authData.role !== requiresRole) {
     return <Navigate to="/" replace />;
   }
 
-
-  const menuRoutes = getMenuElements(authData.role)
+  const menuRoutes = getMenuElements(authData.role);
 
   const computeTitle = (pathname: string) => {
-    return menuRoutes
-      .filter(p => pathname === p.path || pathname.startsWith(p.path + "/"))
-      .sort((a, b) => b.path.length - a.path.length)
-      ?.[0]?.label || "N/A";
+    return (
+      menuRoutes
+        .filter((p) => pathname === p.path || pathname.startsWith(p.path + "/"))
+        .sort((a, b) => b.path.length - a.path.length)?.[0]?.label || "N/A"
+    );
   };
 
   const headerTitle = computeTitle(location.pathname);
-
 
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
   };
 
-  const drawer = <Menu currentPath={location.pathname} elements={menuRoutes} />
+  const drawer = <Menu currentPath={location.pathname} elements={menuRoutes} />;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -64,6 +72,7 @@ function PrivateLayout({requiresRole}: { requiresRole: USER_ROLE}) {
           <Typography variant="h6" noWrap component="div">
             {headerTitle}
           </Typography>
+          <LanguageSelector />
         </Toolbar>
       </AppBar>
 

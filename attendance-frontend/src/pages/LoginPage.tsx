@@ -1,91 +1,110 @@
-import {useState} from 'react';
+import { useEffect, useState } from "react";
 import {
   Box,
   Stack,
   Typography,
   Link,
   Checkbox,
-  FormControlLabel, Alert,
-} from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School';
-import QrCode2Icon from '@mui/icons-material/QrCode2';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import SecurityIcon from '@mui/icons-material/Security';
-import {ActionButton, FormTextField} from '../components/common';
-import {useNavigate} from "react-router-dom";
-import {checkAuth} from "../auth/checkAuth";
-import {api} from "../api";
-import {setToken} from "../auth/token";
+  FormControlLabel,
+  Alert,
+} from "@mui/material";
+import SchoolIcon from "@mui/icons-material/School";
+import QrCode2Icon from "@mui/icons-material/QrCode2";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import SecurityIcon from "@mui/icons-material/Security";
+import { ActionButton, FormTextField } from "../components/common";
+import { useNavigate } from "react-router-dom";
+import { checkAuth } from "../auth/checkAuth";
+import { api } from "../api";
+import { setToken } from "../auth/token";
+import { useTranslation } from "react-i18next";
 
 const FEATURES = [
-  {icon: QrCode2Icon, label: 'QR Code Scanning'},
-  {icon: TrendingUpIcon, label: 'Real-time Analytics'},
-  {icon: SecurityIcon, label: 'Secure & Reliable'},
+  { icon: QrCode2Icon, label: "QR Code Scanning" },
+  { icon: TrendingUpIcon, label: "Real-time Analytics" },
+  { icon: SecurityIcon, label: "Secure & Reliable" },
 ] as const;
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const [signinError, setSigninError] = useState('');
+  const [signinError, setSigninError] = useState("");
+  const { t, i18n } = useTranslation();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    api.auth.signIn({ email, password }).then(async resp => {
-      setSigninError("")
-      if(!resp.ok) setSigninError(await resp?.text() || "An unknown error occurred. Please try again later.")
-      else{
-        let jresp = await resp.json()
-        if(!jresp.token) return setSigninError("An unknown error occurred. Please try again later.")
-        setToken(jresp.token)
-        let user = checkAuth()
-        if (!user) return setSigninError("An unknown error occurred. Please try again later.")
-        navigate(`/${user.role}/dashboard`)
-      }
-    }).catch(_ => {
-      setSigninError("An unknown error occurred. Please try again later.")
-    })
+    api.auth
+      .signIn({ email, password })
+      .then(async (resp) => {
+        setSigninError("");
+        if (!resp.ok)
+          setSigninError(
+            (await resp?.text()) ||
+              "An unknown error occurred. Please try again later.",
+          );
+        else {
+          let jresp = await resp.json();
+          if (!jresp.token)
+            return setSigninError(
+              "An unknown error occurred. Please try again later.",
+            );
+          setToken(jresp.token);
+          let user = checkAuth();
+          if (!user)
+            return setSigninError(
+              "An unknown error occurred. Please try again later.",
+            );
+          navigate(`/${user.role}/dashboard`);
+        }
+      })
+      .catch((_) => {
+        setSigninError("An unknown error occurred. Please try again later.");
+      });
     // let user = checkAuth()
     // if (!user) return
     // navigate(`/${user.role}/dashboard`)
     // // TODO: integrate with auth API
   };
+  useEffect(() => {
+    i18n.changeLanguage("hi");
+  }, []);
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: {xs: 'column', md: 'row'},
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" },
       }}
     >
       <Box
         sx={{
-          flex: {md: '1 1 50%'},
-          minHeight: {xs: 'auto', md: '100vh'},
-          bgcolor: 'brand.main',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flex: { md: "1 1 50%" },
+          minHeight: { xs: "auto", md: "100vh" },
+          bgcolor: "brand.main",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           p: 4,
-          py: {xs: 4, md: 6},
+          py: { xs: 4, md: 6 },
         }}
       >
-        <Stack spacing={3} alignItems="center" sx={{maxWidth: 360}}>
-          <SchoolIcon sx={{fontSize: 64, color: 'brand.contrastText'}}/>
-          <Box sx={{textAlign: 'center'}}>
+        <Stack spacing={3} alignItems="center" sx={{ maxWidth: 360 }}>
+          <SchoolIcon sx={{ fontSize: 64, color: "brand.contrastText" }} />
+          <Box sx={{ textAlign: "center" }}>
             <Typography
               variant="h3"
               component="span"
               sx={{
                 fontWeight: 700,
-                color: 'brand.contrastText',
-                fontFamily: 'inherit',
-                letterSpacing: '-0.02em',
+                color: "brand.contrastText",
+                fontFamily: "inherit",
+                letterSpacing: "-0.02em",
               }}
             >
               aTendy
@@ -93,27 +112,35 @@ export default function LoginPage() {
             <Typography
               variant="body1"
               sx={{
-                color: 'brand.contrastText',
+                color: "brand.contrastText",
                 mt: 1,
                 opacity: 0.95,
-                fontSize: '1rem',
+                fontSize: "1rem",
               }}
             >
-              Smart Attendance Management
+              {t("productDescription")}
             </Typography>
           </Box>
-          <Stack spacing={2} sx={{width: '100%', mt: 2}}>
-            {FEATURES.map(({icon: Icon, label}) => (
+          <Stack spacing={2} sx={{ width: "100%", mt: 2 }}>
+            {FEATURES.map(({ icon: Icon, label }) => (
               <Box
                 key={label}
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: "flex",
+                  alignItems: "center",
                   gap: 2,
                 }}
               >
-                <Icon sx={{fontSize: 24, color: 'brand.contrastText', flexShrink: 0}}/>
-                <Typography sx={{color: 'brand.contrastText', fontWeight: 500}}>
+                <Icon
+                  sx={{
+                    fontSize: 24,
+                    color: "brand.contrastText",
+                    flexShrink: 0,
+                  }}
+                />
+                <Typography
+                  sx={{ color: "brand.contrastText", fontWeight: 500 }}
+                >
                   {label}
                 </Typography>
               </Box>
@@ -124,12 +151,12 @@ export default function LoginPage() {
 
       <Box
         sx={{
-          flex: {md: '1 1 50%'},
-          minHeight: {xs: '100vh', md: 'auto'},
-          bgcolor: 'background.form',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flex: { md: "1 1 50%" },
+          minHeight: { xs: "100vh", md: "auto" },
+          bgcolor: "background.form",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           p: 3,
         }}
       >
@@ -137,32 +164,24 @@ export default function LoginPage() {
           component="form"
           onSubmit={handleSubmit}
           sx={{
-            width: '100%',
+            width: "100%",
             maxWidth: 400,
             p: 4,
           }}
         >
           <Stack spacing={3}>
-            {
-              signinError ? (
-                <Alert severity="error">{signinError}</Alert>
-              ): null
-            }
+            {signinError ? <Alert severity="error">{signinError}</Alert> : null}
             <Box>
               <Typography
                 variant="h4"
                 component="h1"
                 fontWeight={700}
                 color="text.primary"
-                sx={{fontFamily: 'inherit'}}
+                sx={{ fontFamily: "inherit" }}
               >
                 Welcome Back
               </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{mt: 1}}
-              >
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 Sign in to your account
               </Typography>
             </Box>
@@ -191,10 +210,10 @@ export default function LoginPage() {
 
             <Box
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
                 gap: 1,
               }}
             >
@@ -213,22 +232,12 @@ export default function LoginPage() {
                   </Typography>
                 }
               />
-              <Link
-                href="#"
-                variant="body2"
-                underline="hover"
-                color="link"
-              >
+              <Link href="#" variant="body2" underline="hover" color="link">
                 Forgot password?
               </Link>
             </Box>
 
-            <ActionButton
-              type="submit"
-              fullWidth
-              size="large"
-              color="brand"
-            >
+            <ActionButton type="submit" fullWidth size="large" color="brand">
               Sign In
             </ActionButton>
 
@@ -237,12 +246,8 @@ export default function LoginPage() {
               color="text.secondary"
               textAlign="center"
             >
-              Don&apos;t have an account?{' '}
-              <Link
-                href="/signup"
-                underline="hover"
-                color="link"
-              >
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" underline="hover" color="link">
                 Sign up
               </Link>
             </Typography>
