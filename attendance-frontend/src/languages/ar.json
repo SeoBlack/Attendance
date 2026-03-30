@@ -51,5 +51,34 @@
   },
   "errors": {
     "unknown": "حدث خطأ غير متوقع. يُرجى المحاولة لاحقاً."
+  },
+  "teacher": {
+    "courses": {
+      "title": "المقررات",
+      "createCourse": "إنشاء مقرر",
+      "loading": "جارٍ التحميل…",
+      "empty": "لا توجد مقررات.",
+      "table": {
+        "id": "المعرّف",
+        "name": "الاسم",
+        "description": "الوصف",
+        "actions": "إجراءات"
+      },
+      "tooltips": {
+        "startLecture": "بدء المحاضرة",
+        "enrollments": "التسجيلات"
+      },
+      "aria": {
+        "startLecture": "بدء المحاضرة",
+        "enrollments": "التسجيلات",
+        "edit": "تعديل",
+        "delete": "حذف"
+      },
+      "confirmDelete": "هل تريد بالتأكيد حذف هذا المقرر؟",
+      "errors": {
+        "loadFailed": "تعذّر تحميل المقررات.",
+        "deleteFailed": "تعذّر حذف المقرر."
+      }
+    }
   }
 }

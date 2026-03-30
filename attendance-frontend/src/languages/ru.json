@@ -51,5 +51,34 @@
   },
   "errors": {
     "unknown": "Произошла неизвестная ошибка. Попробуйте позже."
+  },
+  "teacher": {
+    "courses": {
+      "title": "Курсы",
+      "createCourse": "Создать курс",
+      "loading": "Загрузка…",
+      "empty": "Курсы не найдены.",
+      "table": {
+        "id": "ID",
+        "name": "Название",
+        "description": "Описание",
+        "actions": "Действия"
+      },
+      "tooltips": {
+        "startLecture": "Начать лекцию",
+        "enrollments": "Зачисления"
+      },
+      "aria": {
+        "startLecture": "Начать лекцию",
+        "enrollments": "Зачисления",
+        "edit": "Редактировать",
+        "delete": "Удалить"
+      },
+      "confirmDelete": "Удалить этот курс?",
+      "errors": {
+        "loadFailed": "Не удалось загрузить курсы.",
+        "deleteFailed": "Не удалось удалить курс."
+      }
+    }
   }
 }

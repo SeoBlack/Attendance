@@ -51,5 +51,34 @@
   },
   "errors": {
     "unknown": "An unknown error occurred. Please try again later."
+  },
+  "teacher": {
+    "courses": {
+      "title": "Courses",
+      "createCourse": "Create course",
+      "loading": "Loading…",
+      "empty": "No courses found.",
+      "table": {
+        "id": "ID",
+        "name": "Name",
+        "description": "Description",
+        "actions": "Actions"
+      },
+      "tooltips": {
+        "startLecture": "Start lecture",
+        "enrollments": "Enrollments"
+      },
+      "aria": {
+        "startLecture": "Start lecture",
+        "enrollments": "Enrollments",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "confirmDelete": "Are you sure you want to delete this course?",
+      "errors": {
+        "loadFailed": "Failed to load courses.",
+        "deleteFailed": "Failed to delete course."
+      }
+    }
   }
 }
