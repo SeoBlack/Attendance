@@ -90,7 +90,12 @@ function CoursesPage() {
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{mb: 2}}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 2, rowGap: 1.5, flexWrap: 'wrap' }}
+      >
         <Typography variant="h5" component="h1">
           {t('teacher.courses.title')}
         </Typography>

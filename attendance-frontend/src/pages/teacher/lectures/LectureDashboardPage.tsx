@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef, useCallback} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Typography,
@@ -28,6 +29,7 @@ import {PresentUserItem} from "./PresentUserItem";
 
 function LectureDashboardPage() {
     const theme = useTheme();
+    const { t } = useTranslation();
     const {id} = useParams<{ id: string }>();
     const navigate = useNavigate();
     const {getLectureById, addLecture} = useLectureContext();
@@ -58,16 +60,19 @@ function LectureDashboardPage() {
         api.lectures
             .getLecture(lectureId)
             .then(async (resp) => {
-                if (!resp.ok) throw new Error((await resp.text()) || 'Failed to load lecture');
+                if (!resp.ok) {
+                    const body = (await resp.text()).trim();
+                    throw new Error(body || t('teacher.lectureDashboard.errors.loadFailed'));
+                }
                 const data: Lecture = await resp.json();
                 addLecture(data);
                 setLecture(data);
                 loadRelatedData(data);
                 loadAttendances(lectureId);
             })
-            .catch((e: any) => setError(e?.message || 'Failed to load lecture'))
+            .catch((e: any) => setError(e?.message || t('teacher.lectureDashboard.errors.loadFailed')))
             .finally(() => setLoading(false));
-    }, [lectureId]);
+    }, [lectureId, getLectureById, addLecture, t]);
 
     const startTimer = useCallback((endDate: string) => {
         if (timerRef.current) clearInterval(timerRef.current);
@@ -143,14 +148,14 @@ function LectureDashboardPage() {
     }
 
     const handleEndSession = () => {
-        if (!confirm('Are you sure you want to end this session?')) return;
+        if (!confirm(t('teacher.lectureDashboard.confirmEndSession'))) return;
         navigate('/teacher/courses');
     };
 
     if (loading) {
         return (
             <Box>
-                <Typography>Loading lecture...</Typography>
+                <Typography>{t('teacher.lectureDashboard.loading')}</Typography>
             </Box>
         );
     }
@@ -160,7 +165,7 @@ function LectureDashboardPage() {
             <Box>
                 <Alert severity="error" sx={{mb: 2}}>{error}</Alert>
                 <ActionButton variant="outlined" onClick={() => navigate('/teacher/courses')}>
-                    Back to Courses
+                    {t('teacher.lectureDashboard.backToCourses')}
                 </ActionButton>
             </Box>
         );
@@ -169,7 +174,7 @@ function LectureDashboardPage() {
     if (!lecture) {
         return (
             <Box>
-                <Typography>Lecture not found.</Typography>
+                <Typography>{t('teacher.lectureDashboard.notFound')}</Typography>
             </Box>
         );
     }
@@ -179,29 +184,34 @@ function LectureDashboardPage() {
     return (
         <Box>
             {/* Header */}
-            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" sx={{mb: 3}}>
+            <Stack
+                direction="row"
+                alignItems="flex-start"
+                justifyContent="space-between"
+                sx={{mb: 3, rowGap: 1.5, flexWrap: 'wrap'}}
+            >
                 <Box>
                     <Typography variant="h5" component="h1" sx={{fontWeight: 700}}>
-                        Attendance Session
+                        {t('teacher.lectureDashboard.sessionTitle')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{mt: 0.5}}>
                         {course ? `${course.courseName} - ${lecture.description}` : lecture.description}
                     </Typography>
                 </Box>
-                <Stack direction="row" spacing={1.5} alignItems="center">
+                <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
                     <ActionButton
                         variant="outlined"
                         startIcon={<NotificationsNoneIcon/>}
                         sx={{borderColor: 'divider', color: 'text.primary'}}
                     >
-                        Notifications
+                        {t('teacher.lectureDashboard.actions.notifications')}
                     </ActionButton>
                     <ActionButton
                         color="error"
                         startIcon={<StopIcon/>}
                         onClick={handleEndSession}
                     >
-                        End Session
+                        {t('teacher.lectureDashboard.actions.endSession')}
                     </ActionButton>
                 </Stack>
             </Stack>
@@ -209,20 +219,20 @@ function LectureDashboardPage() {
             {/* Stat Cards */}
             <Grid container spacing={2} sx={{mb: 3}}>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
-                    <StatCard title="Total Students" value={totalStudents !== null ? String(totalStudents) : '--'}
+                    <StatCard title={t('teacher.lectureDashboard.stats.totalStudents')} value={totalStudents !== null ? String(totalStudents) : '--'}
                               icon={<LaptopMacIcon/>} color="primary"/>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title="Present" value={totalPresent ?? "--"} icon={<CheckCircleIcon/>} color="success"/>
+                    <StatCard title={t('teacher.lectureDashboard.stats.present')} value={totalPresent ?? "--"} icon={<CheckCircleIcon/>} color="success"/>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title="Absent" value={totalAbsent ?? "--"} icon={<CancelIcon/>} color="error"/>
+                    <StatCard title={t('teacher.lectureDashboard.stats.absent')} value={totalAbsent ?? "--"} icon={<CancelIcon/>} color="error"/>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title="Attendance Rate" value={attendanceRate ? `${Math.round(attendanceRate)} %` : "--%"}
+                    <StatCard title={t('teacher.lectureDashboard.stats.attendanceRate')} value={attendanceRate ? `${Math.round(attendanceRate)} %` : "--%"}
                               icon={<TrendingUpIcon/>} color="info"/>
                 </Grid>
             </Grid>
@@ -231,10 +241,10 @@ function LectureDashboardPage() {
             <Box sx={{mb: 3}}>
                 <DisplayPanel bordered>
                     <Typography variant="h6" sx={{fontWeight: 600, mb: 0.5}}>
-                        Numeric Code
+                        {t('teacher.lectureDashboard.numericCode.title')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{mb: 2}}>
-                        Alternative attendance method
+                        {t('teacher.lectureDashboard.numericCode.subtitle')}
                     </Typography>
 
                     {/* Join code from lecture.joinCode (generated by backend) */}
@@ -249,7 +259,7 @@ function LectureDashboardPage() {
                         }}
                     >
                         <Typography variant="body2" sx={{color: 'rgba(255,255,255,0.85)', mb: 1}}>
-                            Enter this code:
+                            {t('teacher.lectureDashboard.numericCode.enterCode')}
                         </Typography>
                         <Typography
                             variant="h2"
@@ -263,7 +273,7 @@ function LectureDashboardPage() {
                             {codeChars.join(' ')}
                         </Typography>
                         <Typography variant="caption" sx={{color: 'rgba(255,255,255,0.7)', mt: 1, display: 'block'}}>
-                            Valid for this session only
+                            {t('teacher.lectureDashboard.numericCode.validForSession')}
                         </Typography>
                     </Box>
 
@@ -286,8 +296,12 @@ function LectureDashboardPage() {
                                     <CheckIcon sx={{fontSize: 18, color: 'success.main'}}/>
                                 </Box>
                                 <Box>
-                                    <Typography variant="body2" sx={{fontWeight: 600}}>Marked</Typography>
-                                    <Typography variant="caption" color="text.secondary">Present</Typography>
+                                    <Typography variant="body2" sx={{fontWeight: 600}}>
+                                        {t('teacher.lectureDashboard.attendanceSummary.marked')}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                        {t('teacher.lectureDashboard.attendanceSummary.present')}
+                                    </Typography>
                                 </Box>
                             </Box>
                             <Typography variant="h5" sx={{fontWeight: 700}}>--</Typography>
@@ -310,8 +324,12 @@ function LectureDashboardPage() {
                                     <CloseIcon sx={{fontSize: 18, color: 'error.main'}}/>
                                 </Box>
                                 <Box>
-                                    <Typography variant="body2" sx={{fontWeight: 600}}>Unmarked</Typography>
-                                    <Typography variant="caption" color="text.secondary">Pending</Typography>
+                                    <Typography variant="body2" sx={{fontWeight: 600}}>
+                                        {t('teacher.lectureDashboard.attendanceSummary.unmarked')}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                        {t('teacher.lectureDashboard.attendanceSummary.pending')}
+                                    </Typography>
                                 </Box>
                             </Box>
                             <Typography variant="h5" sx={{fontWeight: 700}}>--</Typography>
@@ -329,17 +347,14 @@ function LectureDashboardPage() {
                         >
                             <InfoOutlinedIcon sx={{color: 'info.main', fontSize: 20, mt: 0.25}}/>
                             <Box>
-                                <Typography variant="body2" sx={{fontWeight: 600}}>Session Timer</Typography>
+                                <Typography variant="body2" sx={{fontWeight: 600}}>
+                                    {t('teacher.lectureDashboard.timer.title')}
+                                </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     {timeLeft === '00:00' ? (
-                                        'Session has ended'
+                                        t('teacher.lectureDashboard.timer.ended')
                                     ) : (
-                                        <>
-                                            This session will auto-close in{' '}
-                                            <Box component="span"
-                                                 sx={{color: 'info.main', fontWeight: 600}}>{timeLeft}</Box>{' '}
-                                            minutes
-                                        </>
+                                        t('teacher.lectureDashboard.timer.autoCloseIn', { timeLeft })
                                     )}
                                 </Typography>
                             </Box>
@@ -351,7 +366,9 @@ function LectureDashboardPage() {
             {/* Recent Activity — requires GET /attendance?lecture_id endpoint */}
             <DisplayPanel bordered>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 2}}>
-                    <Typography variant="h6" sx={{fontWeight: 600}}>Present students</Typography>
+                    <Typography variant="h6" sx={{fontWeight: 600}}>
+                        {t('teacher.lectureDashboard.presentStudents')}
+                    </Typography>
                 </Stack>
                 <Stack direction="column" spacing={2} divider={<Divider />}>
                 {attendances?.map(a => <PresentUserItem key={a.id} name={`${a.firstName} ${a.lastName}`} email={a.email}/>)}
