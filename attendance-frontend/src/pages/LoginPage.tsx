@@ -35,7 +35,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const unknownError = () => t("errors.unknown");
+  const mapSigninError = (status: number): string => {
+    if (status === 401) return t("errors.invalidCredentials");
+    return t("errors.unknown");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,19 +46,19 @@ export default function LoginPage() {
       .signIn({ email, password })
       .then(async (resp) => {
         setSigninError("");
-        if (!resp.ok)
-          setSigninError((await resp?.text()) || unknownError());
-        else {
+        if (!resp.ok) {
+          setSigninError(mapSigninError(resp.status));
+        } else {
           let jresp = await resp.json();
-          if (!jresp.token) return setSigninError(unknownError());
+          if (!jresp.token) return setSigninError(t("errors.unknown"));
           setToken(jresp.token);
           let user = checkAuth();
-          if (!user) return setSigninError(unknownError());
+          if (!user) return setSigninError(t("errors.unknown"));
           navigate(`/${user.role}/dashboard`);
         }
       })
       .catch((_) => {
-        setSigninError(unknownError());
+        setSigninError(t("errors.unknown"));
       });
   };
 
