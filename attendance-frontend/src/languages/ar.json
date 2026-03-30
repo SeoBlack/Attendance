@@ -58,6 +58,15 @@
       "noSection": "القسم"
     }
   },
+  "common": {
+    "placeholder": {
+      "emDash": "—",
+      "empty": "--",
+      "emptyPercent": "--%",
+      "timeUnset": "--:--",
+      "joinCodeMask": "------"
+    }
+  },
   "teacher": {
     "dashboard": {
       "title": "لوحة التحكم",
@@ -231,7 +240,7 @@
       "timer": {
         "title": "مؤقت الجلسة",
         "ended": "انتهت الجلسة",
-        "autoCloseIn": "سيتم إغلاق هذه الجلسة تلقائياً خلال {{timeLeft}} دقيقة"
+        "autoCloseIn": "يُغلق تلقائياً خلال {{timeLeft}}"
       },
       "presentStudents": "الطلاب الحاضرون",
       "errors": {

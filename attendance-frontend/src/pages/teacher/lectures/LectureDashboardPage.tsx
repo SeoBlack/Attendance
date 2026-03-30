@@ -40,7 +40,9 @@ function LectureDashboardPage() {
     const [error, setError] = useState<string>('');
     const [totalStudents, setTotalStudents] = useState<number | null>(null);
     const [attendances, setAttendances] = useState<PresentUser[] | null>(null);
-    const [timeLeft, setTimeLeft] = useState<string>('--:--');
+    const [timeLeft, setTimeLeft] = useState<string>(() =>
+        t('common.placeholder.timeUnset'),
+    );
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const lectureId = id ? parseInt(id, 10) : undefined;
@@ -179,7 +181,7 @@ function LectureDashboardPage() {
         );
     }
 
-    const codeChars = (lecture.joinCode || '------').split('');
+    const codeChars = (lecture.joinCode || t('common.placeholder.joinCodeMask')).split('');
 
     return (
         <Box>
@@ -219,20 +221,20 @@ function LectureDashboardPage() {
             {/* Stat Cards */}
             <Grid container spacing={2} sx={{mb: 3}}>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
-                    <StatCard title={t('teacher.lectureDashboard.stats.totalStudents')} value={totalStudents !== null ? String(totalStudents) : '--'}
+                    <StatCard title={t('teacher.lectureDashboard.stats.totalStudents')} value={totalStudents !== null ? String(totalStudents) : t('common.placeholder.empty')}
                               icon={<LaptopMacIcon/>} color="primary"/>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title={t('teacher.lectureDashboard.stats.present')} value={totalPresent ?? "--"} icon={<CheckCircleIcon/>} color="success"/>
+                    <StatCard title={t('teacher.lectureDashboard.stats.present')} value={totalPresent ?? t('common.placeholder.empty')} icon={<CheckCircleIcon/>} color="success"/>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title={t('teacher.lectureDashboard.stats.absent')} value={totalAbsent ?? "--"} icon={<CancelIcon/>} color="error"/>
+                    <StatCard title={t('teacher.lectureDashboard.stats.absent')} value={totalAbsent ?? t('common.placeholder.empty')} icon={<CancelIcon/>} color="error"/>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, md: 3}}>
                     {/* Requires GET /attendance?lecture_id endpoint */}
-                    <StatCard title={t('teacher.lectureDashboard.stats.attendanceRate')} value={attendanceRate ? `${Math.round(attendanceRate)} %` : "--%"}
+                    <StatCard title={t('teacher.lectureDashboard.stats.attendanceRate')} value={attendanceRate ? `${Math.round(attendanceRate)} %` : t('common.placeholder.emptyPercent')}
                               icon={<TrendingUpIcon/>} color="info"/>
                 </Grid>
             </Grid>
@@ -304,7 +306,7 @@ function LectureDashboardPage() {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <Typography variant="h5" sx={{fontWeight: 700}}>--</Typography>
+                            <Typography variant="h5" sx={{fontWeight: 700}}>{t('common.placeholder.empty')}</Typography>
                         </Box>
 
                         {/* Unmarked Pending */}
@@ -332,7 +334,7 @@ function LectureDashboardPage() {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <Typography variant="h5" sx={{fontWeight: 700}}>--</Typography>
+                            <Typography variant="h5" sx={{fontWeight: 700}}>{t('common.placeholder.empty')}</Typography>
                         </Box>
 
                         <Box

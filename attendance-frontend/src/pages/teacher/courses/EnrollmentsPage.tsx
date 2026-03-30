@@ -22,6 +22,7 @@ import {
   DialogActions,
   TextField,
   CircularProgress,
+  useTheme,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -35,6 +36,7 @@ import DeleteEnrollmentsButton from "../../../components/enrollments/DeleteEnrol
 
 function EnrollmentsPage() {
   const { t } = useTranslation();
+  const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
   const courseId = Number(id);
@@ -145,6 +147,7 @@ function EnrollmentsPage() {
           <IconButton
             aria-label={t('teacher.enrollments.aria.back')}
             onClick={() => navigate('/teacher/courses')}
+            sx={theme.direction === 'rtl' ? { transform: 'scaleX(-1)' } : undefined}
           >
             <ArrowBackIcon />
           </IconButton>

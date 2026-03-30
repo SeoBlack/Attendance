@@ -58,6 +58,15 @@
       "noSection": "Section"
     }
   },
+  "common": {
+    "placeholder": {
+      "emDash": "—",
+      "empty": "--",
+      "emptyPercent": "--%",
+      "timeUnset": "--:--",
+      "joinCodeMask": "------"
+    }
+  },
   "teacher": {
     "dashboard": {
       "title": "Dashboard",
@@ -231,7 +240,7 @@
       "timer": {
         "title": "Session timer",
         "ended": "Session has ended",
-        "autoCloseIn": "This session will auto-close in {{timeLeft}} minutes"
+        "autoCloseIn": "Auto-closes in {{timeLeft}}"
       },
       "presentStudents": "Present students",
       "errors": {

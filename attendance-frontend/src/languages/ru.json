@@ -58,6 +58,15 @@
       "noSection": "Раздел"
     }
   },
+  "common": {
+    "placeholder": {
+      "emDash": "—",
+      "empty": "--",
+      "emptyPercent": "--%",
+      "timeUnset": "--:--",
+      "joinCodeMask": "------"
+    }
+  },
   "teacher": {
     "dashboard": {
       "title": "Панель",
@@ -231,7 +240,7 @@
       "timer": {
         "title": "Таймер сессии",
         "ended": "Сессия завершена",
-        "autoCloseIn": "Сессия автоматически завершится через {{timeLeft}} мин."
+        "autoCloseIn": "Автозавершение через {{timeLeft}}"
       },
       "presentStudents": "Присутствующие студенты",
       "errors": {

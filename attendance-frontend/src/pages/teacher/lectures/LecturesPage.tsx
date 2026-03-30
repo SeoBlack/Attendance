@@ -63,7 +63,7 @@ function LecturesPage() {
   };
 
   const formatDate = (dateStr: string) => {
-    if (!dateStr) return '—';
+    if (!dateStr) return t('common.placeholder.emDash');
     return new Date(dateStr).toLocaleString(i18n.language);
   };
 
@@ -103,7 +103,7 @@ function LecturesPage() {
                   <TableCell>{lecture.description}</TableCell>
                   <TableCell>
                     <Chip
-                      label={lecture.joinCode || '—'}
+                      label={lecture.joinCode || t('common.placeholder.emDash')}
                       size="small"
                       color="primary"
                       variant="outlined"
