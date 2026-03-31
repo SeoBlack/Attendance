@@ -51,5 +51,201 @@
   },
   "errors": {
     "unknown": "Произошла неизвестная ошибка. Попробуйте позже."
+  },
+  "layout": {
+    "openMenu": "Открыть меню",
+    "header": {
+      "noSection": "Раздел"
+    }
+  },
+  "common": {
+    "placeholder": {
+      "emDash": "—",
+      "empty": "--",
+      "emptyPercent": "--%",
+      "timeUnset": "--:--",
+      "joinCodeMask": "------"
+    }
+  },
+  "teacher": {
+    "dashboard": {
+      "title": "Панель",
+      "welcome": "Панель преподавателя"
+    },
+    "courseForm": {
+      "createTitle": "Создать курс",
+      "editTitle": "Редактировать курс",
+      "fields": {
+        "name": "Название",
+        "description": "Описание"
+      },
+      "actions": {
+        "create": "Создать",
+        "update": "Обновить",
+        "cancel": "Отмена"
+      },
+      "errors": {
+        "loadFailed": "Не удалось загрузить курс.",
+        "saveFailed": "Не удалось сохранить курс."
+      }
+    },
+    "courses": {
+      "title": "Курсы",
+      "createCourse": "Создать курс",
+      "loading": "Загрузка…",
+      "empty": "Курсы не найдены.",
+      "table": {
+        "id": "ID",
+        "name": "Название",
+        "description": "Описание",
+        "actions": "Действия"
+      },
+      "tooltips": {
+        "startLecture": "Начать лекцию",
+        "enrollments": "Зачисления"
+      },
+      "aria": {
+        "startLecture": "Начать лекцию",
+        "enrollments": "Зачисления",
+        "edit": "Редактировать",
+        "delete": "Удалить"
+      },
+      "confirmDelete": "Удалить этот курс?",
+      "errors": {
+        "loadFailed": "Не удалось загрузить курсы.",
+        "deleteFailed": "Не удалось удалить курс."
+      }
+    },
+    "enrollments": {
+      "title": "Зачисления",
+      "titleWithCourse": "Зачисления · {{courseName}}",
+      "actions": {
+        "back": "Назад к курсам",
+        "addStudent": "Добавить студента",
+        "upload": "Загрузить зачисления",
+        "deleteAll": "Удалить зачисления"
+      },
+      "table": {
+        "id": "ID",
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "Email",
+        "actions": "Действия"
+      },
+      "states": {
+        "loading": "Загрузка…",
+        "empty": "Зачисления не найдены."
+      },
+      "tooltips": {
+        "remove": "Удалить"
+      },
+      "aria": {
+        "back": "Назад к курсам",
+        "remove": "Удалить зачисление",
+        "upload": "Загрузить зачисления",
+        "deleteAll": "Удалить зачисления"
+      },
+      "dialogs": {
+        "addStudent": {
+          "title": "Добавить студента",
+          "firstName": "Имя",
+          "lastName": "Фамилия",
+          "email": "Email",
+          "cancel": "Отмена",
+          "submit": "Добавить",
+          "submitting": "Добавление…"
+        }
+      },
+      "confirmRemoveOne": "Удалить это зачисление из курса?",
+      "confirmRemoveAll": "Удалить все зачисления из курса?",
+      "errors": {
+        "loadCourseFailed": "Не удалось загрузить курс.",
+        "loadEnrollmentsFailed": "Не удалось загрузить зачисления.",
+        "loadDataFailed": "Не удалось загрузить данные.",
+        "removeFailed": "Не удалось удалить зачисление.",
+        "removeAllFailed": "Не удалось удалить зачисления.",
+        "addStudentFailed": "Не удалось добавить студента.",
+        "uploadFailed": "Не удалось загрузить зачисления."
+      }
+    },
+    "lectures": {
+      "title": "Лекции",
+      "empty": "Лекции не найдены. Запустите лекцию со страницы курсов.",
+      "loading": "Загрузка…",
+      "table": {
+        "id": "ID",
+        "description": "Описание",
+        "joinCode": "Код входа",
+        "start": "Начало",
+        "end": "Окончание",
+        "actions": "Действия"
+      },
+      "tooltips": {
+        "viewDashboard": "Открыть панель"
+      },
+      "aria": {
+        "viewDashboard": "Открыть панель лекции",
+        "delete": "Удалить лекцию"
+      },
+      "confirmDelete": "Удалить эту лекцию?",
+      "errors": {
+        "loadFailed": "Не удалось загрузить лекции.",
+        "deleteFailed": "Не удалось удалить лекцию.",
+        "createFailed": "Не удалось создать лекцию.",
+        "invalidDateRange": "Дата окончания должна быть позже даты начала."
+      },
+      "dialog": {
+        "title": "Создать лекцию",
+        "fields": {
+          "description": "Описание",
+          "startDate": "Дата и время начала",
+          "endDate": "Дата и время окончания"
+        },
+        "actions": {
+          "cancel": "Отмена",
+          "create": "Создать",
+          "creating": "Создание…"
+        }
+      }
+    },
+    "lectureDashboard": {
+      "title": "Панель лекции",
+      "sessionTitle": "Сессия посещаемости",
+      "loading": "Загрузка лекции…",
+      "notFound": "Лекция не найдена.",
+      "backToCourses": "Назад к курсам",
+      "actions": {
+        "notifications": "Уведомления",
+        "endSession": "Завершить сессию"
+      },
+      "confirmEndSession": "Завершить эту сессию?",
+      "stats": {
+        "totalStudents": "Всего студентов",
+        "present": "Присутствуют",
+        "absent": "Отсутствуют",
+        "attendanceRate": "Посещаемость"
+      },
+      "numericCode": {
+        "title": "Числовой код",
+        "subtitle": "Альтернативный способ отметки посещаемости",
+        "enterCode": "Введите этот код:",
+        "validForSession": "Действует только для этой сессии"
+      },
+      "attendanceSummary": {
+        "marked": "Отмечено",
+        "present": "Присутствуют",
+        "unmarked": "Не отмечено",
+        "pending": "Ожидают"
+      },
+      "timer": {
+        "title": "Таймер сессии",
+        "ended": "Сессия завершена",
+        "autoCloseIn": "Автозавершение через {{timeLeft}}"
+      },
+      "presentStudents": "Присутствующие студенты",
+      "errors": {
+        "loadFailed": "Не удалось загрузить лекцию."
+      }
+    }
   }
 }

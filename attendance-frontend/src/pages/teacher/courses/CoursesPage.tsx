@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Typography,
@@ -28,6 +29,7 @@ import { ActionButton } from '../../../components/common';
 import CreateLectureDialog from '../../../components/lectures/CreateLectureDialog';
 
 function CoursesPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,11 +43,16 @@ function CoursesPage() {
     setError('');
     api.courses.getCourses()
       .then(async (resp) => {
-        if (!resp.ok) throw new Error(await resp.text() || 'Failed to load courses');
+        if (!resp.ok) {
+          const body = (await resp.text()).trim();
+          throw new Error(body || t('teacher.courses.errors.loadFailed'));
+        }
         const data = await resp.json();
         setCourses(data as Course[]);
       })
-      .catch((e: any) => setError(e?.message || 'Failed to load courses'))
+      .catch((e: any) =>
+        setError(e?.message || t('teacher.courses.errors.loadFailed')),
+      )
       .finally(() => setLoading(false));
   }
 
@@ -66,21 +73,39 @@ function CoursesPage() {
     navigate(`/teacher/lectures/${lecture.id}`);
   };
   const handleDelete = (id: number) => {
-    if (!confirm('Are you sure you want to delete this course?')) return;
+    if (!confirm(t('teacher.courses.confirmDelete'))) return;
     api.courses.deleteCourse(id)
       .then(async (resp) => {
-        if (!resp.ok) throw new Error(await resp.text() || 'Failed to delete course');
+        if (!resp.ok) {
+          const body = (await resp.text()).trim();
+          throw new Error(body || t('teacher.courses.errors.deleteFailed'));
+        }
         loadCourses();
       })
-      .catch((e: any) => setError(e?.message || 'Failed to delete course'))
+      .catch((e: any) =>
+        setError(e?.message || t('teacher.courses.errors.deleteFailed')),
+      )
   }
 
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{mb: 2}}>
-        <Typography variant="h5" component="h1">Courses</Typography>
-        <ActionButton startIcon={<AddIcon/>} color="brand" onClick={handleCreate}>Create Course</ActionButton>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 2, rowGap: 1.5, flexWrap: 'wrap' }}
+      >
+        <Typography variant="h5" component="h1">
+          {t('teacher.courses.title')}
+        </Typography>
+        <ActionButton
+          startIcon={<AddIcon />}
+          color="brand"
+          onClick={handleCreate}
+        >
+          {t('teacher.courses.createCourse')}
+        </ActionButton>
       </Stack>
 
       {error && <Alert severity="error" sx={{mb: 2}}>{error}</Alert>}
@@ -89,20 +114,20 @@ function CoursesPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>{t('teacher.courses.table.id')}</TableCell>
+              <TableCell>{t('teacher.courses.table.name')}</TableCell>
+              <TableCell>{t('teacher.courses.table.description')}</TableCell>
+              <TableCell align="right">{t('teacher.courses.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4}>Loading...</TableCell>
+                <TableCell colSpan={4}>{t('teacher.courses.loading')}</TableCell>
               </TableRow>
             ) : courses.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4}>No courses found.</TableCell>
+                <TableCell colSpan={4}>{t('teacher.courses.empty')}</TableCell>
               </TableRow>
             ) : (
               courses.map((course) => (
@@ -111,21 +136,35 @@ function CoursesPage() {
                   <TableCell>{course.courseName}</TableCell>
                   <TableCell>{course.description}</TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Start Lecture">
-                      <IconButton aria-label="start lecture" color="primary" onClick={() => handleStartLecture(course.id!)}>
+                    <Tooltip title={t('teacher.courses.tooltips.startLecture')}>
+                      <IconButton
+                        aria-label={t('teacher.courses.aria.startLecture')}
+                        color="primary"
+                        onClick={() => handleStartLecture(course.id!)}
+                      >
                         <PlayArrowIcon />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Enrollments">
-                      <IconButton aria-label="enrollments" onClick={() => handleViewEnrollments(course.id!)}>
+                    <Tooltip title={t('teacher.courses.tooltips.enrollments')}>
+                      <IconButton
+                        aria-label={t('teacher.courses.aria.enrollments')}
+                        onClick={() => handleViewEnrollments(course.id!)}
+                      >
                         <GroupIcon />
                       </IconButton>
                     </Tooltip>
-                    <IconButton aria-label="edit" onClick={() => handleEdit(course.id!)}>
-                      <EditIcon/>
+                    <IconButton
+                      aria-label={t('teacher.courses.aria.edit')}
+                      onClick={() => handleEdit(course.id!)}
+                    >
+                      <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="delete" color="error" onClick={() => handleDelete(course.id!)}>
-                      <DeleteIcon/>
+                    <IconButton
+                      aria-label={t('teacher.courses.aria.delete')}
+                      color="error"
+                      onClick={() => handleDelete(course.id!)}
+                    >
+                      <DeleteIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>

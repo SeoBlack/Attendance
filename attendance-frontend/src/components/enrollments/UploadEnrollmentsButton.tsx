@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {Button, Tooltip} from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 import { api } from '../../api';
@@ -10,9 +11,11 @@ type Props = {
   title?: string;
 };
 
-function UploadEnrollmentsButton({ courseId, onUploaded, onError, title = 'Upload enrollments' }: Props) {
+function UploadEnrollmentsButton({ courseId, onUploaded, onError, title }: Props) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
+  const buttonTitle = title ?? t('teacher.enrollments.actions.upload');
 
   const trigger = () => inputRef.current?.click();
 
@@ -24,10 +27,13 @@ function UploadEnrollmentsButton({ courseId, onUploaded, onError, title = 'Uploa
     setUploading(true);
     try {
       const resp = await api.courses.uploadEnrollments(courseId, file);
-      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to upload enrollments');
+      if (!resp.ok) {
+        const body = (await resp.text()).trim();
+        throw new Error(body || t('teacher.enrollments.errors.uploadFailed'));
+      }
       onUploaded?.();
     } catch (e: any) {
-      onError?.(e?.message || 'Failed to upload enrollments');
+      onError?.(e?.message || t('teacher.enrollments.errors.uploadFailed'));
     } finally {
       setUploading(false);
     }
@@ -42,11 +48,15 @@ function UploadEnrollmentsButton({ courseId, onUploaded, onError, title = 'Uploa
         style={{ display: 'none' }}
         onChange={handleFileSelected}
       />
-      <Tooltip title={title}>
+      <Tooltip title={buttonTitle}>
         <span>
-          <Button aria-label="upload-enrollments" onClick={trigger} disabled={uploading}>
+          <Button
+            aria-label={t('teacher.enrollments.aria.upload')}
+            onClick={trigger}
+            disabled={uploading}
+          >
             <UploadIcon />
-            Upload enrollments
+            {buttonTitle}
           </Button>
         </span>
       </Tooltip>

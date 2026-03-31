@@ -13,12 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,6 +47,26 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(signupJson("John", "Doe", UserRole.STUDENT.getValue(), "john@example.com", "password123")))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void signup_shouldReturn201_whenPlaceholderUserExistsWithoutPassword() throws Exception {
+        User existing = new User();
+        existing.setRole(UserRole.STUDENT);
+        existing.setFirstName("Enrolled");
+        existing.setLastName("ByTeacher");
+        existing.setEmail("student@example.com");
+        userRepository.save(existing);
+
+        mockMvc.perform(post("/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signupJson("Other", "Name", UserRole.STUDENT.getValue(), "student@example.com", "password123")))
+                .andExpect(status().isCreated());
+
+        User updated = userRepository.findByEmailIgnoreCase("student@example.com").orElseThrow();
+        assertEquals("Enrolled", updated.getFirstName());
+        assertEquals("ByTeacher", updated.getLastName());
+        assertTrue(passwordHasher.matches("password123", updated.getPasswordHash()));
     }
 
     @Test
