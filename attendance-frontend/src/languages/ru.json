@@ -51,7 +51,12 @@
     "changeLanguage": "Сменить язык"
   },
   "errors": {
-    "unknown": "Произошла неизвестная ошибка. Попробуйте позже."
+    "unknown": "Произошла неизвестная ошибка. Попробуйте позже.",
+    "invalidCredentials": "Неверный email или пароль. Попробуйте снова.",
+    "signupFailed": "Не удалось зарегистрироваться. Попробуйте снова.",
+    "required": "Это поле обязательно для заполнения.",
+    "invalidEmail": "Введите корректный адрес электронной почты.",
+    "passwordTooShort": "Пароль должен содержать не менее 6 символов."
   },
   "layout": {
     "openMenu": "Открыть меню",
@@ -248,5 +253,41 @@
         "loadFailed": "Не удалось загрузить лекцию."
       }
     }
+  },
+  "student": {
+    "historyTitle": "История посещаемости",
+    "historyDescription": "Ваша полная история посещаемости по всем записанным курсам.",
+    "historyNoRec": "Записей о посещаемости пока нет.",
+    "date": "Дата",
+    "course": "Курс",
+    "lecture": "Лекция",
+    "time": "Время",
+    "status": "Статус",
+    "markedAt": "Отмечено в",
+    "present": "Присутствовал(а)",
+    "absent": "Отсутствовал(а)",
+    "dashboardTitle": "Панель",
+    "dashboardDescription": "С возвращением, {{firstName}}! Вот обзор вашей посещаемости.",
+    "messageToday": "Сегодня: ",
+    "messageTotalLecture": "Всего лекций",
+    "messageAttendanceRate": "Процент посещаемости",
+    "messageTodayClasses": "Занятия на сегодня",
+    "messageTodayNoClasses": "На сегодня занятий не запланировано.",
+    "messageRecentActivity": "Недавняя активность",
+    "messageNoRecentActivity": "Недавней активности нет.",
+    "messageMarkedPresent": "Отмечено присутствие на",
+    "messageMissed": "Пропущено",
+    "messageQuickAction": "Быстрые действия",
+    "messageEnterCode": "Ввести код",
+    "messageViewHistory": "Посмотреть историю",
+    "dialogTitle": "Отметить посещаемость",
+    "dialogContent": "Введите код лекции, который дал преподаватель.",
+    "messageAttendanceMarked": "Посещаемость отмечена! ID лекции: ",
+    "close": "Закрыть",
+    "cancel": "Отмена",
+    "dialogTextField": "Код лекции",
+    "dialogSubmit": "Отправить",
+    "todayLabel": "Сегодня, ",
+    "yesterdayLabel": "Вчера, "
   }
 }

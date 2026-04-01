@@ -51,7 +51,12 @@
     "changeLanguage": "تغيير اللغة"
   },
   "errors": {
-    "unknown": "حدث خطأ غير متوقع. يُرجى المحاولة لاحقاً."
+    "unknown": "حدث خطأ غير متوقع. يُرجى المحاولة لاحقاً.",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
+    "signupFailed": "فشل إنشاء الحساب. حاول مرة أخرى.",
+    "required": "هذا الحقل مطلوب.",
+    "invalidEmail": "يُرجى إدخال بريد إلكتروني صالح.",
+    "passwordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل."
   },
   "layout": {
     "openMenu": "فتح القائمة",
@@ -248,5 +253,41 @@
         "loadFailed": "تعذّر تحميل المحاضرة."
       }
     }
+  },
+  "student": {
+    "historyTitle": "سجل الحضور",
+    "historyDescription": "سجل حضورك الكامل عبر جميع المقررات المسجل بها.",
+    "historyNoRec": "لا توجد سجلات حضور بعد.",
+    "date": "التاريخ",
+    "course": "المقرر",
+    "lecture": "المحاضرة",
+    "time": "الوقت",
+    "status": "الحالة",
+    "markedAt": "تم التسجيل في",
+    "present": "حاضر",
+    "absent": "غائب",
+    "dashboardTitle": "لوحة التحكم",
+    "dashboardDescription": "مرحباً بعودتك، {{firstName}}! إليك نظرة عامة على حضورك.",
+    "messageToday": "اليوم: ",
+    "messageTotalLecture": "إجمالي المحاضرات",
+    "messageAttendanceRate": "نسبة الحضور",
+    "messageTodayClasses": "محاضرات اليوم",
+    "messageTodayNoClasses": "لا توجد محاضرات مجدولة لليوم.",
+    "messageRecentActivity": "النشاط الأخير",
+    "messageNoRecentActivity": "لا يوجد نشاط حديث.",
+    "messageMarkedPresent": "تم تسجيل الحضور في",
+    "messageMissed": "فاتك",
+    "messageQuickAction": "إجراءات سريعة",
+    "messageEnterCode": "إدخال الرمز",
+    "messageViewHistory": "عرض السجل",
+    "dialogTitle": "تسجيل الحضور",
+    "dialogContent": "أدخل رمز الانضمام إلى المحاضرة الذي يقدمه المدرس.",
+    "messageAttendanceMarked": "تم تسجيل الحضور! معرف المحاضرة: ",
+    "close": "إغلاق",
+    "cancel": "إلغاء",
+    "dialogTextField": "رمز الانضمام",
+    "dialogSubmit": "إرسال",
+    "todayLabel": "اليوم، ",
+    "yesterdayLabel": "أمس، "
   }
 }
