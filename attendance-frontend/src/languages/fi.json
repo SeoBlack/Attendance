@@ -1,0 +1,252 @@
+{
+  "productDescription": "Älykäs läsnäolon hallinta nykyaikaisiin luokkahuoneisiin.",
+  "login": {
+    "featureQr": "QR-koodin skannaus",
+    "featureAnalytics": "Reaaliaikainen analytiikka",
+    "featureSecurity": "Luotettava ja turvallinen",
+    "welcomeBack": "Tervetuloa takaisin",
+    "signInSubtitle": "Kirjaudu tilillesi",
+    "email": "Sähköposti",
+    "emailPlaceholder": "Anna sähköpostiosoite",
+    "password": "Salasana",
+    "passwordPlaceholder": "Anna salasana",
+    "rememberMe": "Muista minut",
+    "forgotPassword": "Unohditko salasanan?",
+    "signIn": "Kirjaudu sisään",
+    "noAccount": "Ei tiliä?",
+    "signUp": "Rekisteröidy"
+  },
+  "signup": {
+    "title": "Rekisteröityminen",
+    "role": "Rooli",
+    "firstName": "Etunimi",
+    "firstNamePlaceholder": "Etunimesi",
+    "lastName": "Sukunimi",
+    "lastNamePlaceholder": "Sukunimesi",
+    "email": "Sähköposti",
+    "emailPlaceholder": "Anna sähköpostiosoite",
+    "password": "Salasana",
+    "passwordPlaceholder": "Anna salasana",
+    "confirmPassword": "Vahvista salasana",
+    "confirmPasswordPlaceholder": "Toista salasana",
+    "passwordsMismatch": "Salasanat eivät täsmää!",
+    "createAccount": "Luo tili"
+  },
+  "role": {
+    "student": "Opiskelija",
+    "teacher": "Opettaja"
+  },
+  "menu": {
+    "dashboard": "Ohjauspaneeli",
+    "history": "Historia",
+    "courses": "Kurssit",
+    "lectures": "Luennot",
+    "signOut": "Kirjaudu ulos"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "العربية",
+    "russian": "Русский",
+    "finnish": "Suomi",
+    "changeLanguage": "Vaihda kieli"
+  },
+  "errors": {
+    "unknown": "Tapahtui tuntematon virhe. Yritä myöhemmin uudelleen."
+  },
+  "layout": {
+    "openMenu": "Avaa valikko",
+    "header": {
+      "noSection": "Osio"
+    }
+  },
+  "common": {
+    "placeholder": {
+      "emDash": "—",
+      "empty": "--",
+      "emptyPercent": "--%",
+      "timeUnset": "--:--",
+      "joinCodeMask": "------"
+    }
+  },
+  "teacher": {
+    "dashboard": {
+      "title": "Ohjauspaneeli",
+      "welcome": "Opettajan paneeli"
+    },
+    "courseForm": {
+      "createTitle": "Luo kurssi",
+      "editTitle": "Muokkaa kurssia",
+      "fields": {
+        "name": "Nimi",
+        "description": "Kuvaus"
+      },
+      "actions": {
+        "create": "Luo",
+        "update": "Päivitä",
+        "cancel": "Peruuta"
+      },
+      "errors": {
+        "loadFailed": "Kurssin lataaminen epäonnistui.",
+        "saveFailed": "Kurssin tallentaminen epäonnistui."
+      }
+    },
+    "courses": {
+      "title": "Kurssit",
+      "createCourse": "Luo kurssi",
+      "loading": "Ladataan…",
+      "empty": "Kursseja ei löytynyt.",
+      "table": {
+        "id": "ID",
+        "name": "Nimi",
+        "description": "Kuvaus",
+        "actions": "Toiminnot"
+      },
+      "tooltips": {
+        "startLecture": "Aloita luento",
+        "enrollments": "Ilmoittautumiset"
+      },
+      "aria": {
+        "startLecture": "Aloita luento",
+        "enrollments": "Ilmoittautumiset",
+        "edit": "Muokkaa",
+        "delete": "Poista"
+      },
+      "confirmDelete": "Poistetaanko tämä kurssi?",
+      "errors": {
+        "loadFailed": "Kurssien lataaminen epäonnistui.",
+        "deleteFailed": "Kurssin poistaminen epäonnistui."
+      }
+    },
+    "enrollments": {
+      "title": "Ilmoittautumiset",
+      "titleWithCourse": "Ilmoittautumiset · {{courseName}}",
+      "actions": {
+        "back": "Takaisin kursseihin",
+        "addStudent": "Lisää opiskelija",
+        "upload": "Lataa ilmoittautumiset",
+        "deleteAll": "Poista kaikki ilmoittautumiset"
+      },
+      "table": {
+        "id": "ID",
+        "firstName": "Etunimi",
+        "lastName": "Sukunimi",
+        "email": "Sähköposti",
+        "actions": "Toiminnot"
+      },
+      "states": {
+        "loading": "Ladataan…",
+        "empty": "Ilmoittautumisia ei löytynyt."
+      },
+      "tooltips": {
+        "remove": "Poista"
+      },
+      "aria": {
+        "back": "Takaisin kursseihin",
+        "remove": "Poista ilmoittautuminen",
+        "upload": "Lataa ilmoittautumiset",
+        "deleteAll": "Poista kaikki ilmoittautumiset"
+      },
+      "dialogs": {
+        "addStudent": {
+          "title": "Lisää opiskelija",
+          "firstName": "Etunimi",
+          "lastName": "Sukunimi",
+          "email": "Sähköposti",
+          "cancel": "Peruuta",
+          "submit": "Lisää",
+          "submitting": "Lisätään…"
+        }
+      },
+      "confirmRemoveOne": "Poistetaanko tämä ilmoittautuminen kurssilta?",
+      "confirmRemoveAll": "Poistetaanko kaikki ilmoittautumiset kurssilta?",
+      "errors": {
+        "loadCourseFailed": "Kurssin lataaminen epäonnistui.",
+        "loadEnrollmentsFailed": "Ilmoittautumisten lataaminen epäonnistui.",
+        "loadDataFailed": "Tietojen lataaminen epäonnistui.",
+        "removeFailed": "Ilmoittautumisen poistaminen epäonnistui.",
+        "removeAllFailed": "Ilmoittautumisten poistaminen epäonnistui.",
+        "addStudentFailed": "Opiskelijan lisääminen epäonnistui.",
+        "uploadFailed": "Ilmoittautumisten lataaminen epäonnistui."
+      }
+    },
+    "lectures": {
+      "title": "Luennot",
+      "empty": "Luentoja ei löytynyt. Aloita luento kurssisivulta.",
+      "loading": "Ladataan…",
+      "table": {
+        "id": "ID",
+        "description": "Kuvaus",
+        "joinCode": "Liittymiskoodi",
+        "start": "Alku",
+        "end": "Loppu",
+        "actions": "Toiminnot"
+      },
+      "tooltips": {
+        "viewDashboard": "Avaa ohjauspaneeli"
+      },
+      "aria": {
+        "viewDashboard": "Avaa luennon ohjauspaneeli",
+        "delete": "Poista luento"
+      },
+      "confirmDelete": "Poistetaanko tämä luento?",
+      "errors": {
+        "loadFailed": "Luentojen lataaminen epäonnistui.",
+        "deleteFailed": "Luennon poistaminen epäonnistui.",
+        "createFailed": "Luennon luominen epäonnistui.",
+        "invalidDateRange": "Päättymisajan on oltava alkamisajan jälkeen."
+      },
+      "dialog": {
+        "title": "Luo luento",
+        "fields": {
+          "description": "Kuvaus",
+          "startDate": "Alkamispäivä ja -aika",
+          "endDate": "Päättymispäivä ja -aika"
+        },
+        "actions": {
+          "cancel": "Peruuta",
+          "create": "Luo",
+          "creating": "Luodaan…"
+        }
+      }
+    },
+    "lectureDashboard": {
+      "title": "Luennon ohjauspaneeli",
+      "sessionTitle": "Läsnäoloistunto",
+      "loading": "Ladataan luentoa…",
+      "notFound": "Luentoa ei löytynyt.",
+      "backToCourses": "Takaisin kursseihin",
+      "actions": {
+        "notifications": "Ilmoitukset",
+        "endSession": "Lopeta istunto"
+      },
+      "confirmEndSession": "Lopetetaanko tämä istunto?",
+      "stats": {
+        "totalStudents": "Opiskelijoita yhteensä",
+        "present": "Paikalla",
+        "absent": "Poissa",
+        "attendanceRate": "Läsnäoloaste"
+      },
+      "numericCode": {
+        "title": "Numerokoodi",
+        "subtitle": "Vaihtoehtoinen tapa merkitä läsnäolo",
+        "enterCode": "Syötä tämä koodi:",
+        "validForSession": "Voimassa vain tämän istunnon ajan"
+      },
+      "attendanceSummary": {
+        "marked": "Merkitty",
+        "present": "Paikalla",
+        "unmarked": "Merkitsemättä",
+        "pending": "Odottaa"
+      },
+      "timer": {
+        "title": "Istunnon ajastin",
+        "ended": "Istunto päättynyt",
+        "autoCloseIn": "Automaattinen lopetus: {{timeLeft}}"
+      },
+      "presentStudents": "Paikalla olevat opiskelijat",
+      "errors": {
+        "loadFailed": "Luennon lataaminen epäonnistui."
+      }
+    }
+  }
+}

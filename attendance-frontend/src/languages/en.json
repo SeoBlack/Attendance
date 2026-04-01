@@ -46,7 +46,8 @@
   "language": {
     "english": "English",
     "arabic": "Arabic",
-    "russian": "Russian",
+    "russian": "Русский",
+    "finnish": "Suomi",
     "changeLanguage": "Change language"
   },
   "errors": {
