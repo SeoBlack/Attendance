@@ -50,7 +50,12 @@
     "changeLanguage": "Change language"
   },
   "errors": {
-    "unknown": "An unknown error occurred. Please try again later."
+    "unknown": "An unknown error occurred. Please try again later.",
+    "invalidCredentials": "Invalid email or password. Please try again.",
+    "signupFailed": "Signup failed. Please try again.",
+    "required": "This field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordTooShort": "Password must be at least 6 characters."
   },
   "layout": {
     "openMenu": "Open menu",

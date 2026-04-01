@@ -72,7 +72,10 @@ export default function SignupPage() {
     validateForm();
   }, [email, firstName, lastName, role]);
 
-  const unknownError = () => t("errors.unknown");
+  const mapSignupError = (status: number): string => {
+    if (status === 500) return t("errors.signupFailed");
+    return t("errors.unknown");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,11 +89,11 @@ export default function SignupPage() {
       })
       .then(async (resp) => {
         if (!resp.ok)
-          setSignupError((await resp?.text()) || unknownError());
+          setSignupError(mapSignupError(resp.status));
         else navigate("/");
       })
       .catch((_) => {
-        setSignupError(unknownError());
+        setSignupError(t("errors.unknown"));
       });
   };
 
