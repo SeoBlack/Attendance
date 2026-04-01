@@ -7,6 +7,8 @@ import org.example.attendancebackend.util.PasswordHasher;
 import org.example.attendancebackend.dto.SigninRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -33,8 +35,15 @@ public class UserService {
 
         String normalizedEmail = request.getEmail().trim().toLowerCase();
 
-        if (userRepository.existsByEmail(normalizedEmail)) {
-            throw new RuntimeException("User already exists");
+        Optional<User> optionalExisting = userRepository.findByEmailIgnoreCase(normalizedEmail);
+        if (optionalExisting.isPresent()) {
+            User existing = optionalExisting.get();
+            if (hasPassword(existing)) {
+                throw new RuntimeException("User already exists");
+            }
+            existing.setPasswordHash(passwordHasher.hash(request.getPassword()));
+            userRepository.save(existing);
+            return;
         }
 
         User user = new User();
@@ -45,6 +54,11 @@ public class UserService {
         user.setPasswordHash(passwordHasher.hash(request.getPassword()));
 
         userRepository.save(user);
+    }
+
+    private static boolean hasPassword(User user) {
+        String hash = user.getPasswordHash();
+        return hash != null && !hash.isBlank();
     }
 
     public void signin(SigninRequest request) {
@@ -87,7 +101,7 @@ public class UserService {
         return user;
     }
 
-        private boolean isBlank(String value) {
+    private boolean isBlank(String value) {
         return value == null || value.trim().isEmpty();
     }
 }

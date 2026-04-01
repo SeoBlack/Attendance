@@ -56,5 +56,237 @@
     "required": "هذا الحقل مطلوب.",
     "invalidEmail": "يُرجى إدخال بريد إلكتروني صالح.",
     "passwordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل."
+  },
+  "layout": {
+    "openMenu": "فتح القائمة",
+    "header": {
+      "noSection": "القسم"
+    }
+  },
+  "common": {
+    "placeholder": {
+      "emDash": "—",
+      "empty": "--",
+      "emptyPercent": "--%",
+      "timeUnset": "--:--",
+      "joinCodeMask": "------"
+    }
+  },
+  "teacher": {
+    "dashboard": {
+      "title": "لوحة التحكم",
+      "welcome": "لوحة المعلم"
+    },
+    "courseForm": {
+      "createTitle": "إنشاء مقرر",
+      "editTitle": "تعديل المقرر",
+      "fields": {
+        "name": "الاسم",
+        "description": "الوصف"
+      },
+      "actions": {
+        "create": "إنشاء",
+        "update": "تحديث",
+        "cancel": "إلغاء"
+      },
+      "errors": {
+        "loadFailed": "تعذّر تحميل المقرر.",
+        "saveFailed": "تعذّر حفظ المقرر."
+      }
+    },
+    "courses": {
+      "title": "المقررات",
+      "createCourse": "إنشاء مقرر",
+      "loading": "جارٍ التحميل…",
+      "empty": "لا توجد مقررات.",
+      "table": {
+        "id": "المعرّف",
+        "name": "الاسم",
+        "description": "الوصف",
+        "actions": "إجراءات"
+      },
+      "tooltips": {
+        "startLecture": "بدء المحاضرة",
+        "enrollments": "التسجيلات"
+      },
+      "aria": {
+        "startLecture": "بدء المحاضرة",
+        "enrollments": "التسجيلات",
+        "edit": "تعديل",
+        "delete": "حذف"
+      },
+      "confirmDelete": "هل تريد بالتأكيد حذف هذا المقرر؟",
+      "errors": {
+        "loadFailed": "تعذّر تحميل المقررات.",
+        "deleteFailed": "تعذّر حذف المقرر."
+      }
+    },
+    "enrollments": {
+      "title": "التسجيلات",
+      "titleWithCourse": "التسجيلات · {{courseName}}",
+      "actions": {
+        "back": "العودة إلى المقررات",
+        "addStudent": "إضافة طالب",
+        "upload": "رفع التسجيلات",
+        "deleteAll": "حذف التسجيلات"
+      },
+      "table": {
+        "id": "المعرّف",
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "email": "البريد الإلكتروني",
+        "actions": "إجراءات"
+      },
+      "states": {
+        "loading": "جارٍ التحميل…",
+        "empty": "لا توجد تسجيلات."
+      },
+      "tooltips": {
+        "remove": "إزالة"
+      },
+      "aria": {
+        "back": "العودة إلى المقررات",
+        "remove": "إزالة التسجيل",
+        "upload": "رفع التسجيلات",
+        "deleteAll": "حذف التسجيلات"
+      },
+      "dialogs": {
+        "addStudent": {
+          "title": "إضافة طالب",
+          "firstName": "الاسم الأول",
+          "lastName": "اسم العائلة",
+          "email": "البريد الإلكتروني",
+          "cancel": "إلغاء",
+          "submit": "إضافة",
+          "submitting": "جارٍ الإضافة…"
+        }
+      },
+      "confirmRemoveOne": "هل تريد إزالة هذا التسجيل من المقرر؟",
+      "confirmRemoveAll": "هل تريد إزالة جميع التسجيلات من هذا المقرر؟",
+      "errors": {
+        "loadCourseFailed": "تعذّر تحميل المقرر.",
+        "loadEnrollmentsFailed": "تعذّر تحميل التسجيلات.",
+        "loadDataFailed": "تعذّر تحميل البيانات.",
+        "removeFailed": "تعذّر إزالة التسجيل.",
+        "removeAllFailed": "تعذّر إزالة التسجيلات.",
+        "addStudentFailed": "تعذّر إضافة الطالب.",
+        "uploadFailed": "تعذّر رفع التسجيلات."
+      }
+    },
+    "lectures": {
+      "title": "المحاضرات",
+      "empty": "لا توجد محاضرات. ابدأ محاضرة من صفحة المقررات.",
+      "loading": "جارٍ التحميل…",
+      "table": {
+        "id": "المعرّف",
+        "description": "الوصف",
+        "joinCode": "رمز الانضمام",
+        "start": "البداية",
+        "end": "النهاية",
+        "actions": "إجراءات"
+      },
+      "tooltips": {
+        "viewDashboard": "عرض اللوحة"
+      },
+      "aria": {
+        "viewDashboard": "عرض لوحة المحاضرة",
+        "delete": "حذف المحاضرة"
+      },
+      "confirmDelete": "هل تريد بالتأكيد حذف هذه المحاضرة؟",
+      "errors": {
+        "loadFailed": "تعذّر تحميل المحاضرات.",
+        "deleteFailed": "تعذّر حذف المحاضرة.",
+        "createFailed": "تعذّر إنشاء المحاضرة.",
+        "invalidDateRange": "يجب أن يكون وقت الانتهاء بعد وقت البدء."
+      },
+      "dialog": {
+        "title": "إنشاء محاضرة",
+        "fields": {
+          "description": "الوصف",
+          "startDate": "تاريخ ووقت البدء",
+          "endDate": "تاريخ ووقت الانتهاء"
+        },
+        "actions": {
+          "cancel": "إلغاء",
+          "create": "إنشاء",
+          "creating": "جارٍ الإنشاء…"
+        }
+      }
+    },
+    "lectureDashboard": {
+      "title": "لوحة المحاضرة",
+      "sessionTitle": "جلسة الحضور",
+      "loading": "جارٍ تحميل المحاضرة…",
+      "notFound": "المحاضرة غير موجودة.",
+      "backToCourses": "العودة إلى المقررات",
+      "actions": {
+        "notifications": "الإشعارات",
+        "endSession": "إنهاء الجلسة"
+      },
+      "confirmEndSession": "هل تريد بالتأكيد إنهاء هذه الجلسة؟",
+      "stats": {
+        "totalStudents": "إجمالي الطلاب",
+        "present": "حاضرون",
+        "absent": "غائبون",
+        "attendanceRate": "نسبة الحضور"
+      },
+      "numericCode": {
+        "title": "الرمز الرقمي",
+        "subtitle": "طريقة بديلة لتسجيل الحضور",
+        "enterCode": "أدخل هذا الرمز:",
+        "validForSession": "صالح لهذه الجلسة فقط"
+      },
+      "attendanceSummary": {
+        "marked": "تم التعليم",
+        "present": "حاضرون",
+        "unmarked": "غير معلّم",
+        "pending": "قيد الانتظار"
+      },
+      "timer": {
+        "title": "مؤقت الجلسة",
+        "ended": "انتهت الجلسة",
+        "autoCloseIn": "يُغلق تلقائياً خلال {{timeLeft}}"
+      },
+      "presentStudents": "الطلاب الحاضرون",
+      "errors": {
+        "loadFailed": "تعذّر تحميل المحاضرة."
+      }
+    }
+  },
+  "student": {
+    "historyTitle": "سجل الحضور",
+    "historyDescription": "سجل حضورك الكامل عبر جميع المقررات المسجل بها.",
+    "historyNoRec": "لا توجد سجلات حضور بعد.",
+    "date": "التاريخ",
+    "course": "المقرر",
+    "lecture": "المحاضرة",
+    "time": "الوقت",
+    "status": "الحالة",
+    "markedAt": "تم التسجيل في",
+    "present": "حاضر",
+    "absent": "غائب",
+    "dashboardTitle": "لوحة التحكم",
+    "dashboardDescription": "مرحباً بعودتك، {{firstName}}! إليك نظرة عامة على حضورك.",
+    "messageToday": "اليوم: ",
+    "messageTotalLecture": "إجمالي المحاضرات",
+    "messageAttendanceRate": "نسبة الحضور",
+    "messageTodayClasses": "محاضرات اليوم",
+    "messageTodayNoClasses": "لا توجد محاضرات مجدولة لليوم.",
+    "messageRecentActivity": "النشاط الأخير",
+    "messageNoRecentActivity": "لا يوجد نشاط حديث.",
+    "messageMarkedPresent": "تم تسجيل الحضور في",
+    "messageMissed": "فاتك",
+    "messageQuickAction": "إجراءات سريعة",
+    "messageEnterCode": "إدخال الرمز",
+    "messageViewHistory": "عرض السجل",
+    "dialogTitle": "تسجيل الحضور",
+    "dialogContent": "أدخل رمز الانضمام إلى المحاضرة الذي يقدمه المدرس.",
+    "messageAttendanceMarked": "تم تسجيل الحضور! معرف المحاضرة: ",
+    "close": "إغلاق",
+    "cancel": "إلغاء",
+    "dialogTextField": "رمز الانضمام",
+    "dialogSubmit": "إرسال",
+    "todayLabel": "اليوم، ",
+    "yesterdayLabel": "أمس، "
   }
 }

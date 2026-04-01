@@ -32,6 +32,21 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
   const menuRoutes = getMenuElements(authData.role);
 
   const computeTitle = (pathname: string) => {
+    if (authData.role === USER_ROLE.TEACHER) {
+      if (pathname === "/teacher/courses/create") {
+        return "teacher.courseForm.createTitle";
+      }
+      if (pathname.startsWith("/teacher/courses/update/")) {
+        return "teacher.courseForm.editTitle";
+      }
+      if (/^\/teacher\/courses\/\d+\/enrollments$/.test(pathname)) {
+        return "teacher.enrollments.title";
+      }
+      if (/^\/teacher\/lectures\/\d+$/.test(pathname)) {
+        return "teacher.lectureDashboard.title";
+      }
+    }
+
     return (
       menuRoutes
         .filter(
@@ -42,7 +57,7 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
   };
 
   const titleKey = computeTitle(location.pathname);
-  const headerTitle = titleKey ? t(titleKey) : "N/A";
+  const headerTitle = titleKey ? t(titleKey) : t("layout.header.noSection");
 
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
@@ -69,7 +84,7 @@ function PrivateLayout({ requiresRole }: { requiresRole: USER_ROLE }) {
         <Toolbar sx={{ gap: 1 }}>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
+            aria-label={t("layout.openMenu")}
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ display: { sm: "none" } }}

@@ -27,6 +27,7 @@ import DisplayPanel from '../../components/common/DisplayPanel';
 import { attendance, student } from '../../api';
 import type { Attendance } from '../../entities/attendance';
 import { useNavigate } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 type TodayLecture = {
   lectureId: number;
@@ -55,24 +56,29 @@ type DashboardData = {
   recentActivity: AttendanceRecord[];
 };
 
-function formatTime(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+function formatTime(dateStr: string, locale: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(dateStr));
 }
 
-function formatRelativeDate(dateStr: string): string {
+function formatRelativeDate(dateStr: string, locale: string, t: (key: string) => string): string {
   const date = new Date(dateStr);
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
   if (date.toDateString() === today.toDateString()) {
-    return `Today, ${formatTime(dateStr)}`;
+    return `${t("student.todayLabel")} ${formatTime(dateStr, locale)}`;
   }
   if (date.toDateString() === yesterday.toDateString()) {
-    return `Yesterday, ${formatTime(dateStr)}`;
+    return `${t("student.yesterdayLabel")} ${formatTime(dateStr, locale)}`;
   }
-  return date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ', ' + formatTime(dateStr);
+  return `${new Intl.DateTimeFormat(locale, {
+    month: "short",
+    day: "numeric",
+  }).format(date)}, ${formatTime(dateStr, locale)}`;
 }
 
 function getLectureStatus(lecture: TodayLecture): { label: string; color: 'success' | 'warning' | 'info' } {
@@ -99,6 +105,8 @@ function DashboardPage() {
   const [success, setSuccess] = useState(false);
   const [result, setResult] = useState<Attendance | null>(null);
 
+  const {t, i18n} = useTranslation();
+
   const fetchDashboard = async () => {
     try {
       const response = await student.getDashboard();
@@ -112,6 +120,14 @@ function DashboardPage() {
       setPageLoading(false);
     }
   };
+
+  const localeMap: Record<string, string> = {
+    en: "en-US",
+    ru: "ru-RU",
+    ar: "ar-EG",
+  };
+
+  const locale = localeMap[i18n.resolvedLanguage ?? i18n.language] ?? "en-US";
 
   useEffect(() => {
     fetchDashboard();
@@ -163,23 +179,26 @@ function DashboardPage() {
   }
 
   const data = dashboardData;
-  const today = new Date().toLocaleDateString([], { weekday: undefined, year: 'numeric', month: 'long', day: 'numeric' });
-
+  const today = new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date());
   return (
     <Box sx={{ p: { xs: 1, sm: 3 }, position: 'relative', minHeight: '80vh' }}>
       {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Dashboard
+            {t("student.dashboardTitle")}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Welcome back, {data?.firstName}! Here's your attendance overview.
+            {t("student.dashboardDescription", {firstName: data?.firstName})}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
           <NotificationsNoneIcon />
-          <Typography variant="body2">Today: {today}</Typography>
+          <Typography variant="body2">{t("student.messageToday")} {today}</Typography>
         </Box>
       </Box>
 
@@ -187,7 +206,7 @@ function DashboardPage() {
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid size={{ xs: 6, md: 3 }}>
           <StatCard
-            title="Total Lectures"
+            title={t("student.messageTotalLecture")}
             value={data?.totalLectures ?? 0}
             icon={<SchoolIcon />}
             color="primary"
@@ -195,7 +214,7 @@ function DashboardPage() {
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
           <StatCard
-            title="Present"
+            title={t("student.present")}
             value={data?.presentCount ?? 0}
             icon={<CheckCircleIcon />}
             color="success"
@@ -203,7 +222,7 @@ function DashboardPage() {
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
           <StatCard
-            title="Absent"
+            title={t("student.absent")}
             value={data?.absentCount ?? 0}
             icon={<CancelIcon />}
             color="error"
@@ -211,7 +230,7 @@ function DashboardPage() {
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
           <StatCard
-            title="Attendance Rate"
+            title={t("student.messageAttendanceRate")}
             value={`${data?.attendanceRate ?? 0}%`}
             icon={<TrendingUpIcon />}
             color="warning"
@@ -224,11 +243,11 @@ function DashboardPage() {
         <Grid size={{ xs: 12, md: 6 }}>
           <DisplayPanel sx={{ minHeight: 300 }}>
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
-              Today's Classes
+              {t("student.messageTodayClasses")}
             </Typography>
             {(!data?.todayLectures || data.todayLectures.length === 0) ? (
               <Typography variant="body2" color="text.secondary">
-                No classes scheduled for today.
+                {t("student.messageTodayNoClasses")}
               </Typography>
             ) : (
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
@@ -254,7 +273,7 @@ function DashboardPage() {
                           {lecture.courseName}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {formatTime(lecture.startDate)} - {formatTime(lecture.endDate)}
+                          {formatTime(lecture.startDate, locale)} - {formatTime(lecture.endDate, locale)}
                         </Typography>
                       </Box>
                       <Chip
@@ -274,11 +293,11 @@ function DashboardPage() {
         <Grid size={{ xs: 12, md: 6 }}>
           <DisplayPanel sx={{ minHeight: 300 }}>
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
-              Recent Activity
+              {t("student.messageRecentActivity")}
             </Typography>
             {(!data?.recentActivity || data.recentActivity.length === 0) ? (
               <Typography variant="body2" color="text.secondary">
-                No recent activity.
+                {t("student.messageNoRecentActivity")}
               </Typography>
             ) : (
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -298,10 +317,10 @@ function DashboardPage() {
                     />
                     <Box>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {record.present ? 'Marked present for' : 'Missed'} {record.courseName}
+                        {record.present ? `${t("student.messageMarkedPresent")}` : `${t("student.messageMissed")}`} {record.courseName}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
-                        {formatRelativeDate(record.scannedAt)}
+                        {formatRelativeDate(record.scannedAt, locale, t)}
                       </Typography>
                     </Box>
                   </Box>
@@ -314,7 +333,7 @@ function DashboardPage() {
 
       {/* Quick Actions */}
       <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
-        Quick Actions
+        {t("student.messageQuickAction")}
       </Typography>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6 }}>
@@ -343,7 +362,7 @@ function DashboardPage() {
               <KeyboardIcon fontSize="small" />
             </Box>
             <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              Enter Code
+              {t("student.messageEnterCode")}
             </Typography>
           </DisplayPanel>
         </Grid>
@@ -373,7 +392,7 @@ function DashboardPage() {
               <HistoryIcon fontSize="small" />
             </Box>
             <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              View History
+              {t("student.messageViewHistory")}
             </Typography>
           </DisplayPanel>
         </Grid>
@@ -387,26 +406,27 @@ function DashboardPage() {
         onClick={() => setOpen(true)}
       >
         <KeyboardIcon sx={{ mr: 1 }} />
-        Enter Code
+        {t("student.messageEnterCode")}
       </Fab>
 
       {/* Mark Attendance Dialog */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-        <DialogTitle>Mark Attendance</DialogTitle>
+
+        <DialogTitle>{t("student.dialogTitle")}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Enter the lecture join code provided by your instructor.
+            {t("student.dialogContent")}
           </Typography>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
           )}
           {success && result ? (
             <Alert severity="success">
-              Attendance marked! Lecture ID: {result.attendanceId.lectureId}
+              {t("student.messageAttendanceMarked")} {result.attendanceId.lectureId}
             </Alert>
           ) : (
             <TextField
-              label="Join Code"
+              label={t("student.dialogTextField")}
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value)}
               fullWidth
@@ -418,7 +438,7 @@ function DashboardPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} disabled={loading}>
-            {success ? 'Close' : 'Cancel'}
+            {success ? `${t("student.close")}` : `${t("student.cancel")}`}
           </Button>
           {!success && (
             <Button
@@ -426,7 +446,7 @@ function DashboardPage() {
               onClick={handleSubmit}
               disabled={loading || !joinCode.trim()}
             >
-              {loading ? <CircularProgress size={20} color="inherit" /> : 'Submit'}
+              {loading ? <CircularProgress size={20} color="inherit" /> : `${t("student.dialogSubmit")}`}
             </Button>
           )}
         </DialogActions>

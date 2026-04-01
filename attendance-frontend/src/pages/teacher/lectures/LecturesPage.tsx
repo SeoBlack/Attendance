@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Typography,
@@ -22,6 +23,7 @@ import { api } from '../../../api';
 import type { Lecture } from '../../../entities/lecture';
 
 function LecturesPage() {
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const [lectures, setLectures] = useState<Lecture[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,37 +34,43 @@ function LecturesPage() {
     setError('');
     api.lectures.getLectures()
       .then(async (resp) => {
-        if (!resp.ok) throw new Error(await resp.text() || 'Failed to load lectures');
+        if (!resp.ok) {
+          const body = (await resp.text()).trim();
+          throw new Error(body || t('teacher.lectures.errors.loadFailed'));
+        }
         const data = await resp.json();
         setLectures(data as Lecture[]);
       })
-      .catch((e: any) => setError(e?.message || 'Failed to load lectures'))
+      .catch((e: any) => setError(e?.message || t('teacher.lectures.errors.loadFailed')))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
     loadLectures();
-  }, []);
+  }, [t]);
 
   const handleDelete = (id: number) => {
-    if (!confirm('Are you sure you want to delete this lecture?')) return;
+    if (!confirm(t('teacher.lectures.confirmDelete'))) return;
     api.lectures.deleteLecture(id)
       .then(async (resp) => {
-        if (!resp.ok) throw new Error(await resp.text() || 'Failed to delete lecture');
+        if (!resp.ok) {
+          const body = (await resp.text()).trim();
+          throw new Error(body || t('teacher.lectures.errors.deleteFailed'));
+        }
         loadLectures();
       })
-      .catch((e: any) => setError(e?.message || 'Failed to delete lecture'));
+      .catch((e: any) => setError(e?.message || t('teacher.lectures.errors.deleteFailed')));
   };
 
   const formatDate = (dateStr: string) => {
-    if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleString();
+    if (!dateStr) return t('common.placeholder.emDash');
+    return new Date(dateStr).toLocaleString(i18n.language);
   };
 
   return (
     <Box>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="h5" component="h1">Lectures</Typography>
+        <Typography variant="h5" component="h1">{t('teacher.lectures.title')}</Typography>
       </Stack>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -71,22 +79,22 @@ function LecturesPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Join Code</TableCell>
-              <TableCell>Start</TableCell>
-              <TableCell>End</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>{t('teacher.lectures.table.id')}</TableCell>
+              <TableCell>{t('teacher.lectures.table.description')}</TableCell>
+              <TableCell>{t('teacher.lectures.table.joinCode')}</TableCell>
+              <TableCell>{t('teacher.lectures.table.start')}</TableCell>
+              <TableCell>{t('teacher.lectures.table.end')}</TableCell>
+              <TableCell align="right">{t('teacher.lectures.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6}>Loading...</TableCell>
+                <TableCell colSpan={6}>{t('teacher.lectures.loading')}</TableCell>
               </TableRow>
             ) : lectures.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6}>No lectures found. Start a lecture from the Courses page.</TableCell>
+                <TableCell colSpan={6}>{t('teacher.lectures.empty')}</TableCell>
               </TableRow>
             ) : (
               lectures.map((lecture) => (
@@ -95,7 +103,7 @@ function LecturesPage() {
                   <TableCell>{lecture.description}</TableCell>
                   <TableCell>
                     <Chip
-                      label={lecture.joinCode || '—'}
+                      label={lecture.joinCode || t('common.placeholder.emDash')}
                       size="small"
                       color="primary"
                       variant="outlined"
@@ -105,12 +113,20 @@ function LecturesPage() {
                   <TableCell>{formatDate(lecture.startDate)}</TableCell>
                   <TableCell>{formatDate(lecture.endDate)}</TableCell>
                   <TableCell align="right">
-                    <Tooltip title="View Dashboard">
-                      <IconButton aria-label="view" color="primary" onClick={() => navigate(`/teacher/lectures/${lecture.id}`)}>
+                    <Tooltip title={t('teacher.lectures.tooltips.viewDashboard')}>
+                      <IconButton
+                        aria-label={t('teacher.lectures.aria.viewDashboard')}
+                        color="primary"
+                        onClick={() => navigate(`/teacher/lectures/${lecture.id}`)}
+                      >
                         <VisibilityIcon />
                       </IconButton>
                     </Tooltip>
-                    <IconButton aria-label="delete" color="error" onClick={() => handleDelete(lecture.id!)}>
+                    <IconButton
+                      aria-label={t('teacher.lectures.aria.delete')}
+                      color="error"
+                      onClick={() => handleDelete(lecture.id!)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
