@@ -35,6 +35,8 @@ Copy ``.env.example`` to ``.env.local`` and change the value of ``VITE_API_URL``
 npm run dev
 ```
 
+Translations: JSON bundles in `src/languages/` (`en`, `ru`, `ar`, `fi`). See the repository root **README** section *UI languages & localization* for supported locales and behavior.
+
 ### 3. Testing
 
 ```shell

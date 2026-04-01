@@ -44,6 +44,22 @@ Teachers are marking their students attendance using excel sheets and by calling
 - GPS validation and lecture statistics (for teachers).
 - Teacher can manipulate attendance records.
 
+## UI languages & localization
+
+The frontend supports **English**, **Russian**, **Arabic** (with **RTL** layout for Arabic), and **Finnish**. Translations live in JSON bundles under `attendance-frontend/src/languages/` (`en.json`, `ru.json`, `ar.json`, `fi.json`); Finnish was added in [#145](https://github.com/SeoBlack/Attendance/pull/145).
+
+**Stack:** [i18next](https://www.i18next.com/) and [react-i18next](https://react.i18next.com/). RTL uses MUI `direction`, Emotion cache, and `stylis-plugin-rtl` (see `AppThemeProvider`).
+
+**Switching language:** use the in-app language menu. The choice is stored in `localStorage` under key `language` (`en` | `ru` | `ar` | `fi`) so it survives refresh.
+
+**Running the localized UI:** configure and start the frontend as in [attendance-frontend/README.md](attendance-frontend/README.md) (`npm install`, `.env.local` with `VITE_API_URL`, then `npm run dev`). The same build serves all locales.
+
+**Limitations:** only strings from the JSON resources are translated. User- and API-supplied text (e.g. course titles) is shown as stored until **database content localization** ([docs/sprint_report/Sprint6_Plan.md](docs/sprint_report/Sprint6_Plan.md)).
+
+**Resources for translators:** keep keys identical across locale files; edit `*.json` per language.
+
+**QA:** before release or demo, use the [localization QA checklist](docs/LOCALIZATION_QA_CHECKLIST.md) (Epic 5, Sprint 5).
+
 # Technologies used
 ## Backend
 - Java 17
