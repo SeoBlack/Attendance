@@ -51,7 +51,12 @@
     "changeLanguage": "Vaihda kieli"
   },
   "errors": {
-    "unknown": "Tapahtui tuntematon virhe. Yritä myöhemmin uudelleen."
+    "unknown": "Tapahtui tuntematon virhe. Yritä myöhemmin uudelleen.",
+    "invalidCredentials": "Virheellinen sähköposti tai salasana. Yritä uudelleen.",
+    "signupFailed": "Rekisteröityminen epäonnistui. Yritä uudelleen.",
+    "required": "Tämä kenttä on pakollinen.",
+    "invalidEmail": "Anna kelvollinen sähköpostiosoite.",
+    "passwordTooShort": "Salasanan on oltava vähintään 6 merkkiä."
   },
   "layout": {
     "openMenu": "Avaa valikko",
@@ -248,5 +253,41 @@
         "loadFailed": "Luennon lataaminen epäonnistui."
       }
     }
+  },
+  "student": {
+    "historyTitle": "Läsnäolohistoria",
+    "historyDescription": "Täydellinen läsnäolosi kaikilta kursseilta, joille olet ilmoittautunut.",
+    "historyNoRec": "Ei vielä läsnäolomerkintöjä.",
+    "date": "Päivämäärä",
+    "course": "Kurssi",
+    "lecture": "Luento",
+    "time": "Aika",
+    "status": "Tila",
+    "markedAt": "Merkitty aikaan",
+    "present": "Paikalla",
+    "absent": "Poissa",
+    "dashboardTitle": "Ohjauspaneeli",
+    "dashboardDescription": "Tervetuloa takaisin, {{firstName}}! Tässä on läsnäolosi yhteenveto.",
+    "messageToday": "Tänään: ",
+    "messageTotalLecture": "Luentoja yhteensä",
+    "messageAttendanceRate": "Läsnäoloaste",
+    "messageTodayClasses": "Tämän päivän luennot",
+    "messageTodayNoClasses": "Tälle päivälle ei ole aikataulutettu luentoja.",
+    "messageRecentActivity": "Viimeaikainen toiminta",
+    "messageNoRecentActivity": "Ei viimeaikaista toimintaa.",
+    "messageMarkedPresent": "Merkitty läsnä olevaksi:",
+    "messageMissed": "Jäi väliin",
+    "messageQuickAction": "Pikatoiminnot",
+    "messageEnterCode": "Syötä koodi",
+    "messageViewHistory": "Näytä historia",
+    "dialogTitle": "Merkitse läsnäolo",
+    "dialogContent": "Syötä opettajan antama luennon liittymiskoodi.",
+    "messageAttendanceMarked": "Läsnäolo merkitty! Luento-ID: ",
+    "close": "Sulje",
+    "cancel": "Peruuta",
+    "dialogTextField": "Liittymiskoodi",
+    "dialogSubmit": "Lähetä",
+    "todayLabel": "Tänään, ",
+    "yesterdayLabel": "Eilen, "
   }
 }
