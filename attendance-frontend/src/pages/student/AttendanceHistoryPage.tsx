@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import DisplayPanel from '../../components/common/DisplayPanel';
 import { student } from '../../api';
+import { useTranslation } from "react-i18next";
 
 type HistoryRecord = {
   lectureId: number;
@@ -25,20 +26,39 @@ type HistoryRecord = {
   scannedAt: string | null;
 };
 
-function formatDateTime(dateStr: string): string {
+function formatDateTime(dateStr: string, locale: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
-    + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date) + ' ' + new Intl.DateTimeFormat(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
 }
 
-function formatTime(dateStr: string): string {
-  return new Date(dateStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+function formatTime(dateStr: string, locale: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(dateStr));
 }
 
 function AttendanceHistoryPage() {
   const theme = useTheme();
   const [records, setRecords] = useState<HistoryRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t, i18n } = useTranslation();
+
+  const localeMap: Record<string, string> = {
+    en: "en-US",
+    ru: "ru-RU",
+    ar: "ar-EG",
+  }
+
+  const locale = localeMap[i18n.resolvedLanguage ?? i18n.language] ?? "en-US";
+
 
   useEffect(() => {
     (async () => {
@@ -67,16 +87,16 @@ function AttendanceHistoryPage() {
   return (
     <Box sx={{ p: { xs: 1, sm: 3 } }}>
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-        Attendance History
+        {t("student.historyTitle")}
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-        Your complete attendance record across all enrolled courses.
+        {t("student.historyDescription")}
       </Typography>
 
       {records.length === 0 ? (
         <DisplayPanel>
           <Typography variant="body2" color="text.secondary">
-            No attendance records yet.
+            {t("student.historyNoRec")}
           </Typography>
         </DisplayPanel>
       ) : (
@@ -85,12 +105,12 @@ function AttendanceHistoryPage() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Course</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Lecture</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Time</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Marked At</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{t("student.date")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{t("student.course")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{t("student.lecture")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{t("student.time")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{t("student.status")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{t("student.markedAt")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -105,11 +125,11 @@ function AttendanceHistoryPage() {
                     }}
                   >
                     <TableCell>
-                      {new Date(record.lectureStartDate).toLocaleDateString([], {
+                      {new Intl.DateTimeFormat(locale, {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
-                      })}
+                        }).format(new Date(record.lectureStartDate))}
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
@@ -123,12 +143,12 @@ function AttendanceHistoryPage() {
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2" color="text.secondary">
-                        {formatTime(record.lectureStartDate)} - {formatTime(record.lectureEndDate)}
+                        {formatTime(record.lectureStartDate, locale)} - {formatTime(record.lectureEndDate, locale)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Chip
-                        label={record.present ? 'Present' : 'Absent'}
+                        label={record.present ? `${t("student.present")}` : `${t("student.absent")}`}
                         color={record.present ? 'success' : 'error'}
                         size="small"
                         variant="outlined"
@@ -136,7 +156,7 @@ function AttendanceHistoryPage() {
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2" color="text.secondary">
-                        {record.scannedAt ? formatDateTime(record.scannedAt) : '-'}
+                        {record.scannedAt ? formatDateTime(record.scannedAt, locale) : '-'}
                       </Typography>
                     </TableCell>
                   </TableRow>
