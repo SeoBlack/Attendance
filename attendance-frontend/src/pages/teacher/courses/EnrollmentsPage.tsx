@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Typography,
@@ -21,6 +22,7 @@ import {
   DialogActions,
   TextField,
   CircularProgress,
+  useTheme,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,6 +35,8 @@ import type { Enrollment } from '../../../entities/enrollment';
 import DeleteEnrollmentsButton from "../../../components/enrollments/DeleteEnrollmentsButton.";
 
 function EnrollmentsPage() {
+  const { t } = useTranslation();
+  const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
   const courseId = Number(id);
@@ -56,32 +60,41 @@ function EnrollmentsPage() {
       api.enrollments.getEnrollments(courseId)
     ])
       .then(async ([courseResp, enrollmentsResp]) => {
-        if (!courseResp.ok) throw new Error(await courseResp.text() || 'Failed to load course');
-        if (!enrollmentsResp.ok) throw new Error(await enrollmentsResp.text() || 'Failed to load enrollments');
+        if (!courseResp.ok) {
+          const body = (await courseResp.text()).trim();
+          throw new Error(body || t('teacher.enrollments.errors.loadCourseFailed'));
+        }
+        if (!enrollmentsResp.ok) {
+          const body = (await enrollmentsResp.text()).trim();
+          throw new Error(body || t('teacher.enrollments.errors.loadEnrollmentsFailed'));
+        }
         const courseData = await courseResp.json();
         const enrollmentsData = await enrollmentsResp.json();
         setCourse(courseData as Course);
         setEnrollments(enrollmentsData as Enrollment[]);
       })
-      .catch((e: any) => setError(e?.message || 'Failed to load data'))
+      .catch((e: any) => setError(e?.message || t('teacher.enrollments.errors.loadDataFailed')))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
     loadData();
-  }, [courseId]);
+  }, [courseId, t]);
 
   const handleRemove = async (enrollmentId: number) => {
     if (!courseId || Number.isNaN(courseId)) return;
-    if (!confirm('Remove this enrollment from the course?')) return;
+    if (!confirm(t('teacher.enrollments.confirmRemoveOne'))) return;
     setError('');
     try {
       const resp = await api.enrollments.deleteEnrollment(courseId, enrollmentId);
-      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to remove enrollment');
+      if (!resp.ok) {
+        const body = (await resp.text()).trim();
+        throw new Error(body || t('teacher.enrollments.errors.removeFailed'));
+      }
       // reload list
       loadData();
     } catch (e: any) {
-      setError(e?.message || 'Failed to remove enrollment');
+      setError(e?.message || t('teacher.enrollments.errors.removeFailed'));
     }
   }
 
@@ -91,25 +104,31 @@ function EnrollmentsPage() {
     setAddError('');
     try {
       const resp = await api.enrollments.enrollOneStudent(courseId, addForm);
-      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to add student');
+      if (!resp.ok) {
+        const body = (await resp.text()).trim();
+        throw new Error(body || t('teacher.enrollments.errors.addStudentFailed'));
+      }
       setAddDialogOpen(false);
       setAddForm({ firstName: '', lastName: '', email: '' });
       loadData();
     } catch (e: any) {
-      setAddError(e?.message || 'Failed to add student');
+      setAddError(e?.message || t('teacher.enrollments.errors.addStudentFailed'));
     } finally {
       setAddLoading(false);
     }
   };
 
   const handleDeleteEnrollments = async () => {
-    if (!confirm('Remove all enrollments from the course?')) return;
+    if (!confirm(t('teacher.enrollments.confirmRemoveAll'))) return;
     try{
       const resp = await api.enrollments.deleteAllEnrollments(courseId);
-      if (!resp.ok) throw new Error((await resp.text()) || 'Failed to remove enrollment');
+      if (!resp.ok) {
+        const body = (await resp.text()).trim();
+        throw new Error(body || t('teacher.enrollments.errors.removeAllFailed'));
+      }
       loadData();
     }catch (e: any) {
-      setError(e?.message || 'Failed to remove enrollments');
+      setError(e?.message || t('teacher.enrollments.errors.removeAllFailed'));
     }
   }
 
@@ -117,29 +136,41 @@ function EnrollmentsPage() {
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }} justifyContent="space-between">
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1}
+        sx={{ mb: 2, rowGap: 1.5, flexWrap: 'wrap' }}
+        justifyContent="space-between"
+      >
         <Stack direction="row" alignItems="center" spacing={1}>
-          <IconButton aria-label="back" onClick={() => navigate('/teacher/courses')}>
+          <IconButton
+            aria-label={t('teacher.enrollments.aria.back')}
+            onClick={() => navigate('/teacher/courses')}
+            sx={theme.direction === 'rtl' ? { transform: 'scaleX(-1)' } : undefined}
+          >
             <ArrowBackIcon />
           </IconButton>
           <Typography variant="h5" component="h1">
-            {course ? `Enrollments · ${course.courseName}` : 'Enrollments'}
+            {course
+              ? t('teacher.enrollments.titleWithCourse', { courseName: course.courseName })
+              : t('teacher.enrollments.title')}
           </Typography>
         </Stack>
         {courseId ? (
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
             <Button
               variant="outlined"
               startIcon={<PersonAddIcon />}
               onClick={() => setAddDialogOpen(true)}
             >
-              Add Student
+              {t('teacher.enrollments.actions.addStudent')}
             </Button>
             <UploadEnrollmentsButton
               courseId={courseId}
               onUploaded={loadData}
               onError={(msg) => setError(msg)}
-              title="Upload enrollments"
+              title={t('teacher.enrollments.actions.upload')}
             />
             <DeleteEnrollmentsButton onClick={handleDeleteEnrollments} disabled={deleteButtonDisabled} />
           </Stack>
@@ -152,21 +183,21 @@ function EnrollmentsPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>First name</TableCell>
-              <TableCell>Second name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>{t('teacher.enrollments.table.id')}</TableCell>
+              <TableCell>{t('teacher.enrollments.table.firstName')}</TableCell>
+              <TableCell>{t('teacher.enrollments.table.lastName')}</TableCell>
+              <TableCell>{t('teacher.enrollments.table.email')}</TableCell>
+              <TableCell align="right">{t('teacher.enrollments.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5}>Loading...</TableCell>
+                <TableCell colSpan={5}>{t('teacher.enrollments.states.loading')}</TableCell>
               </TableRow>
             ) : enrollments.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5}>No enrollments found.</TableCell>
+                <TableCell colSpan={5}>{t('teacher.enrollments.states.empty')}</TableCell>
               </TableRow>
             ) : (
               enrollments.map((e) => (
@@ -176,8 +207,12 @@ function EnrollmentsPage() {
                   <TableCell>{e.lastName}</TableCell>
                   <TableCell>{e.email}</TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Remove">
-                      <IconButton aria-label="remove" color="error" onClick={() => handleRemove(e.id)}>
+                    <Tooltip title={t('teacher.enrollments.tooltips.remove')}>
+                      <IconButton
+                        aria-label={t('teacher.enrollments.aria.remove')}
+                        color="error"
+                        onClick={() => handleRemove(e.id)}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
@@ -190,11 +225,11 @@ function EnrollmentsPage() {
       </TableContainer>
 
       <Dialog open={addDialogOpen} onClose={() => { setAddDialogOpen(false); setAddError(''); }} fullWidth maxWidth="sm">
-        <DialogTitle>Add Student</DialogTitle>
+        <DialogTitle>{t('teacher.enrollments.dialogs.addStudent.title')}</DialogTitle>
         <DialogContent>
           {addError && <Alert severity="error" sx={{ mb: 2 }}>{addError}</Alert>}
           <TextField
-            label="First Name"
+            label={t('teacher.enrollments.dialogs.addStudent.firstName')}
             value={addForm.firstName}
             onChange={(e) => setAddForm((f) => ({ ...f, firstName: e.target.value }))}
             fullWidth
@@ -202,7 +237,7 @@ function EnrollmentsPage() {
             disabled={addLoading}
           />
           <TextField
-            label="Last Name"
+            label={t('teacher.enrollments.dialogs.addStudent.lastName')}
             value={addForm.lastName}
             onChange={(e) => setAddForm((f) => ({ ...f, lastName: e.target.value }))}
             fullWidth
@@ -210,7 +245,7 @@ function EnrollmentsPage() {
             disabled={addLoading}
           />
           <TextField
-            label="Email"
+            label={t('teacher.enrollments.dialogs.addStudent.email')}
             type="email"
             value={addForm.email}
             onChange={(e) => setAddForm((f) => ({ ...f, email: e.target.value }))}
@@ -219,16 +254,18 @@ function EnrollmentsPage() {
             disabled={addLoading}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ flexWrap: 'wrap', gap: 1 }}>
           <Button onClick={() => { setAddDialogOpen(false); setAddError(''); }} disabled={addLoading}>
-            Cancel
+            {t('teacher.enrollments.dialogs.addStudent.cancel')}
           </Button>
           <Button
             variant="contained"
             onClick={handleAddStudent}
             disabled={addLoading || !addForm.firstName.trim() || !addForm.lastName.trim() || !addForm.email.trim()}
           >
-            {addLoading ? <CircularProgress size={20} color="inherit" /> : 'Add'}
+            {addLoading
+              ? <CircularProgress size={20} color="inherit" />
+              : t('teacher.enrollments.dialogs.addStudent.submit')}
           </Button>
         </DialogActions>
       </Dialog>

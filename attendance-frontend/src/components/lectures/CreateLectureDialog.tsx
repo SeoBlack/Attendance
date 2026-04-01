@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogTitle,
@@ -26,6 +27,7 @@ export default function CreateLectureDialog({
   onClose,
   onCreated,
 }: CreateLectureDialogProps) {
+  const { t } = useTranslation();
   const { addLecture } = useLectureContext();
 
   const toDatetimeLocal = (date: Date) => {
@@ -61,7 +63,7 @@ export default function CreateLectureDialog({
     const end = new Date(endDate);
 
     if (end <= start) {
-      setError('End date must be after start date');
+      setError(t('teacher.lectures.errors.invalidDateRange'));
       return;
     }
 
@@ -76,13 +78,16 @@ export default function CreateLectureDialog({
         endDate: end.toISOString(),
       })
       .then(async (resp) => {
-        if (!resp.ok) throw new Error((await resp.text()) || 'Failed to create lecture');
+        if (!resp.ok) {
+          const body = (await resp.text()).trim();
+          throw new Error(body || t('teacher.lectures.errors.createFailed'));
+        }
         const lecture: Lecture = await resp.json();
         addLecture(lecture);
         onCreated(lecture);
         resetForm();
       })
-      .catch((e: any) => setError(e?.message || 'Failed to create lecture'))
+      .catch((e: any) => setError(e?.message || t('teacher.lectures.errors.createFailed')))
       .finally(() => setSaving(false));
   };
 
@@ -102,12 +107,12 @@ export default function CreateLectureDialog({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <form onSubmit={handleSubmit}>
-        <DialogTitle>Create Lecture</DialogTitle>
+        <DialogTitle>{t('teacher.lectures.dialog.title')}</DialogTitle>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
             {error && <Alert severity="error">{error}</Alert>}
             <TextField
-              label="Description"
+              label={t('teacher.lectures.dialog.fields.description')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
@@ -117,7 +122,7 @@ export default function CreateLectureDialog({
               disabled={saving}
             />
             <TextField
-              label="Start Date & Time"
+              label={t('teacher.lectures.dialog.fields.startDate')}
               type="datetime-local"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
@@ -127,7 +132,7 @@ export default function CreateLectureDialog({
               slotProps={{ inputLabel: { shrink: true } }}
             />
             <TextField
-              label="End Date & Time"
+              label={t('teacher.lectures.dialog.fields.endDate')}
               type="datetime-local"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
@@ -138,12 +143,14 @@ export default function CreateLectureDialog({
             />
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
+        <DialogActions sx={{ px: 3, pb: 2, flexWrap: 'wrap', gap: 1 }}>
           <ActionButton variant="outlined" onClick={handleClose} disabled={saving}>
-            Cancel
+            {t('teacher.lectures.dialog.actions.cancel')}
           </ActionButton>
           <ActionButton type="submit" color="brand" disabled={!canSave || saving}>
-            {saving ? 'Creating...' : 'Create'}
+            {saving
+              ? t('teacher.lectures.dialog.actions.creating')
+              : t('teacher.lectures.dialog.actions.create')}
           </ActionButton>
         </DialogActions>
       </form>

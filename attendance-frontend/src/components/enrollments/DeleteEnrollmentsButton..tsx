@@ -1,5 +1,6 @@
 import {Button, Tooltip} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     onClick: () => void;
@@ -7,12 +8,18 @@ type Props = {
 };
 
 function DeleteEnrollmentsButton({onClick, disabled}: Props) {
-    const title = 'Delete enrollments';
+    const { t } = useTranslation();
+    const title = t('teacher.enrollments.actions.deleteAll');
 
     return (
         <Tooltip title={title}>
           <span>
-            <Button aria-label="delete-enrollments" onClick={onClick} disabled={disabled} color="error">
+            <Button
+              aria-label={t('teacher.enrollments.aria.deleteAll')}
+              onClick={onClick}
+              disabled={disabled}
+              color="error"
+            >
                 <DeleteIcon/>
                 {title}
             </Button>
