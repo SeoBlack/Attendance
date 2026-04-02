@@ -136,3 +136,5 @@ Linux, Mac:
 PG_LOCAL_DATA=/this/is/your/path docker compose -f compose.yaml up -d
 
 ```
+---
+[TEACHER JOURNEY MAP in Figma](https://www.figma.com/board/3dinfOaquf2pNITHZnsUPz/User-Journey-Map?node-id=6-243&t=X15jp82Z1kkL7F8O-1)
