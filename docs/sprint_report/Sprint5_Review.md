@@ -43,13 +43,13 @@ Requirements follow the OTP2/AD 2026 Sprint 5 (UI localization) theme. Below is 
 
 ## Team: contribution, hours, and PRs
 
-Summary of each member’s main contribution, primary PR, and **approximate hours** on Sprint 5 work. Olga’s hours — *TBD* (to be added later).
+Summary of each member’s main contribution, primary PR, and **approximate hours** on Sprint 5 work.
 
 | Team Member Name | Assigned tasks (summary) | PR | Time Spent (hrs) |
 |------------------|--------------------------|-----|------------------|
 | Soreen Oraibi (SeoBlack) | i18n, RTL, theme (`AppThemeProvider`), sign-in/sign-up, menu, fonts | [#140](https://github.com/SeoBlack/Attendance/pull/140) | 4 |
 | Lev Karavanov (levkaravanov) | Teacher UI, `PrivateLayout`, dialogs; backend signup for placeholders; merge conflict resolution | [#142](https://github.com/SeoBlack/Attendance/pull/142) | 6 |
-| Olga Shomarova (olshom) | Student dashboard and history; dates/times per locale | [#141](https://github.com/SeoBlack/Attendance/pull/141) | *TBD* |
+| Olga Shomarova (olshom) | Student dashboard and history; dates/times per locale | [#141](https://github.com/SeoBlack/Attendance/pull/141) | 1 |
 | Viswak Ggautham (viswak-DataCrunch) | Sign-in/sign-up errors by HTTP status → i18n keys | [#143](https://github.com/SeoBlack/Attendance/pull/143) | 1 |
 | Alexey Lebedev (zalman29096) | Finnish: `fi.json`, selector, `i18n.js` | [#145](https://github.com/SeoBlack/Attendance/pull/145) | 1 |
 
