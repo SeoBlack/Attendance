@@ -38,12 +38,10 @@ public class CourseController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Course>> getCourses(
-            @RequestParam(required = false) String instructionLanguage,
-            HttpServletRequest request) {
+    public ResponseEntity<List<Course>> getCourses(HttpServletRequest request) {
         String locale = LocaleUtil.resolveLocaleHeader(request.getHeader("Accept-Language"));
         return new ResponseEntity<>(
-                courseService.getCourses((Long) request.getAttribute("authUserId"), locale, instructionLanguage),
+                courseService.getCourses((Long) request.getAttribute("authUserId"), locale),
                 HttpStatus.OK);
     }
 

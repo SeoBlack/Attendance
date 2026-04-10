@@ -33,16 +33,8 @@ public class CourseService {
         return course;
     }
 
-    public List<Course> getCourses(Long teacherId, String requestedLocale, String instructionLanguageFilter) {
-        List<Course> courses;
-        if (instructionLanguageFilter == null || instructionLanguageFilter.isBlank()) {
-            courses = courseRepository.findByTeacherId(teacherId);
-        } else {
-            courses = courseRepository.findByTeacherIdAndInstructionLanguage(
-                    teacherId,
-                    LocaleUtil.normalize(instructionLanguageFilter)
-            );
-        }
+    public List<Course> getCourses(Long teacherId, String requestedLocale) {
+        List<Course> courses = courseRepository.findByTeacherId(teacherId);
         applyTranslationsBatch(courses, requestedLocale);
         return courses;
     }

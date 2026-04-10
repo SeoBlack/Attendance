@@ -119,9 +119,9 @@ For entities that need the **same logical field** in more than one language (for
 
 **Entry workflow:** require **one** default language at create time (the teacher’s current UI language or an application default). Additional locales are **optional** and can be added later. When serving data, if a translation is missing for the requested locale, **fall back** to the default locale (then optionally to any available string). Teachers do not need to type every supported language on every save.
 
-### Language as a filter (optional)
+### User locale preference (optional)
 
-A **`language`** (or `locale`) column on `courses`, `lectures`, or **user preference** on `users` is **complementary**: it tags the **primary language** of an offering or a user’s preference and supports **filtering** (e.g. list only courses taught in a given language). It does **not** replace translation rows for fields that need multiple localized strings; use both when the product needs tagging and translations.
+**`preferred_locale` on `users`** can store the student’s preferred language for localized API responses. It does **not** replace translation rows for multilingual course titles; those live in `course_translation`.
 
 ### Character encoding and locale
 
@@ -146,14 +146,11 @@ The backend picks the translation row using the **requested locale**. The fronte
    - **JSON files** under `attendance-frontend/src/languages/`: labels, buttons, menu (`t('...')`).
    - **API JSON fields** (e.g. `courseName`, `description` on course objects): show as `{course.courseName}` without `t()`, because they already come localized from the server.
 
-3. **Optional: filter courses by instruction language**  
-   `GET /courses?instructionLanguage=en` (or `ar`, `ru`) limits the list to courses whose `instruction_language` matches. The frontend can add this query when you expose a filter in the UI.
-
-4. **Student preference vs browser language**  
+3. **Student preference vs browser language**  
    If `users.preferred_locale` is set in the database, the student dashboard/history services resolve the course title using that value before `Accept-Language`. To drive that from the app later, add a profile setting that PATCHes the user and persist `preferred_locale`.
 
-5. **Teacher create/update course**  
-   `POST` / `PUT /courses` sends `courseName`, `description`, and optionally `defaultLocale` and `instructionLanguage`. The text is stored for `defaultLocale` (defaults to `en` if omitted). Align `defaultLocale` with the teacher’s UI when saving (e.g. same primary subtag as `i18n.language`) so the first saved row matches the language they typed in.
+4. **Teacher create/update course**  
+   `POST` / `PUT /courses` sends `courseName`, `description`, and optionally `defaultLocale`. The text is stored for `defaultLocale` (defaults from `Accept-Language` if omitted). Align `defaultLocale` with the teacher’s UI when saving (e.g. same primary subtag as `i18n.language`) so the correct translation row is updated.
 
 After changing language in the **LanguageSelector**, i18next updates `i18n.language`; the next `pfetch` calls send the new `Accept-Language`, so list and detail views refetched from the API reflect the new locale without extra wiring in each page.
 

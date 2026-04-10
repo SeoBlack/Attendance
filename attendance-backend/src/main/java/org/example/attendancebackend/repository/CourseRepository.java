@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByTeacherId(Long teacherId);
 
-    List<Course> findByTeacherIdAndInstructionLanguage(Long teacherId, String instructionLanguage);
-
     Optional<Course> findByIdAndTeacherId(Long id, Long teacherId);
 
     void deleteByIdAndTeacherId(Long id, Long teacherId);

@@ -93,7 +93,7 @@ public class CourseServiceTest {
                 .courseId(2L).locale("en").courseName("Python").description("Python is practice").build();
         given(translationRepository.findByCourseIdIn(List.of(1L, 2L))).willReturn(List.of(t1, t2));
 
-        List<Course> result = courseService.getCourses(0L, "en", null);
+        List<Course> result = courseService.getCourses(0L, "en");
 
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals("Math", result.get(0).getCourseName());

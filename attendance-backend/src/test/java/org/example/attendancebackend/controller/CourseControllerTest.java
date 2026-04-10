@@ -60,7 +60,7 @@ class CourseControllerTest {
     @Test
     void getCourses() throws Exception {
         Course course2 = Course.builder().courseName("Python").description("Python is practical").defaultLocale("en").build();
-        given(courseService.getCourses(ArgumentMatchers.any(), ArgumentMatchers.eq("en"), ArgumentMatchers.isNull()))
+        given(courseService.getCourses(ArgumentMatchers.any(), ArgumentMatchers.eq("en")))
                 .willReturn(List.of(course, course2));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/courses")
