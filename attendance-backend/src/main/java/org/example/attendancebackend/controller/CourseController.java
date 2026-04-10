@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
+import org.example.attendancebackend.util.LocaleUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -37,26 +38,47 @@ public class CourseController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Course>> getCourses(HttpServletRequest request) {
-        return new ResponseEntity<>(courseService.getCourses((Long) request.getAttribute("authUserId")), HttpStatus.OK);
+    public ResponseEntity<List<Course>> getCourses(
+            @RequestParam(required = false) String instructionLanguage,
+            HttpServletRequest request) {
+        String locale = LocaleUtil.resolveLocaleHeader(request.getHeader("Accept-Language"));
+        return new ResponseEntity<>(
+                courseService.getCourses((Long) request.getAttribute("authUserId"), locale, instructionLanguage),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourse(@PathVariable Long id, HttpServletRequest request){
-        return new ResponseEntity<>(courseService.getCourseById(id, (Long) request.getAttribute("authUserId")), HttpStatus.OK);
+    public ResponseEntity<Course> getCourse(@PathVariable Long id, HttpServletRequest request) {
+        String locale = LocaleUtil.resolveLocaleHeader(request.getHeader("Accept-Language"));
+        return new ResponseEntity<>(
+                courseService.getCourseById(id, (Long) request.getAttribute("authUserId"), locale),
+                HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
         course.setId(null);
         course.setTeacherId((Long) request.getAttribute("authUserId"));
-        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED) ;
+        applyContentLocaleFromHeaderIfMissing(course, request);
+        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED);
     }
 
     @PutMapping()
     public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
         course.setTeacherId((Long) request.getAttribute("authUserId"));
-        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.OK) ;
+        applyContentLocaleFromHeaderIfMissing(course, request);
+        return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.OK);
+    }
+
+    /**
+     * Which translation row to upsert: use JSON {@code defaultLocale} when sent, otherwise the UI locale from
+     * {@code Accept-Language} (same as i18n on the client). Without this, missing {@code defaultLocale} defaulted to
+     * {@code en} and Arabic text was stored under the English slot.
+     */
+    private static void applyContentLocaleFromHeaderIfMissing(Course course, HttpServletRequest request) {
+        if (course.getDefaultLocale() == null || course.getDefaultLocale().isBlank()) {
+            course.setDefaultLocale(LocaleUtil.resolveLocaleHeader(request.getHeader("Accept-Language")));
+        }
     }
 
     @DeleteMapping("/{id}")

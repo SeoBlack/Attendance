@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.attendancebackend.dto.StudentDashboardResponse;
 import org.example.attendancebackend.dto.StudentHistoryResponse;
 import org.example.attendancebackend.service.StudentDashboardService;
+import org.example.attendancebackend.util.LocaleUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,8 @@ public class StudentDashboardController {
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-        return studentDashboardService.getDashboard(userId);
+        String requestLocale = LocaleUtil.resolveLocaleHeader(request.getHeader("Accept-Language"));
+        return studentDashboardService.getDashboard(userId, requestLocale);
     }
 
     @GetMapping("/history")
@@ -37,6 +39,7 @@ public class StudentDashboardController {
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-        return studentDashboardService.getHistory(userId);
+        String requestLocale = LocaleUtil.resolveLocaleHeader(request.getHeader("Accept-Language"));
+        return studentDashboardService.getHistory(userId, requestLocale);
     }
 }

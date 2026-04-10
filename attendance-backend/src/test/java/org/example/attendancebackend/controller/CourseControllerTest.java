@@ -54,13 +54,14 @@ class CourseControllerTest {
 
     @BeforeEach
     public void init() {
-        course = Course.builder().courseName("Math").description("Math is beautiful").teacherId(0L).build();
+        course = Course.builder().courseName("Math").description("Math is beautiful").teacherId(0L).defaultLocale("en").build();
     }
 
     @Test
     void getCourses() throws Exception {
-        Course course2 = Course.builder().courseName("Python").description("Python is practical").build();
-        given(courseService.getCourses(null)).willReturn(List.of(course, course2));
+        Course course2 = Course.builder().courseName("Python").description("Python is practical").defaultLocale("en").build();
+        given(courseService.getCourses(ArgumentMatchers.any(), ArgumentMatchers.eq("en"), ArgumentMatchers.isNull()))
+                .willReturn(List.of(course, course2));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/courses")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -74,7 +75,7 @@ class CourseControllerTest {
     @Test
     void getCourse() throws Exception {
         Long courseId = 1L;
-        given(courseService.getCourseById(courseId, null)).willReturn(course);
+        given(courseService.getCourseById(courseId, null, "en")).willReturn(course);
 
         ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/courses/{id}",courseId)
                 .contentType(MediaType.APPLICATION_JSON));

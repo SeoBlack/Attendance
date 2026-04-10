@@ -48,11 +48,12 @@ public class AttendanceControllerTest {
                 .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
                 .build();
 
-        testUser = new User(1L, UserRole.STUDENT, "Test", "User", "test@example.com", "hash");
+        testUser = new User(1L, UserRole.STUDENT, "Test", "User", "test@example.com", "hash", null);
         testCourse = Course.builder()
                 .id(100L)
                 .courseName("Test Course")
                 .description("Test course description")
+                .defaultLocale("en")
                 .build();
         testLecture = new Lecture(
                 10L,
