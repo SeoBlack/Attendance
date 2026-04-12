@@ -38,6 +38,7 @@ public class AuthController {
             userService.signup(request);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Signup failed");
         }
     }

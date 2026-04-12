@@ -32,4 +32,11 @@ public class User {
 
     @Column(name = "password_hash", nullable = true)
     private String passwordHash;
+
+    /**
+     * Preferred UI / content locale for localized API responses (BCP-47 primary tag).
+     */
+    @Column(name = "preferred_locale", length = 10)
+    private String preferredLocale;
 }
+

@@ -1,0 +1,1273 @@
+{
+  "_type": "Project",
+  "_id": "PROJ-ATT-BACKEND",
+  "name": "Attendance Backend",
+  "ownedElements": [
+    {
+      "_type": "UMLModel",
+      "_id": "MDL-MAIN",
+      "name": "AttendanceBackend",
+      "ownedElements": [
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-ENTITY",
+          "name": "entity",
+          "ownedElements": [
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-USER",
+              "name": "User",
+              "stereotype": "Entity",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-USER-001", "name": "id",           "type": "Long",     "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-USER-002", "name": "role",         "type": "UserRole", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-USER-003", "name": "firstName",    "type": "String",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-USER-004", "name": "lastName",     "type": "String",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-USER-005", "name": "email",        "type": "String",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-USER-006", "name": "passwordHash", "type": "String",   "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLEnumeration",
+              "_id": "ENM-USERROLE",
+              "name": "UserRole",
+              "visibility": "public",
+              "literals": [
+                { "_type": "UMLEnumerationLiteral", "_id": "LIT-TEACHER", "name": "TEACHER" },
+                { "_type": "UMLEnumerationLiteral", "_id": "LIT-STUDENT", "name": "STUDENT" }
+              ],
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-UR-001", "name": "value", "type": "String", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-UR-001", "name": "getValue",   "visibility": "public" },
+                { "_type": "UMLOperation", "_id": "OPR-UR-002", "name": "toString",   "visibility": "public" },
+                { "_type": "UMLOperation", "_id": "OPR-UR-003", "name": "fromValue",  "visibility": "public", "isStatic": true }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-COURSE",
+              "name": "Course",
+              "stereotype": "Entity",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-CRS-001", "name": "id",          "type": "Long",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-CRS-002", "name": "courseName",  "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-CRS-003", "name": "description", "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-CRS-004", "name": "teacherId",   "type": "Long",   "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-LECTURE",
+              "name": "Lecture",
+              "stereotype": "Entity",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-LEC-001", "name": "id",          "type": "Long",      "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LEC-002", "name": "courseId",    "type": "Long",      "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LEC-003", "name": "joinCode",    "type": "String",    "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LEC-004", "name": "description", "type": "String",    "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LEC-005", "name": "startDate",   "type": "Timestamp", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LEC-006", "name": "endDate",     "type": "Timestamp", "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ENROLLMENTID",
+              "name": "EnrollmentId",
+              "stereotype": "Embeddable",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-EID-001", "name": "userId",   "type": "Long", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-EID-002", "name": "courseId", "type": "Long", "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ENROLLMENT",
+              "name": "Enrollment",
+              "stereotype": "Entity",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-ENR-001", "name": "id",   "type": "EnrollmentId", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ENR-002", "name": "user", "type": "User",         "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ATTENDANCEID",
+              "name": "AttendanceId",
+              "stereotype": "Embeddable",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-AID-001", "name": "userId",    "type": "Long", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-AID-002", "name": "lectureId", "type": "Long", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-AID-001", "name": "getUserId",    "visibility": "public" },
+                { "_type": "UMLOperation", "_id": "OPR-AID-002", "name": "getLectureId", "visibility": "public" }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ATTENDANCE",
+              "name": "Attendance",
+              "stereotype": "Entity",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-ATT-001", "name": "attendanceId", "type": "AttendanceId", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ATT-002", "name": "scannedAt",    "type": "Timestamp",    "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLAssociation",
+              "_id": "ASC-ENR-USER",
+              "end1": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-ENR-USER-E1",
+                "reference": { "$ref": "CLS-ENROLLMENT" },
+                "multiplicity": "*",
+                "name": ""
+              },
+              "end2": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-ENR-USER-E2",
+                "reference": { "$ref": "CLS-USER" },
+                "multiplicity": "1",
+                "name": "user"
+              }
+            },
+
+            {
+              "_type": "UMLAssociation",
+              "_id": "ASC-ENR-EID",
+              "end1": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-ENR-EID-E1",
+                "reference": { "$ref": "CLS-ENROLLMENT" },
+                "multiplicity": "1",
+                "name": ""
+              },
+              "end2": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-ENR-EID-E2",
+                "reference": { "$ref": "CLS-ENROLLMENTID" },
+                "multiplicity": "1",
+                "name": "id",
+                "aggregation": "composite"
+              }
+            },
+
+            {
+              "_type": "UMLAssociation",
+              "_id": "ASC-ATT-AID",
+              "end1": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-ATT-AID-E1",
+                "reference": { "$ref": "CLS-ATTENDANCE" },
+                "multiplicity": "1",
+                "name": ""
+              },
+              "end2": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-ATT-AID-E2",
+                "reference": { "$ref": "CLS-ATTENDANCEID" },
+                "multiplicity": "1",
+                "name": "attendanceId",
+                "aggregation": "composite"
+              }
+            }
+
+          ]
+        },
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-DTO",
+          "name": "dto",
+          "ownedElements": [
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-SIGNINREQ",
+              "name": "SigninRequest",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SINREQ-001", "name": "email",    "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SINREQ-002", "name": "password", "type": "String", "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-SIGNINRESP",
+              "name": "SigninResponse",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SINRSP-001", "name": "token", "type": "String", "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-SIGNUPREQ",
+              "name": "SignupRequest",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SUPREQ-001", "name": "firstName", "type": "String",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SUPREQ-002", "name": "lastName",  "type": "String",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SUPREQ-003", "name": "role",      "type": "UserRole", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SUPREQ-004", "name": "email",     "type": "String",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SUPREQ-005", "name": "password",  "type": "String",   "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-MERESP",
+              "name": "MeResponse",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-MERSP-001", "name": "id",        "type": "Long",   "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-MERSP-002", "name": "firstName", "type": "String", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-MERSP-003", "name": "lastName",  "type": "String", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-MERSP-004", "name": "email",     "type": "String", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-MERSP-005", "name": "role",      "type": "String", "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ENROLLEDUSER",
+              "name": "EnrolledUser",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-EU-001", "name": "id",        "type": "Long",   "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-EU-002", "name": "firstName", "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-EU-003", "name": "lastName",  "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-EU-004", "name": "email",     "type": "String", "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ENROLLUPLOADRES",
+              "name": "EnrollmentUploadResult",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-EUR-001", "name": "newEnrollments", "type": "int", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-EUR-002", "name": "newUsers",       "type": "int", "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ONESTUDENTROLL",
+              "name": "OneStudentEnrollment",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-OSE-001", "name": "firstName", "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-OSE-002", "name": "lastName",  "type": "String", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-OSE-003", "name": "email",     "type": "String", "visibility": "private" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-TODAYLECTURE",
+              "name": "TodayLecture",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-TL-001", "name": "lectureId",   "type": "Long",      "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-TL-002", "name": "courseName",  "type": "String",    "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-TL-003", "name": "description", "type": "String",    "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-TL-004", "name": "startDate",   "type": "Timestamp", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-TL-005", "name": "endDate",     "type": "Timestamp", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-TL-006", "name": "attended",    "type": "boolean",   "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ATTENDRECORD",
+              "name": "AttendanceRecord",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-AR-001", "name": "lectureId",   "type": "Long",      "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-AR-002", "name": "courseName",  "type": "String",    "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-AR-003", "name": "scannedAt",   "type": "Timestamp", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-AR-004", "name": "present",     "type": "boolean",   "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-STDASHRESP",
+              "name": "StudentDashboardResponse",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-001", "name": "firstName",      "type": "String",                  "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-002", "name": "lastName",       "type": "String",                  "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-003", "name": "totalLectures",  "type": "int",                     "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-004", "name": "presentCount",   "type": "int",                     "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-005", "name": "absentCount",    "type": "int",                     "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-006", "name": "attendanceRate", "type": "double",                  "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-007", "name": "todayLectures",  "type": "List<TodayLecture>",      "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDR-008", "name": "recentActivity", "type": "List<AttendanceRecord>",  "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-HISTORYREC",
+              "name": "HistoryRecord",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-HR-001", "name": "lectureId",          "type": "Long",      "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-HR-002", "name": "courseName",         "type": "String",    "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-HR-003", "name": "lectureDescription", "type": "String",    "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-HR-004", "name": "lectureStartDate",   "type": "Timestamp", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-HR-005", "name": "lectureEndDate",     "type": "Timestamp", "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-HR-006", "name": "present",            "type": "boolean",   "visibility": "public" },
+                { "_type": "UMLAttribute", "_id": "ATR-HR-007", "name": "scannedAt",          "type": "Timestamp", "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-STHISTRESP",
+              "name": "StudentHistoryResponse",
+              "stereotype": "record",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SHR-001", "name": "records", "type": "List<HistoryRecord>", "visibility": "public" }
+              ],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLAssociation",
+              "_id": "ASC-SDR-TL",
+              "end1": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-SDR-TL-E1",
+                "reference": { "$ref": "CLS-STDASHRESP" },
+                "multiplicity": "1"
+              },
+              "end2": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-SDR-TL-E2",
+                "reference": { "$ref": "CLS-TODAYLECTURE" },
+                "multiplicity": "0..*",
+                "name": "todayLectures"
+              }
+            },
+
+            {
+              "_type": "UMLAssociation",
+              "_id": "ASC-SDR-AR",
+              "end1": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-SDR-AR-E1",
+                "reference": { "$ref": "CLS-STDASHRESP" },
+                "multiplicity": "1"
+              },
+              "end2": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-SDR-AR-E2",
+                "reference": { "$ref": "CLS-ATTENDRECORD" },
+                "multiplicity": "0..*",
+                "name": "recentActivity"
+              }
+            },
+
+            {
+              "_type": "UMLAssociation",
+              "_id": "ASC-SHR-HR",
+              "end1": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-SHR-HR-E1",
+                "reference": { "$ref": "CLS-STHISTRESP" },
+                "multiplicity": "1"
+              },
+              "end2": {
+                "_type": "UMLAssociationEnd",
+                "_id": "ASC-SHR-HR-E2",
+                "reference": { "$ref": "CLS-HISTORYREC" },
+                "multiplicity": "0..*",
+                "name": "records"
+              }
+            }
+
+          ]
+        },
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-REPO",
+          "name": "repository",
+          "ownedElements": [
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-JPAREPOSITORY",
+              "name": "JpaRepository",
+              "stereotype": "external",
+              "visibility": "public",
+              "isAbstract": true,
+              "attributes": [],
+              "operations": []
+            },
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-USRREP",
+              "name": "UserRepository",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-UR-REP-001", "name": "existsByEmail",        "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-UR-REP-001-1", "name": "email",  "type": "String",        "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-UR-REP-001-2", "name": "",       "type": "boolean",       "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-UR-REP-002", "name": "findByEmailIgnoreCase", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-UR-REP-002-1", "name": "email",  "type": "String",        "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-UR-REP-002-2", "name": "",       "type": "Optional<User>","direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-COURSEREP",
+              "name": "CourseRepository",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-CR-REP-001", "name": "findByTeacherId",        "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-001-1", "name": "teacherId", "type": "Long",          "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-001-2", "name": "",          "type": "List<Course>",  "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CR-REP-002", "name": "findByIdAndTeacherId",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-002-1", "name": "id",        "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-002-2", "name": "teacherId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-002-3", "name": "",          "type": "Optional<Course>","direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CR-REP-003", "name": "deleteByIdAndTeacherId", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-003-1", "name": "id",        "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-003-2", "name": "teacherId", "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CR-REP-003-3", "name": "",          "type": "void", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-LECTUREREP",
+              "name": "LectureRepository",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-LR-REP-001", "name": "findByCourseId", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LR-REP-001-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LR-REP-001-2", "name": "",         "type": "List<Lecture>",   "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LR-REP-002", "name": "findByJoinCode", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LR-REP-002-1", "name": "joinCode", "type": "String",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LR-REP-002-2", "name": "",         "type": "Optional<Lecture>","direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-ENROLLREP",
+              "name": "EnrollmentRepository",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-ER-REP-001", "name": "findUsersByCourseId",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ER-REP-001-1", "name": "courseId", "type": "Long",               "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ER-REP-001-2", "name": "",         "type": "List<EnrolledUser>",  "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ER-REP-002", "name": "deleteByCourseId",       "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ER-REP-002-1", "name": "courseId", "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ER-REP-002-2", "name": "",         "type": "void", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ER-REP-003", "name": "findCourseIdsByUserId",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ER-REP-003-1", "name": "userId", "type": "Long",       "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ER-REP-003-2", "name": "",       "type": "List<Long>", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-ATTREP",
+              "name": "AttendanceRepository",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-AR-REP-001", "name": "findByAttendanceIdLectureId", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-AR-REP-001-1", "name": "lectureId", "type": "Long",              "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-AR-REP-001-2", "name": "",          "type": "List<Attendance>",  "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-AR-REP-002", "name": "findByAttendanceIdUserId",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-AR-REP-002-1", "name": "userId", "type": "Long",             "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-AR-REP-002-2", "name": "",       "type": "List<Attendance>", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLGeneralization",
+              "_id": "GEN-USRREP-JPA",
+              "source": { "$ref": "INT-USRREP" },
+              "target": { "$ref": "CLS-JPAREPOSITORY" }
+            },
+            {
+              "_type": "UMLGeneralization",
+              "_id": "GEN-COURSEREP-JPA",
+              "source": { "$ref": "INT-COURSEREP" },
+              "target": { "$ref": "CLS-JPAREPOSITORY" }
+            },
+            {
+              "_type": "UMLGeneralization",
+              "_id": "GEN-LECTUREREP-JPA",
+              "source": { "$ref": "INT-LECTUREREP" },
+              "target": { "$ref": "CLS-JPAREPOSITORY" }
+            },
+            {
+              "_type": "UMLGeneralization",
+              "_id": "GEN-ENROLLREP-JPA",
+              "source": { "$ref": "INT-ENROLLREP" },
+              "target": { "$ref": "CLS-JPAREPOSITORY" }
+            },
+            {
+              "_type": "UMLGeneralization",
+              "_id": "GEN-ATTREP-JPA",
+              "source": { "$ref": "INT-ATTREP" },
+              "target": { "$ref": "CLS-JPAREPOSITORY" }
+            }
+
+          ]
+        },
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-SERVICE",
+          "name": "service",
+          "ownedElements": [
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-USRSVC",
+              "name": "UserService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-USRSVC-001", "name": "userRepository", "type": "UserRepository", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-USRSVC-002", "name": "passwordHasher", "type": "PasswordHasher", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-USRSVC-001", "name": "signup",       "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-USRSVC-001-1", "name": "request", "type": "SignupRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-USRSVC-001-2", "name": "",        "type": "void",          "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-USRSVC-002", "name": "signin",       "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-USRSVC-002-1", "name": "request", "type": "SigninRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-USRSVC-002-2", "name": "",        "type": "void",          "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-USRSVC-003", "name": "authenticate", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-USRSVC-003-1", "name": "request", "type": "SigninRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-USRSVC-003-2", "name": "",        "type": "User",          "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-COURSESVC",
+              "name": "CourseService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-CSVC-001", "name": "courseRepository", "type": "CourseRepository", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-CSVC-001", "name": "getCourseById",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-001-1", "name": "id",        "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-001-2", "name": "teacherId", "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-001-3", "name": "",          "type": "Course","direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CSVC-002", "name": "getCourses",      "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-002-1", "name": "teacherId", "type": "Long",         "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-002-2", "name": "",          "type": "List<Course>", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CSVC-003", "name": "saveCourse",      "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-003-1", "name": "course", "type": "Course", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-003-2", "name": "",       "type": "Course", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CSVC-004", "name": "deleteCourseById","visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-004-1", "name": "id",        "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-004-2", "name": "teacherId", "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CSVC-004-3", "name": "",          "type": "void", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-LECTURESVC",
+              "name": "LectureService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-LSVC-001", "name": "codeSize",          "type": "int",               "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LSVC-002", "name": "lectureRepository", "type": "LectureRepository", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-LSVC-003", "name": "courseRepository",  "type": "CourseRepository",  "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-LSVC-001", "name": "getLectures",    "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-001-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-001-2", "name": "",         "type": "List<Lecture>",  "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LSVC-002", "name": "getLecture",     "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-002-1", "name": "id", "type": "Long",    "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-002-2", "name": "",   "type": "Lecture", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LSVC-003", "name": "createLecture",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-003-1", "name": "lecture", "type": "Lecture", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-003-2", "name": "",        "type": "Lecture", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LSVC-004", "name": "updateLecture",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-004-1", "name": "id",      "type": "Long",    "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-004-2", "name": "lecture", "type": "Lecture", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-004-3", "name": "",        "type": "Lecture", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LSVC-005", "name": "deleteLecture",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-005-1", "name": "id", "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LSVC-005-2", "name": "",   "type": "void", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ENROLLSVC",
+              "name": "EnrollmentService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-ESVC-001", "name": "enrollmentRepository", "type": "EnrollmentRepository", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ESVC-002", "name": "userRepository",       "type": "UserRepository",       "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-ESVC-001", "name": "enrollFromXml",          "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-001-1", "name": "courseId", "type": "Long",                   "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-001-2", "name": "file",     "type": "MultipartFile",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-001-3", "name": "",         "type": "EnrollmentUploadResult",  "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ESVC-002", "name": "getCourseEnrollments",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-002-1", "name": "courseId", "type": "Long",               "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-002-2", "name": "",         "type": "List<EnrolledUser>", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ESVC-003", "name": "deleteCourseEnrollments","visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-003-1", "name": "courseId", "type": "Long", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-003-2", "name": "",         "type": "void", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ESVC-004", "name": "enrollOneStudent",        "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-004-1", "name": "courseId", "type": "Long",                   "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-004-2", "name": "student",  "type": "OneStudentEnrollment",    "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-004-3", "name": "",         "type": "EnrollmentUploadResult",  "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ESVC-005", "name": "deleteById",               "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-005-1", "name": "id", "type": "EnrollmentId", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ESVC-005-2", "name": "",   "type": "void",          "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ATTSVC",
+              "name": "AttendanceService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-ASVC-001", "name": "attendanceRepository",  "type": "AttendanceRepository",  "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ASVC-002", "name": "courseRepository",      "type": "CourseRepository",      "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ASVC-003", "name": "lectureRepository",     "type": "LectureRepository",     "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ASVC-004", "name": "userRepository",        "type": "UserRepository",        "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-ASVC-005", "name": "enrollmentRepository",  "type": "EnrollmentRepository",  "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-ASVC-001", "name": "MarkAttendance", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ASVC-001-1", "name": "userId",   "type": "Long",       "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ASVC-001-2", "name": "joinCode", "type": "String",     "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ASVC-001-3", "name": "",         "type": "Attendance", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ASVC-002", "name": "getPresentUsers","visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ASVC-002-1", "name": "lectureId", "type": "Long",               "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ASVC-002-2", "name": "",          "type": "List<EnrolledUser>", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-JWTSVC",
+              "name": "JwtService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-JWT-001", "name": "secretKey",    "type": "SecretKey", "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-JWT-002", "name": "expirationMs", "type": "long",      "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-JWT-001", "name": "generateToken",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-001-1", "name": "user", "type": "User",   "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-001-2", "name": "",     "type": "String", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-JWT-002", "name": "isTokenValid",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-002-1", "name": "token", "type": "String",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-002-2", "name": "",      "type": "boolean", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-JWT-003", "name": "extractEmail",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-003-1", "name": "token", "type": "String", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-003-2", "name": "",      "type": "String", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-JWT-004", "name": "extractUserId", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-004-1", "name": "token", "type": "String", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWT-004-2", "name": "",      "type": "Long",   "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-STDASHSVC",
+              "name": "StudentDashboardService",
+              "stereotype": "Service",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SDSH-001", "name": "enrollmentRepository",  "type": "EnrollmentRepository",  "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDSH-002", "name": "courseRepository",      "type": "CourseRepository",      "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDSH-003", "name": "lectureRepository",     "type": "LectureRepository",     "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDSH-004", "name": "attendanceRepository",  "type": "AttendanceRepository",  "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-SDSH-005", "name": "userRepository",        "type": "UserRepository",        "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-SDSH-001", "name": "getDashboard", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-SDSH-001-1", "name": "userId", "type": "Long",                       "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-SDSH-001-2", "name": "",       "type": "StudentDashboardResponse",    "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-SDSH-002", "name": "getHistory",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-SDSH-002-1", "name": "userId", "type": "Long",                     "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-SDSH-002-2", "name": "",       "type": "StudentHistoryResponse",   "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            { "_type": "UMLDependency", "_id": "DEP-USRSVC-USRREP",  "source": { "$ref": "CLS-USRSVC" },    "target": { "$ref": "INT-USRREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-USRSVC-PWDH",    "source": { "$ref": "CLS-USRSVC" },    "target": { "$ref": "CLS-PWDHASHER" } },
+            { "_type": "UMLDependency", "_id": "DEP-CSVC-CREP",      "source": { "$ref": "CLS-COURSESVC" }, "target": { "$ref": "INT-COURSEREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-LSVC-LREP",      "source": { "$ref": "CLS-LECTURESVC" },"target": { "$ref": "INT-LECTUREREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-LSVC-CREP",      "source": { "$ref": "CLS-LECTURESVC" },"target": { "$ref": "INT-COURSEREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ESVC-EREP",      "source": { "$ref": "CLS-ENROLLSVC" }, "target": { "$ref": "INT-ENROLLREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ESVC-UREP",      "source": { "$ref": "CLS-ENROLLSVC" }, "target": { "$ref": "INT-USRREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ASVC-ATREP",     "source": { "$ref": "CLS-ATTSVC" },    "target": { "$ref": "INT-ATTREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ASVC-CREP",      "source": { "$ref": "CLS-ATTSVC" },    "target": { "$ref": "INT-COURSEREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ASVC-LREP",      "source": { "$ref": "CLS-ATTSVC" },    "target": { "$ref": "INT-LECTUREREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ASVC-UREP",      "source": { "$ref": "CLS-ATTSVC" },    "target": { "$ref": "INT-USRREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-ASVC-EREP",      "source": { "$ref": "CLS-ATTSVC" },    "target": { "$ref": "INT-ENROLLREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-SDSH-EREP",      "source": { "$ref": "CLS-STDASHSVC" }, "target": { "$ref": "INT-ENROLLREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-SDSH-CREP",      "source": { "$ref": "CLS-STDASHSVC" }, "target": { "$ref": "INT-COURSEREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-SDSH-LREP",      "source": { "$ref": "CLS-STDASHSVC" }, "target": { "$ref": "INT-LECTUREREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-SDSH-ATREP",     "source": { "$ref": "CLS-STDASHSVC" }, "target": { "$ref": "INT-ATTREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-SDSH-UREP",      "source": { "$ref": "CLS-STDASHSVC" }, "target": { "$ref": "INT-USRREP" } }
+
+          ]
+        },
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-CONTROLLER",
+          "name": "controller",
+          "ownedElements": [
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-AUTHCTL",
+              "name": "AuthController",
+              "stereotype": "RestController",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-AUTHCTL-001", "name": "userService",    "type": "UserService",    "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-AUTHCTL-002", "name": "jwtService",     "type": "JwtService",     "visibility": "private" },
+                { "_type": "UMLAttribute", "_id": "ATR-AUTHCTL-003", "name": "userRepository", "type": "UserRepository", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-AUTHCTL-001", "name": "signup", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-AUTHCTL-001-1", "name": "request", "type": "SignupRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-AUTHCTL-001-2", "name": "",        "type": "ResponseEntity","direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-AUTHCTL-002", "name": "signin", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-AUTHCTL-002-1", "name": "request", "type": "SigninRequest",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-AUTHCTL-002-2", "name": "",        "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-AUTHCTL-003", "name": "me",     "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-AUTHCTL-003-1", "name": "request", "type": "HttpServletRequest","direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-AUTHCTL-003-2", "name": "",        "type": "ResponseEntity",    "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-COURSECTL",
+              "name": "CourseController",
+              "stereotype": "RestController",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-CCTL-001", "name": "courseService", "type": "CourseService", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-CCTL-001", "name": "getCourses",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-001-1", "name": "request", "type": "HttpServletRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-001-2", "name": "",        "type": "ResponseEntity",     "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CCTL-002", "name": "getCourse",    "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-002-1", "name": "id",      "type": "Long",               "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-002-2", "name": "request", "type": "HttpServletRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-002-3", "name": "",        "type": "ResponseEntity",     "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CCTL-003", "name": "createCourse", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-003-1", "name": "course",  "type": "Course",             "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-003-2", "name": "request", "type": "HttpServletRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-003-3", "name": "",        "type": "ResponseEntity",     "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CCTL-004", "name": "updateCourse", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-004-1", "name": "course",  "type": "Course",             "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-004-2", "name": "request", "type": "HttpServletRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-004-3", "name": "",        "type": "ResponseEntity",     "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-CCTL-005", "name": "deleteCourse", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-005-1", "name": "id",      "type": "Long",               "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-005-2", "name": "request", "type": "HttpServletRequest", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CCTL-005-3", "name": "",        "type": "ResponseEntity",     "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-LECTURECTL",
+              "name": "LectureController",
+              "stereotype": "RestController",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-LCTL-001", "name": "lectureService", "type": "LectureService", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-LCTL-001", "name": "getLectures",    "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-001-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-001-2", "name": "",         "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LCTL-002", "name": "getLecture",     "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-002-1", "name": "id", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-002-2", "name": "",   "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LCTL-003", "name": "createLecture",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-003-1", "name": "lecture",  "type": "Lecture",        "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-003-2", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-003-3", "name": "",         "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LCTL-004", "name": "updateLecture",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-004-1", "name": "id",      "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-004-2", "name": "lecture", "type": "Lecture",        "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-004-3", "name": "",        "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-LCTL-005", "name": "deleteLecture",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-005-1", "name": "id", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-LCTL-005-2", "name": "",   "type": "ResponseEntity", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ENROLLCTL",
+              "name": "EnrollmentController",
+              "stereotype": "RestController",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-ECTL-001", "name": "enrollmentService", "type": "EnrollmentService", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-ECTL-001", "name": "uploadEnrollments",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-001-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-001-2", "name": "file",     "type": "MultipartFile",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-001-3", "name": "",         "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ECTL-002", "name": "getEnrollments",     "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-002-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-002-2", "name": "",         "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ECTL-003", "name": "deleteEnrollments",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-003-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-003-2", "name": "",         "type": "ResponseEntity", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ECTL-004", "name": "enrollOneStudent",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-004-1", "name": "courseId", "type": "Long",                  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-004-2", "name": "student",  "type": "OneStudentEnrollment",   "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-004-3", "name": "",         "type": "ResponseEntity",         "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ECTL-005", "name": "deleteEnrollment",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-005-1", "name": "courseId", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-005-2", "name": "userId",   "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ECTL-005-3", "name": "",         "type": "ResponseEntity", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-ATTCTL",
+              "name": "AttendanceController",
+              "stereotype": "RestController",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-ATTCTL-001", "name": "attendanceService", "type": "AttendanceService", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-ATTCTL-001", "name": "markAttendance",  "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ATTCTL-001-1", "name": "joinCode", "type": "String",              "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ATTCTL-001-2", "name": "request",  "type": "HttpServletRequest",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ATTCTL-001-3", "name": "",         "type": "ResponseEntity",      "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-ATTCTL-002", "name": "getPresentUsers", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-ATTCTL-002-1", "name": "id", "type": "Long",           "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-ATTCTL-002-2", "name": "",   "type": "ResponseEntity", "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-STDASHCTL",
+              "name": "StudentDashboardController",
+              "stereotype": "RestController",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-SDCTL-001", "name": "studentDashboardService", "type": "StudentDashboardService", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-SDCTL-001", "name": "getDashboard", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-SDCTL-001-1", "name": "request", "type": "HttpServletRequest",       "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-SDCTL-001-2", "name": "",        "type": "ResponseEntity",           "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-SDCTL-002", "name": "getHistory",   "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-SDCTL-002-1", "name": "request", "type": "HttpServletRequest",     "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-SDCTL-002-2", "name": "",        "type": "ResponseEntity",         "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            { "_type": "UMLDependency", "_id": "DEP-AUTHCTL-USRSVC",   "source": { "$ref": "CLS-AUTHCTL" },    "target": { "$ref": "CLS-USRSVC" } },
+            { "_type": "UMLDependency", "_id": "DEP-AUTHCTL-JWTSVC",   "source": { "$ref": "CLS-AUTHCTL" },    "target": { "$ref": "CLS-JWTSVC" } },
+            { "_type": "UMLDependency", "_id": "DEP-AUTHCTL-UREP",     "source": { "$ref": "CLS-AUTHCTL" },    "target": { "$ref": "INT-USRREP" } },
+            { "_type": "UMLDependency", "_id": "DEP-CCTL-CSVC",        "source": { "$ref": "CLS-COURSECTL" },  "target": { "$ref": "CLS-COURSESVC" } },
+            { "_type": "UMLDependency", "_id": "DEP-LCTL-LSVC",        "source": { "$ref": "CLS-LECTURECTL" }, "target": { "$ref": "CLS-LECTURESVC" } },
+            { "_type": "UMLDependency", "_id": "DEP-ECTL-ESVC",        "source": { "$ref": "CLS-ENROLLCTL" },  "target": { "$ref": "CLS-ENROLLSVC" } },
+            { "_type": "UMLDependency", "_id": "DEP-ATTCTL-ASVC",      "source": { "$ref": "CLS-ATTCTL" },     "target": { "$ref": "CLS-ATTSVC" } },
+            { "_type": "UMLDependency", "_id": "DEP-SDCTL-SDSHSVC",    "source": { "$ref": "CLS-STDASHCTL" },  "target": { "$ref": "CLS-STDASHSVC" } }
+
+          ]
+        },
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-CONFIG",
+          "name": "config",
+          "ownedElements": [
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-WEBMVCCONFIGURER",
+              "name": "WebMvcConfigurer",
+              "stereotype": "external",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-WMVC-001", "name": "addCorsMappings",   "visibility": "public" },
+                { "_type": "UMLOperation", "_id": "OPR-WMVC-002", "name": "addInterceptors",   "visibility": "public" }
+              ]
+            },
+
+            {
+              "_type": "UMLInterface",
+              "_id": "INT-HANDLERINTERCEPTOR",
+              "name": "HandlerInterceptor",
+              "stereotype": "external",
+              "visibility": "public",
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-HI-001", "name": "preHandle", "visibility": "public" }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-CORSCFG",
+              "name": "CorsConfig",
+              "stereotype": "Configuration",
+              "visibility": "public",
+              "attributes": [],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-CORS-001", "name": "addCorsMappings", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-CORS-001-1", "name": "registry", "type": "CorsRegistry", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-CORS-001-2", "name": "",          "type": "void",         "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-JWTINTERCEPTOR",
+              "name": "JwtAuthInterceptor",
+              "stereotype": "Component",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-JWTINT-001", "name": "jwtService", "type": "JwtService", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-JWTINT-001", "name": "preHandle",          "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-JWTINT-001-1", "name": "request",  "type": "HttpServletRequest",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWTINT-001-2", "name": "response", "type": "HttpServletResponse", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWTINT-001-3", "name": "handler",  "type": "Object",              "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-JWTINT-001-4", "name": "",         "type": "boolean",             "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-JWTINT-002", "name": "writeUnauthorized",  "visibility": "private" },
+                { "_type": "UMLOperation", "_id": "OPR-JWTINT-003", "name": "isPublicEndpoint",   "visibility": "private" }
+              ]
+            },
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-WEBCFG",
+              "name": "WebConfig",
+              "stereotype": "Configuration",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-WCFG-001", "name": "jwtAuthInterceptor", "type": "JwtAuthInterceptor", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-WCFG-001", "name": "addInterceptors", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-WCFG-001-1", "name": "registry", "type": "InterceptorRegistry", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-WCFG-001-2", "name": "",         "type": "void",                "direction": "return" }
+                  ]
+                }
+              ]
+            },
+
+            { "_type": "UMLInterfaceRealization", "_id": "REL-CORS-WMC",   "source": { "$ref": "CLS-CORSCFG" },       "target": { "$ref": "INT-WEBMVCCONFIGURER" } },
+            { "_type": "UMLInterfaceRealization", "_id": "REL-JWTINT-HI",  "source": { "$ref": "CLS-JWTINTERCEPTOR" },"target": { "$ref": "INT-HANDLERINTERCEPTOR" } },
+            { "_type": "UMLInterfaceRealization", "_id": "REL-WCFG-WMC",   "source": { "$ref": "CLS-WEBCFG" },        "target": { "$ref": "INT-WEBMVCCONFIGURER" } },
+            { "_type": "UMLDependency",           "_id": "DEP-WCFG-JWTINT","source": { "$ref": "CLS-WEBCFG" },        "target": { "$ref": "CLS-JWTINTERCEPTOR" } },
+            { "_type": "UMLDependency",           "_id": "DEP-JWTINT-JSVC","source": { "$ref": "CLS-JWTINTERCEPTOR" },"target": { "$ref": "CLS-JWTSVC" } }
+
+          ]
+        },
+
+        {
+          "_type": "UMLPackage",
+          "_id": "PKG-UTIL",
+          "name": "util",
+          "ownedElements": [
+
+            {
+              "_type": "UMLClass",
+              "_id": "CLS-PWDHASHER",
+              "name": "PasswordHasher",
+              "stereotype": "Component",
+              "visibility": "public",
+              "attributes": [
+                { "_type": "UMLAttribute", "_id": "ATR-PWD-001", "name": "encoder", "type": "BCryptPasswordEncoder", "visibility": "private" }
+              ],
+              "operations": [
+                { "_type": "UMLOperation", "_id": "OPR-PWD-001", "name": "hash",    "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-PWD-001-1", "name": "rawPassword", "type": "String", "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-PWD-001-2", "name": "",            "type": "String", "direction": "return" }
+                  ]
+                },
+                { "_type": "UMLOperation", "_id": "OPR-PWD-002", "name": "matches", "visibility": "public",
+                  "parameters": [
+                    { "_type": "UMLParameter", "_id": "PRM-PWD-002-1", "name": "rawPassword",    "type": "String",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-PWD-002-2", "name": "hashedPassword",  "type": "String",  "direction": "in" },
+                    { "_type": "UMLParameter", "_id": "PRM-PWD-002-3", "name": "",               "type": "boolean", "direction": "return" }
+                  ]
+                }
+              ]
+            }
+
+          ]
+        }
+
+      ]
+    }
+  ]
+}

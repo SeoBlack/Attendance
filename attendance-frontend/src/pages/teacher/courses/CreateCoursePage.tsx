@@ -5,6 +5,7 @@ import {Box, Stack, Typography, Alert} from '@mui/material';
 import {api} from '../../../api';
 import type {Course} from '../../../entities/course';
 import {ActionButton, FormTextField} from '../../../components/common';
+import i18n from '../../../i18n';
 
 function CreateCoursePage() {
     const { t } = useTranslation();
@@ -46,10 +47,13 @@ function CreateCoursePage() {
         if (!canSave) return;
         setSaving(true);
         setError('');
+        const primary = (i18n.language || 'en').split('-')[0] || 'en';
         const payload: Course = {
             id: courseId || undefined,
             courseName: name.trim(),
             description: description.trim(),
+            // Tells the API which translation row to write; keeps ar/en/ru rows separate when you switch UI language.
+            defaultLocale: primary,
         };
         api.courses.saveCourse(payload)
             .then(async (resp) => {

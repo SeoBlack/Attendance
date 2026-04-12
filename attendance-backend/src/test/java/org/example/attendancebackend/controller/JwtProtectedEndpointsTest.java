@@ -4,7 +4,9 @@ import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.entity.Lecture;
 import org.example.attendancebackend.entity.User;
 import org.example.attendancebackend.entity.UserRole;
+import org.example.attendancebackend.entity.CourseTranslation;
 import org.example.attendancebackend.repository.CourseRepository;
+import org.example.attendancebackend.repository.CourseTranslationRepository;
 import org.example.attendancebackend.repository.LectureRepository;
 import org.example.attendancebackend.repository.UserRepository;
 import org.example.attendancebackend.util.PasswordHasher;
@@ -42,16 +44,30 @@ class JwtProtectedEndpointsTest {
     private CourseRepository courseRepository;
 
     @Autowired
+    private CourseTranslationRepository courseTranslationRepository;
+
+    @Autowired
     private LectureRepository lectureRepository;
 
     @Autowired
     private PasswordHasher passwordHasher;
 
+    private Long seededTeacherId;
+
     @BeforeEach
     void setUp() {
         lectureRepository.deleteAll();
+        courseTranslationRepository.deleteAll();
         courseRepository.deleteAll();
         userRepository.deleteAll();
+        User seed = new User();
+        seed.setRole(UserRole.TEACHER);
+        seed.setFirstName("Seed");
+        seed.setLastName("Teacher");
+        seed.setEmail("seed-teacher@example.local");
+        seed.setPasswordHash(passwordHasher.hash("seed"));
+        userRepository.saveAndFlush(seed);
+        seededTeacherId = seed.getId();
     }
 
     @Test
@@ -224,10 +240,17 @@ class JwtProtectedEndpointsTest {
 
     private Course buildCourse(String name) {
         Course course = new Course();
-        course.setCourseName(name);
-        course.setDescription("Course description");
-        course.setTeacherId(0L);
-        return course;
+        course.setDefaultLocale("en");
+        course.setDescription(null);
+        course.setTeacherId(seededTeacherId);
+        Course saved = courseRepository.saveAndFlush(course);
+        CourseTranslation tr = new CourseTranslation();
+        tr.setCourseId(saved.getId());
+        tr.setLocale("en");
+        tr.setCourseName(name);
+        tr.setDescription("Course description");
+        courseTranslationRepository.saveAndFlush(tr);
+        return saved;
     }
 
     private Lecture buildLecture(Long courseId) {

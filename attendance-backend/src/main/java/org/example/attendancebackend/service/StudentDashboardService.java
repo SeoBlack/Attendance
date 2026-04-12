@@ -14,6 +14,7 @@ import org.example.attendancebackend.repository.CourseRepository;
 import org.example.attendancebackend.repository.EnrollmentRepository;
 import org.example.attendancebackend.repository.LectureRepository;
 import org.example.attendancebackend.repository.UserRepository;
+import org.example.attendancebackend.util.LocaleUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 public class StudentDashboardService {
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
+    private final CourseService courseService;
     private final LectureRepository lectureRepository;
     private final AttendanceRepository attendanceRepository;
     private final UserRepository userRepository;
@@ -36,26 +38,33 @@ public class StudentDashboardService {
     public StudentDashboardService(
             EnrollmentRepository enrollmentRepository,
             CourseRepository courseRepository,
+            CourseService courseService,
             LectureRepository lectureRepository,
             AttendanceRepository attendanceRepository,
             UserRepository userRepository
     ) {
         this.enrollmentRepository = enrollmentRepository;
         this.courseRepository = courseRepository;
+        this.courseService = courseService;
         this.lectureRepository = lectureRepository;
         this.attendanceRepository = attendanceRepository;
         this.userRepository = userRepository;
     }
 
-    public StudentDashboardResponse getDashboard(Long userId) {
+    public StudentDashboardResponse getDashboard(Long userId, String requestLocale) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        String effectiveLocale = resolveEffectiveLocale(user, requestLocale);
 
         List<Long> courseIds = enrollmentRepository.findCourseIdsByUserId(userId);
 
         Map<Long, Course> courseMap = new HashMap<>();
         for (Long courseId : courseIds) {
-            courseRepository.findById(courseId).ifPresent(c -> courseMap.put(c.getId(), c));
+            courseRepository.findById(courseId).ifPresent(c -> {
+                courseService.applyTranslation(c, effectiveLocale);
+                courseMap.put(c.getId(), c);
+            });
         }
 
         List<Lecture> allLectures = new ArrayList<>();
@@ -136,15 +145,20 @@ public class StudentDashboardService {
         );
     }
 
-    public StudentHistoryResponse getHistory(Long userId) {
-        userRepository.findById(userId)
+    public StudentHistoryResponse getHistory(Long userId, String requestLocale) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        String effectiveLocale = resolveEffectiveLocale(user, requestLocale);
 
         List<Long> courseIds = enrollmentRepository.findCourseIdsByUserId(userId);
 
         Map<Long, Course> courseMap = new HashMap<>();
         for (Long courseId : courseIds) {
-            courseRepository.findById(courseId).ifPresent(c -> courseMap.put(c.getId(), c));
+            courseRepository.findById(courseId).ifPresent(c -> {
+                courseService.applyTranslation(c, effectiveLocale);
+                courseMap.put(c.getId(), c);
+            });
         }
 
         List<Lecture> allLectures = new ArrayList<>();
@@ -178,5 +192,12 @@ public class StudentDashboardService {
                 .toList();
 
         return new StudentHistoryResponse(records);
+    }
+
+    private static String resolveEffectiveLocale(User user, String requestLocale) {
+        if (user.getPreferredLocale() != null && !user.getPreferredLocale().isBlank()) {
+            return LocaleUtil.normalize(user.getPreferredLocale());
+        }
+        return LocaleUtil.normalize(requestLocale);
     }
 }
