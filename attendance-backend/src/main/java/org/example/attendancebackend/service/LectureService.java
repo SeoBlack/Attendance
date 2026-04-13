@@ -5,17 +5,18 @@ import org.example.attendancebackend.repository.CourseRepository;
 import org.example.attendancebackend.repository.LectureRepository;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.NoSuchElementException;
 import java.util.List;
-import java.util.Random;
 
 
 
 @Service
 public class LectureService {
-    private final int codeSize = 6;
+    private static final int CODE_SIZE = 6;
     private final LectureRepository lectureRepository;
     private final CourseRepository courseRepository;
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     public LectureService(LectureRepository lectureRepository, CourseRepository courseRepository) {
         this.lectureRepository = lectureRepository;
@@ -70,11 +71,10 @@ public class LectureService {
     }
     //generate a join code lecture specific(we could think of this later when implementing revalidation)
     private String generateRandomString() {
-        Random random = new Random();
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder joinCode = new StringBuilder();
-        for (int i = 0; i < this.codeSize; i++) {
-            int index = random.nextInt(characters.length());
+        for (int i = 0; i < CODE_SIZE; i++) {
+            int index = RANDOM.nextInt(characters.length());
             joinCode.append(characters.charAt(index));
         }
         return joinCode.toString();
