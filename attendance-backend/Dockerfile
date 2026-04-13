@@ -12,7 +12,7 @@ COPY pom.xml /app/
 COPY . /app
 
 # Expose the port your Spring Boot app runs on (usually 8080)
-#EXPOSE 8081
+EXPOSE 8081
 
 # Package your application
 RUN mvn package
