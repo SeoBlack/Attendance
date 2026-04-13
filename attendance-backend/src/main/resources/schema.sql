@@ -1,3 +1,5 @@
+-- UTF-8 encoding is expected for the PostgreSQL database (default in modern installs).
+
 CREATE TABLE users
 (
     user_id SERIAL NOT NULL,
@@ -6,23 +8,31 @@ CREATE TABLE users
     second_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255),
+    preferred_locale VARCHAR(10),
     PRIMARY KEY (user_id)
 );
-
--- ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 
 CREATE TABLE courses
 (
     course_id SERIAL NOT NULL,
     teacher_id INT NOT NULL,
-    course_name VARCHAR(100) NOT NULL,
-    description TEXT,
+    default_locale VARCHAR(10) NOT NULL DEFAULT 'en',
+    instruction_language VARCHAR(10),
+
     PRIMARY KEY (course_id),
     FOREIGN KEY (teacher_id) REFERENCES users(user_id)
 );
 
--- ALTER TABLE courses ADD COLUMN teacher_id INT NOT NULL DEFAULT -1;
--- ALTER TABLE courses ADD CONSTRAINT courses_teacher_id_fkey FOREIGN KEY(teacher_id) REFERENCES users(user_id);
+CREATE TABLE course_translation
+(
+    course_id INT NOT NULL,
+    locale VARCHAR(10) NOT NULL,
+    course_name VARCHAR(200) NOT NULL,
+    description TEXT,
+
+    PRIMARY KEY (course_id, locale),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
+);
 
 CREATE TABLE lectures
 (

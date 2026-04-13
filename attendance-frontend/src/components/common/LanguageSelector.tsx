@@ -41,6 +41,9 @@ export default function LanguageSelector() {
         <MenuItem onClick={() => handleChangeLanguage("ru")}>
           {t("language.russian")}
         </MenuItem>
+        <MenuItem onClick={() => handleChangeLanguage("fi")}>
+          {t("language.finnish")}
+        </MenuItem>
       </Menu>
     </Box>
   );
