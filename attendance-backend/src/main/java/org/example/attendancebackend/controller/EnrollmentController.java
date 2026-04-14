@@ -46,9 +46,9 @@ public class EnrollmentController {
     @PutMapping()
     public ResponseEntity<EnrollmentUploadResult> updateEnrollments(
             @RequestParam("course_id") Long courseId,
-            @RequestBody OneStudentEnrollment studentinfo
+            @RequestBody OneStudentEnrollment studentInfo
             ){
-        return new ResponseEntity<>(enrollmentService.enrollOneStudent(courseId, studentinfo), HttpStatus.OK);
+        return new ResponseEntity<>(enrollmentService.enrollOneStudent(courseId, studentInfo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{course_id}")

@@ -30,11 +30,23 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Constructs EnrollmentService with required repositories.
+     * @param enrollmentRepository repository for enrollments
+     * @param userRepository repository for users
+     */
     public EnrollmentService(EnrollmentRepository enrollmentRepository, UserRepository userRepository) {
         this.enrollmentRepository = enrollmentRepository;
         this.userRepository = userRepository;
     }
 
+    /**
+     * Enrolls students to a course from an XML file. Creates users if needed.
+     * @param courseId target course id
+     * @param file XML file containing <student> entries
+     * @return result counters for new enrollments and new users
+     * @throws org.springframework.web.server.ResponseStatusException BAD_REQUEST on invalid XML
+     */
     public EnrollmentUploadResult enrollFromXml(Long courseId, MultipartFile file) {
         Document doc;
         int newEnrollments=0, newUsers=0;
@@ -67,15 +79,27 @@ public class EnrollmentService {
         return new EnrollmentUploadResult(newEnrollments, newUsers);
     }
 
+    /**
+     * Returns enrolled users for a course as lightweight DTOs.
+     * @param courseId course id
+     * @return list of enrolled users
+     */
     public List<EnrolledUser> getCourseEnrollments(Long courseId) {
         return enrollmentRepository.findUsersByCourseId(courseId);
     }
 
     @Transactional
+    /**
+     * Deletes all enrollments for the given course id.
+     * @param courseId course id
+     */
     public void deleteCourseEnrollments(Long courseId) {
         enrollmentRepository.deleteByCourseId(courseId);
     }
 
+    /**
+     * Creates a new student user with STUDENT role.
+     */
     private User addNewStudent(String firstName, String lastName, String email) {
         User newUser = new User();
         newUser.setFirstName(firstName);
@@ -85,6 +109,12 @@ public class EnrollmentService {
         return userRepository.save(newUser);
     }
 
+    /**
+     * Enrolls exactly one student into a course; creates user if needed.
+     * @param courseId course id
+     * @param student student data
+     * @return counters for new enrollment and user creation
+     */
     public EnrollmentUploadResult enrollOneStudent(Long courseId, OneStudentEnrollment student) {
         int newEnrollments=0, newUsers=0;
         Optional<User> existingUser = userRepository.findByEmailIgnoreCase(student.getEmail());
@@ -99,6 +129,10 @@ public class EnrollmentService {
         return new EnrollmentUploadResult(newEnrollments, newUsers);
     }
 
+    /**
+     * Deletes one enrollment by composite id.
+     * @param id composite enrollment id (userId + courseId)
+     */
     public void deleteById(EnrollmentId id) {
         enrollmentRepository.deleteById(id);
     }

@@ -35,6 +35,9 @@ public class StudentDashboardService {
     private final AttendanceRepository attendanceRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Constructs StudentDashboardService with required repositories and services.
+     */
     public StudentDashboardService(
             EnrollmentRepository enrollmentRepository,
             CourseRepository courseRepository,
@@ -51,6 +54,13 @@ public class StudentDashboardService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Builds dashboard summary for the given student: stats, today's lectures and recent activity.
+     * @param userId student id
+     * @param requestLocale preferred locale (nullable)
+     * @return dashboard DTO
+     * @throws org.springframework.web.server.ResponseStatusException NOT_FOUND if user not found
+     */
     public StudentDashboardResponse getDashboard(Long userId, String requestLocale) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
@@ -145,6 +155,13 @@ public class StudentDashboardService {
         );
     }
 
+    /**
+     * Builds full attendance history for the student across courses.
+     * @param userId student id
+     * @param requestLocale preferred locale (nullable)
+     * @return history DTO
+     * @throws org.springframework.web.server.ResponseStatusException NOT_FOUND if user not found
+     */
     public StudentHistoryResponse getHistory(Long userId, String requestLocale) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
@@ -194,6 +211,9 @@ public class StudentDashboardService {
         return new StudentHistoryResponse(records);
     }
 
+    /**
+     * Resolves effective locale: user's preferred locale if present, otherwise request locale.
+     */
     private static String resolveEffectiveLocale(User user, String requestLocale) {
         if (user.getPreferredLocale() != null && !user.getPreferredLocale().isBlank()) {
             return LocaleUtil.normalize(user.getPreferredLocale());

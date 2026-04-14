@@ -18,6 +18,11 @@ public class JwtService {
     private final SecretKey secretKey;
     private final long expirationMs;
 
+    /**
+     * Constructs JwtService with secret and expiration values.
+     * @param secret HMAC secret key string
+     * @param expirationMs token expiration in milliseconds
+     */
     public JwtService(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration-ms}") long expirationMs
@@ -26,6 +31,11 @@ public class JwtService {
         this.expirationMs = expirationMs;
     }
 
+    /**
+     * Generates a signed JWT for the given user.
+     * @param user user principal
+     * @return compact JWT string
+     */
     public String generateToken(User user) {
         Instant now = Instant.now();
 
@@ -39,6 +49,11 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Validates a JWT signature and structure.
+     * @param token compact JWT string
+     * @return true if token can be parsed and verified; false otherwise
+     */
     public boolean isTokenValid(String token) {
         try {
             parseClaims(token);
@@ -48,10 +63,20 @@ public class JwtService {
         }
     }
 
+    /**
+     * Extracts subject email from token.
+     * @param token JWT token
+     * @return email (subject)
+     */
     public String extractEmail(String token) {
         return parseClaims(token).getSubject();
     }
 
+    /**
+     * Extracts user id claim from token.
+     * @param token JWT token
+     * @return user id as Long
+     */
     public Long extractUserId(String token) {
         Object value = parseClaims(token).get("userId");
         if (value instanceof Integer i) return i.longValue();
@@ -59,6 +84,12 @@ public class JwtService {
         return Long.parseLong(String.valueOf(value));
     }
 
+    /**
+     * Parses and verifies JWT claims using configured key.
+     * @param token JWT token
+     * @return parsed Claims
+     * @throws io.jsonwebtoken.JwtException if verification fails
+     */
     private Claims parseClaims(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)

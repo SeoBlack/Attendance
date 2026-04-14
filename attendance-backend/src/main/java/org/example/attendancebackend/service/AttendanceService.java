@@ -21,6 +21,14 @@ public class AttendanceService {
     EnrollmentRepository enrollmentRepository;
 
 
+    /**
+     * Constructs AttendanceService with required repositories.
+     * @param attendanceRepository repository for attendance records
+     * @param courseRepository repository for courses
+     * @param lectureRepository repository for lectures
+     * @param userRepository repository for users
+     * @param enrollmentRepository repository for enrollments
+     */
     public AttendanceService(AttendanceRepository attendanceRepository,  CourseRepository courseRepository, LectureRepository lectureRepository,  UserRepository userRepository, EnrollmentRepository enrollmentRepository) {
         this.attendanceRepository = attendanceRepository;
         this.courseRepository = courseRepository;
@@ -29,6 +37,15 @@ public class AttendanceService {
         this.enrollmentRepository = enrollmentRepository;
 
     }
+    /**
+     * Marks attendance for a student in a lecture identified by join code.
+     * @param userId id of the user marking attendance
+     * @param joinCode lecture join code
+     * @return persisted Attendance entity
+     * @throws IllegalAccessException if user is not enrolled in the course
+     * @throws AlreadyBoundException if attendance already exists
+     * @throws NoSuchElementException if user, lecture or course is not found
+     */
     public Attendance MarkAttendance(Long userId, String joinCode) throws IllegalAccessException, AlreadyBoundException {
         //check if user is enrolled in the course
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
@@ -63,6 +80,12 @@ public class AttendanceService {
         }
 
     }
+    /**
+     * Returns users who have marked attendance for the given lecture.
+     * @param lectureId target lecture id
+     * @return list of enrolled user DTOs present in the lecture
+     * @throws NoSuchElementException if a referenced user is not found
+     */
     public List<EnrolledUser> getPresentUsers(Long lectureId){
         try{
             //get attendances by lecture ID

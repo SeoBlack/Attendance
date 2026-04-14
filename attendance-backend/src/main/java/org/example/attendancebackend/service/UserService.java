@@ -15,11 +15,22 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordHasher passwordHasher;
 
+    /**
+     * Constructs UserService with user repository and password hasher.
+     * @param userRepository repository for User entities
+     * @param passwordHasher utility for hashing and verifying passwords
+     */
     public UserService(UserRepository userRepository, PasswordHasher passwordHasher) {
         this.userRepository = userRepository;
         this.passwordHasher = passwordHasher;
     }
 
+    /**
+     * Creates a new user or completes registration if a user with email exists without password.
+     * Validates mandatory fields and hashes password.
+     * @param request signup data
+     * @throws RuntimeException if validation fails or user already exists with password
+     */
     public void signup(SignupRequest request) {
         if (request == null) {
             throw new RuntimeException("Request is null");
@@ -61,6 +72,11 @@ public class UserService {
         return hash != null && !hash.isBlank();
     }
 
+    /**
+     * Verifies user credentials. Throws on failure.
+     * @param request signin data
+     * @throws RuntimeException on invalid input or invalid credentials
+     */
     public void signin(SigninRequest request) {
         if (request == null) {
             throw new RuntimeException("Request is null");
@@ -80,6 +96,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Authenticates user and returns the User entity on success.
+     * @param request signin data
+     * @return authenticated User
+     * @throws RuntimeException on invalid input or invalid credentials
+     */
     public User authenticate(SigninRequest request) {
         if (request == null) {
             throw new RuntimeException("Request is null");
