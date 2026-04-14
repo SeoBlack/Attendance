@@ -2,17 +2,20 @@
 
 Reconstructed from [CLASS_DIAGRAM.pdf](/Users/levkaravanov/Dev/Attendance/docs/diagrams/CLASS_DIAGRAM.pdf) and aligned with the current backend code in [attendance-backend/src/main/java/org/example/attendancebackend](/Users/levkaravanov/Dev/Attendance/attendance-backend/src/main/java/org/example/attendancebackend).
 
-## Core Domain Model
+## Domain Model
 
 ```mermaid
 classDiagram
-direction LR
+direction TB
 
 class User {
-  +Long id
-  +UserRole role
-  +String email
-  +String preferredLocale
+  -Long id
+  -UserRole role
+  -String firstName
+  -String lastName
+  -String email
+  -String passwordHash
+  -String preferredLocale
 }
 
 class UserRole {
@@ -22,100 +25,130 @@ class UserRole {
 }
 
 class Course {
-  +Long id
-  +Long teacherId
-  +String defaultLocale
-  +String instructionLanguage
+  -Long id
+  -Long teacherId
+  -String defaultLocale
+  -String instructionLanguage
+  +String courseName ~~transient~~
+  +String description ~~transient~~
 }
 
 class CourseTranslation {
-  +Long courseId
-  +String locale
-  +String courseName
+  -Long courseId
+  -String locale
+  -String courseName
+  -String description
 }
 
 class Lecture {
-  +Long id
-  +String joinCode
-  +Timestamp startDate
-  +Timestamp endDate
+  -Long id
+  -Long courseId
+  -String joinCode
+  -String description
+  -Timestamp startDate
+  -Timestamp endDate
 }
 
 class Enrollment {
-  +EnrollmentId id
+  -EnrollmentId id
+  -User user
+}
+
+class EnrollmentId {
+  -Long userId
+  -Long courseId
 }
 
 class Attendance {
-  +AttendanceId attendanceId
-  +Timestamp scannedAt
+  -AttendanceId attendanceId
+  -Timestamp scannedAt
+}
+
+class AttendanceId {
+  -Long userId
+  -Long lectureId
 }
 
 User --> UserRole : role
 Course --> User : teacherId
-Course "1" --> "0..*" Lecture : has
-Course "1" --> "0..*" CourseTranslation : translations
-Enrollment --> User : student
-Enrollment --> Course : course
-Attendance --> User : student
-Attendance --> Lecture : lecture
-```
-
-## Persistence Details
-
-```mermaid
-classDiagram
-direction LR
-
-class Enrollment {
-  +EnrollmentId id
-}
-
-class EnrollmentId {
-  +Long userId
-  +Long courseId
-}
-
-class Attendance {
-  +AttendanceId attendanceId
-}
-
-class AttendanceId {
-  +Long userId
-  +Long lectureId
-}
-
-class CourseTranslation {
-  +Long courseId
-  +String locale
-  +String courseName
-}
-
-class CourseTranslationId {
-  +Long courseId
-  +String locale
-}
-
+Course "1" --> "*" Lecture : courseId
+Course "1" --> "*" CourseTranslation : translations
+Enrollment "*" --> "1" User : student
+Enrollment "*" --> "1" Course : courseId
 Enrollment *-- EnrollmentId : composite key
+Attendance "*" --> "1" User : userId
+Attendance "*" --> "1" Lecture : lectureId
 Attendance *-- AttendanceId : composite key
 CourseTranslation ..> CourseTranslationId : key class
 ```
 
-## REST Controllers Overview
+## REST Controllers
 
 ```mermaid
-flowchart TB
-  AuthController["AuthController"] --> User["User"]
-  CourseController["CourseController"] --> Course["Course + CourseTranslation"]
-  LectureController["LectureController"] --> Lecture["Lecture"]
-  EnrollmentController["EnrollmentController"] --> Enrollment["Enrollment"]
-  AttendanceController["AttendanceController"] --> Attendance["Attendance"]
-  StudentDashboardController["StudentDashboardController"] --> Dashboard["Dashboard / History view"]
+classDiagram
+direction TB
+
+class AuthController {
+  +signup(SignupRequest) ResponseEntity
+  +signin(SigninRequest) ResponseEntity
+  +me(HttpServletRequest) ResponseEntity
+}
+
+class CourseController {
+  +getCourses() ResponseEntity
+  +getCourse(Long id) ResponseEntity
+  +createCourse(Course) ResponseEntity
+  +updateCourse(Course) ResponseEntity
+  +deleteCourse(Long id) ResponseEntity
+}
+
+class LectureController {
+  +getLectures(Long courseId) List
+  +getLecture(Long id) Lecture
+  +createLecture(Lecture) Lecture
+  +updateLecture(Long id, Lecture) Lecture
+  +deleteLecture(Long id) void
+}
+
+class EnrollmentController {
+  +uploadEnrollments(Long courseId, MultipartFile) ResponseEntity
+  +getCourseEnrollments(Long courseId) ResponseEntity
+  +deleteEnrollments(Long courseId) ResponseEntity
+  +updateEnrollments(Long courseId, OneStudentEnrollment) ResponseEntity
+  +deleteOneEnrollment(Long courseId, Long userId) ResponseEntity
+}
+
+class AttendanceController {
+  +MarkAttendance(Map body) Attendance
+  +getPresentStudents(Long id) List
+}
+
+class StudentDashboardController {
+  +getDashboard() StudentDashboardResponse
+  +getHistory() StudentHistoryResponse
+}
+
+AuthController --> User
+CourseController --> Course
+CourseController --> CourseTranslation
+LectureController --> Lecture
+EnrollmentController --> Enrollment
+AttendanceController --> Attendance
+StudentDashboardController --> Dashboard
+
+class User { }
+class Course { }
+class CourseTranslation { }
+class Lecture { }
+class Enrollment { }
+class Attendance { }
+class Dashboard { }
 ```
 
 ## Notes
 
-- `Course.courseName` and `Course.description` are resolved localized API values; the persisted localized text lives in `CourseTranslation`.
-- Compared to the PDF version, this source includes the newer localization-related model changes: `CourseTranslation`, `CourseTranslationId`, `Course.defaultLocale`, `Course.instructionLanguage`, and `User.preferredLocale`.
-- The main diagram intentionally omits some helper classes and less important fields to keep Mermaid readable.
-- `StudentDashboardController` works with user, course, lecture, and attendance data, but that dependency fan-out is summarized as `Dashboard / History view` to avoid a tangled graph.
-- If you need a single figure for the report, use `Core Domain Model` as the main class diagram and keep the other two blocks as supporting figures.
+- `Course.courseName` and `Course.description` — transient поля, разрешаются через локализацию; персистентный текст хранится в `CourseTranslation`.
+- `CourseTranslation` использует `@IdClass(CourseTranslationId)` с составным ключом `(courseId, locale)`.
+- `Enrollment` и `Attendance` используют `@EmbeddedId` с составными ключами `EnrollmentId` и `AttendanceId` соответственно.
+- `StudentDashboardController` агрегирует данные из нескольких сущностей — зависимости показаны обобщённо как `Dashboard`.
+- Сервисы, репозитории, DTO и конфигурация опущены для читаемости.
