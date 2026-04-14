@@ -1,0 +1,3 @@
+- Ensured DTOs in all controllers instead of direct usage of Entities
+- Got rid of SOUTs, replaced with logger
+- Added function-level documentation
