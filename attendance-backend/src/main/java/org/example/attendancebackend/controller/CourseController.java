@@ -2,6 +2,7 @@ package org.example.attendancebackend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.example.attendancebackend.dto.CourseRequest;
 import org.example.attendancebackend.entity.Course;
 import org.example.attendancebackend.service.CourseService;
 import org.example.attendancebackend.util.LocaleUtil;
@@ -54,16 +55,29 @@ public class CourseController {
     }
 
     @PostMapping()
-    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
-        course.setId(null);
-        course.setTeacherId((Long) request.getAttribute("authUserId"));
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody CourseRequest body, HttpServletRequest request) {
+        Course course = Course.builder()
+                .id(null)
+                .teacherId((Long) request.getAttribute("authUserId"))
+                .defaultLocale(body.getDefaultLocale())
+                .instructionLanguage(body.getInstructionLanguage())
+                .courseName(body.getCourseName())
+                .description(body.getDescription())
+                .build();
         applyContentLocaleFromHeaderIfMissing(course, request);
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public ResponseEntity<Course> updateCourse(@Valid @RequestBody Course course, HttpServletRequest request) {
-        course.setTeacherId((Long) request.getAttribute("authUserId"));
+    public ResponseEntity<Course> updateCourse(@Valid @RequestBody CourseRequest body, HttpServletRequest request) {
+        Course course = Course.builder()
+                .id(body.getId())
+                .teacherId((Long) request.getAttribute("authUserId"))
+                .defaultLocale(body.getDefaultLocale())
+                .instructionLanguage(body.getInstructionLanguage())
+                .courseName(body.getCourseName())
+                .description(body.getDescription())
+                .build();
         applyContentLocaleFromHeaderIfMissing(course, request);
         return new ResponseEntity<>(courseService.saveCourse(course), HttpStatus.OK);
     }

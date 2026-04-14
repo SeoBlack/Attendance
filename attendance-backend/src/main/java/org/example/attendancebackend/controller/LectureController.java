@@ -1,5 +1,6 @@
 package org.example.attendancebackend.controller;
 
+import org.example.attendancebackend.dto.LectureRequest;
 import org.example.attendancebackend.entity.Lecture;
 import org.example.attendancebackend.service.LectureService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
 import java.util.NoSuchElementException;
 import java.util.List;
 
@@ -35,10 +37,10 @@ public class LectureController {
 
     @PostMapping(path="/lectures", consumes = "application/json") // I found out that this has to be set for spring boot to understand the request body
     @ResponseStatus(HttpStatus.CREATED)
-    public Lecture createLecture(@RequestBody Lecture lecture) {
-        validateLectureInput(lecture);
+    public Lecture createLecture(@RequestBody LectureRequest body) {
+        validateLectureInput(body);
         try {
-            return lectureService.createLecture(lecture);
+            return lectureService.createLecture(toEntity(body));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DataIntegrityViolationException e) {
@@ -49,10 +51,10 @@ public class LectureController {
     }
 
     @PutMapping(path = "/lectures/{id}", consumes = "application/json")
-    public Lecture updateLecture(@PathVariable Long id, @RequestBody Lecture lecture) {
-        validateLectureInput(lecture);
+    public Lecture updateLecture(@PathVariable Long id, @RequestBody LectureRequest body) {
+        validateLectureInput(body);
         try {
-            return lectureService.updateLecture(id, lecture);
+            return lectureService.updateLecture(id, toEntity(body));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DataIntegrityViolationException e) {
@@ -72,19 +74,26 @@ public class LectureController {
         }
     }
 
-    private void validateLectureInput(Lecture lecture) {
-        if (lecture.getCourseId() == null) {
+    private void validateLectureInput(LectureRequest body) {
+        if (body.getCourseId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing course id");
         }
 
-        if (lecture.getStartDate() == null || lecture.getEndDate() == null) {
+        if (body.getStartDate() == null || body.getEndDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Start date and end date are required");
         }
 
-        if (lecture.getEndDate().before(lecture.getStartDate())) {
+        if (body.getEndDate() < body.getStartDate()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "End date must be after start date");
         }
     }
 
-
+    private static Lecture toEntity(LectureRequest body) {
+        Lecture l = new Lecture();
+        l.setCourseId(body.getCourseId());
+        l.setDescription(body.getDescription());
+        l.setStartDate(new Timestamp(body.getStartDate()));
+        l.setEndDate(new Timestamp(body.getEndDate()));
+        return l;
+    }
 }
