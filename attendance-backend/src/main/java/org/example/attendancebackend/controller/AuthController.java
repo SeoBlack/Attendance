@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
+@Slf4j
 public class AuthController {
 
     private final UserService userService;
@@ -38,7 +41,7 @@ public class AuthController {
             userService.signup(request);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("Signup failed: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Signup failed");
         }
     }

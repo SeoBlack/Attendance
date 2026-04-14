@@ -16,8 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/attendance")
+@Slf4j
 public class AttendanceController {
 
     AttendanceService attendanceService;
@@ -30,7 +33,7 @@ public class AttendanceController {
     public Attendance MarkAttendance(@RequestBody Map<String, String> body, HttpServletRequest request) {
 
         String joinCode = body.get("joinCode");
-        System.out.println("joinCode:" + joinCode);
+        log.info("joinCode: {}", joinCode);
 
         Long userId = (Long) request.getAttribute("authUserId");
 
@@ -46,7 +49,7 @@ public class AttendanceController {
             //handle logic in the service ( Right Alexei? )
             return attendanceService.MarkAttendance(userId, joinCode);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error while marking attendance", e);
             if(e instanceof NoSuchElementException){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
@@ -67,7 +70,7 @@ public class AttendanceController {
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<EnrolledUser> getPresentStudents(@PathVariable Long id, HttpServletRequest request) {
-        System.out.println("getPresentStudents:" + id);
+        log.info("getPresentStudents: {}", id);
         Long lectureId = id;
 
         Long userId = (Long) request.getAttribute("authUserId");
