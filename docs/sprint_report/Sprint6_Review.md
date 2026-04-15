@@ -143,9 +143,3 @@ Requirements follow **OTP2/AD (2026) Sprint 6: Database / Localization**.
 - Design: walk through ER/UML artifacts in `docs/`.
 
 ---
-
-## Progress and challenges
-
-**Progress:** TBD — summarize completed deliverables vs. plan ([Sprint6_Plan.md](Sprint6_Plan.md)).
-
-**Challenges:** TBD — e.g. schema migration risk, Sonar rule noise, test stability after refactor.
