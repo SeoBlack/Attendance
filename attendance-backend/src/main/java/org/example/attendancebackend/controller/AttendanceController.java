@@ -2,10 +2,8 @@ package org.example.attendancebackend.controller;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.tomcat.util.json.JSONParser;
 import org.example.attendancebackend.dto.EnrolledUser;
 import org.example.attendancebackend.entity.Attendance;
-import org.example.attendancebackend.entity.User;
 import org.example.attendancebackend.service.AttendanceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +44,6 @@ public class AttendanceController {
             //handle logic in the service ( Right Alexei? )
             return attendanceService.MarkAttendance(userId, joinCode);
         } catch (Exception e) {
-            e.printStackTrace();
             if(e instanceof NoSuchElementException){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
