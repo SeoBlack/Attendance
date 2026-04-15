@@ -22,13 +22,6 @@ This is only a **plan** for acceptance testing. The tests do not need to be full
 
 This plan covers the **whole project at a high level**, because acceptance testing is about checking the final product from the user point of view.
 
-However, it gives **special attention to Sprint 6**, especially:
-
-- database localization of course content;
-- language-based content retrieval;
-- fallback to default language;
-- correct display of localized content in the UI.
-
 ### Main project areas included
 
 - login and access for teacher and student;
@@ -101,34 +94,18 @@ Besides core functionality, the acceptance plan also checks:
 
 ---
 
-## 7. Sprint 6 Focus
-
-The main Sprint 6-specific acceptance topic is **database localization**.
-
-For this sprint, we especially want to confirm that:
-
-- course content can be stored by locale;
-- the backend returns the correct translation;
-- the frontend displays localized content correctly;
-- fallback to the default locale works as expected.
-
-So, the acceptance test plan covers the **whole project**, but Sprint 6 adds one extra focus area: **localized course content coming from the database**.
-
----
-
-## 8. Backlog and Requirements Reference
+## 7. Backlog and Requirements Reference
 
 The acceptance scenarios in this plan are based on:
 
 - the main project functionality described in the repository documentation;
-- the Sprint 6 course requirements;
 - the team backlog maintained in the GitHub project board.
 
 Backlog reference: [https://github.com/users/SeoBlack/projects/7/views/21](https://github.com/users/SeoBlack/projects/7/views/21)
 
 ---
 
-## 9. Conclusion
+## 8. Conclusion
 
 This acceptance test plan is intentionally simple and suitable for a student project.
 
