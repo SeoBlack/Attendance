@@ -33,7 +33,7 @@ Teachers are marking their students attendance using excel sheets and by calling
 - Teachers can view statistics of the lecture such as students attended, time interval, and more.
 - GPS verification to ensure students are at the campus when marking attendance.
 
-## Current Status (as of 2026-03-10)
+## Current Status (as of 2026-04-15)
 
 ### Critical functionality completed:
 
