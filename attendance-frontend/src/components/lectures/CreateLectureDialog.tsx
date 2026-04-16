@@ -74,8 +74,8 @@ export default function CreateLectureDialog({
       .createLecture({
         courseId,
         description: description.trim(),
-        startDate: start.toISOString(),
-        endDate: end.toISOString(),
+        startDate: start.getTime(),
+        endDate: end.getTime(),
       })
       .then(async (resp) => {
         if (!resp.ok) {

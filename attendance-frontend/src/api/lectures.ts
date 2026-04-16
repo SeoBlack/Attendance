@@ -1,7 +1,13 @@
 import { pfetch } from "./lib/fetch";
-import type { Lecture } from "../entities/lecture";
 
-export async function createLecture(lecture: Omit<Lecture, 'id' | 'joinCode'>): Promise<Response> {
+export type CreateLectureRequest = {
+  courseId: number;
+  description: string;
+  startDate: number;
+  endDate: number;
+};
+
+export async function createLecture(lecture: CreateLectureRequest): Promise<Response> {
   return pfetch(`/lectures`, {
     method: 'POST',
     headers: {
