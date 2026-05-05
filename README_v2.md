@@ -69,33 +69,202 @@ Intermediate communication handled via Whatsapp.
 | Sprint 7 | Create UATs, run final acceptance tests, fix revealed bugs                                                                    |
 | Sprint 8 | Final documentation                                                                                                           |
 
+---
 
 ### Sprint 1
-### Sprint 2
-### Sprint 3
-### Sprint 4
-### Sprint 5
-### Sprint 6
-### Sprint 7
-### Sprint 8
+
+[Planning](./docs/sprint_report/Sprint_1_Planning_report.md)   
+[Report](./docs/sprint_report/Sprint1_Review.md)
+
+
+- Defined project scope and vision 
+- Established all user-stories for MVP
+- Set up task management tools, repository (Github / Github Actions)
 
 ---
 
-## Run it 
+### Sprint 2
 
+[Planning](./docs/sprint_report/Sprint_2_Planning_report.md)   
+[Report](./docs/sprint_report/Sprint2_Review.md)
+
+Functional requirements were established as follows:
+
+- Users must be able to create their accounts
+- Users must be able to authenticate into their accounts
+- Teacher must be able to create and update / delete courses and lectures within this courses
+- Teacher must be able to see a list of students attending specific lecture
+- Student must be able to mark lecture attendance by entering lecture code
+
+Use case diagram has been created to reflect these requirements: [Diagram](./docs/diagrams/usecase_diagram.png)
+
+`Postgres` has been selected as DB engine.
+Database has been designed and ER diagram created: [ER diagram](./docs/diagrams/Attendance_project_db.png) | [DB schema](./docs/diagrams/Attendance_project_db-Relational%20Schema.png)
+
+--- 
+
+### Sprint 3
+
+[Planning](./docs/sprint_report/Sprint_3_Planning_report.md)   
+[Report](./docs/sprint_report/Sprint3_Review.md)
+
+UI mockups have been created and implementation has started.  
+[Student lecture view](./docs/design/lecture_view.png)  
+[Student dashboard](./docs/design/student_dashboard.png)  
+[Teacher dashboard](./docs/design/teacher_dashboard.png)
+
+Technology selection was a `React.js` framework with `MUI` component library.
+
+Initial version of API was implemented with `SpringBoot` java framework.
+Jenkins pipeline has been created to automate build and unit testing.  
+**Build phase** consisted of `maven` packaging of API artefact and UI bundling with `vite`  
+**Test phase** was facilitated by `JUnit` (backend) and `Mocha` (frontend)  
+**Coverage phase** implemented with `JaCoCo` (backend only) [Report 1](./docs/sprint_report/images/coverage_report_01.png) | [Report 2](./docs/sprint_report/images/coverage_report_02.png)
+
+---
+
+### Sprint 4
+
+Planning and report missing.
+
+Both front and back end were containerised separately using `Docker`.  
+System was deployed locally using `docker compose` to avoid cross-platform problems among developers.  
+Database was wrapped in docker from the very beginning of the project using default official image.  
+
+At the same time the system has been enabled with authentication mechanism and tenant-based data segregation
+
+--- 
+
+### Sprint 5
+ 
+[Report](./docs/sprint_report/Sprint5_Review.md)
+
+Fully localized UI introducing support for English, Finnish, Russian and Arabic languages.  
+That has been achieved by using 3rd party i18n JS library and fixed set of key->translation pairs.
+
+--- 
+
+### Sprint 6
+
+[Planning](./docs/sprint_report/Sprint6_Plan.md)   
+[Report](./docs/sprint_report/Sprint6_Review.md)
+
+Database has been localized. Schema was enriched with language key for appropriate resources (course, user).
+
+---
+
+### Sprint 7
+
+[Planning](./docs/sprint_report/Sprint7_Acceptance_Test_Plan_Template.md)   
+[Report](./docs/sprint_report/Sprint7_Review.md)
+
+Fully focused on code and functional quality. For code analysis `SonarQube` was introduced, static analysis performed, [issues gathered and fixed](./docs/sprint_report/images/sonarqube_overview.png)  
+For functional testing we used heuristical testing, use-cases have been analyzed and revealed bugs fixed. 
+
+
+---
+
+### Sprint 8
+
+The related resources have been consolidated in repository, dead-code cleaned, and final documentation produced.
+
+
+---
+
+
+# Run it in production mode
+
+```shell
+
+cd attendance-frontend
+docker build -t attendance-frontend:latest .
+
+cd ../attendance-backend
+docker build -t attendance-backend:latest .
+
+cd ..
+# Windows:
+$env:PG_LOCAL_DATA="./attendance-backend/data"; docker compose -f compose.yaml up -d postgres
+
+# Linux, Mac:
+PG_LOCAL_DATA=/this/is/your/path docker compose -f compose.yaml up -d
+
+```
+
+---
+
+## Run it locally in DEV mode
+
+### Start database
+
+```shell
+export PG_LOCAL_DATA=/your/local/path
+docker compose -f compose.yaml up -d postgres
+```
+
+### Start API
+
+Configure your database connection and app port in `src/main/resources/application.properties`.  
+Make sure `src/main/resources/application.properties` matches the DB name, user, and password in `compose.yaml`.  
+Then run the app  
+```shell
+cd attendance-backend/
+mvn spring-boot:run
+```
+
+### Start UI server
+
+
+#### Install deps
+```shell
+cd attendance-frontend/
+npm install
+```
+
+#### Specify your API url
+
+Copy ``.env.example`` to ``.env.local`` and change the value of ``VITE_API_URL`` to your API url (most likely `http://localhost:8081`)
+
+#### Start
+
+```shell
+npm run dev
+```
+
+Access at URL provided by `vite` in output 
 
 ---
 
 ## Test it
 
+### Backend
+
+```shell
+cd attendance-backend/
+mvn test
+```
+### Frontend
+
+```shell
+cd attendance-frontend/
+npm run test
+```
+
 --- 
 
 ## Repository explained
 
+`attendance-frontend/` - main directory for UI
+`attendance-backend/` - main directory for API
+`docs/` - documentation and report
+`Jenkinsfile` - jenkins pipeline for whole project
+`compose.yaml` - Docker compose file to spin up project in production mode
 
 ---
 
 ## Authors
+
+**Team 6**
 
 Olga Shomarova
 Sorin
