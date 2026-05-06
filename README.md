@@ -38,25 +38,25 @@ Sprint goals overview:
 
 ---
 
-## 4. Sprint 1 – Project Planning & Vision
+## Sprint 1 – Project Planning & Vision
 
 - Project plan and vision defined, MVP scope agreed
 - Backlog created with user stories for teacher/student
 - Tooling set up (GitHub, CI, task manager)
 - [Planning](docs/sprint_report/Sprint_1_Planning_report.md) | [Review](docs/sprint_report/Sprint1_Review.md)
 
-## 5. Sprint 2 – Requirements & Database
+##  Sprint 2 – Requirements & Database
 
 - Functional requirements finalized (accounts, auth, course/lecture CRUD, attendance via code, teacher view)
 - Use Case Diagram: [Use Case Diagram](docs/diagrams/usecase_diagram.png)
-- ER Diagram: [ER Diagram](docs/diagrams/Attendance_project_db.png) | Relational schema: [Relational schema](docs/diagrams/Attendance_project_db-Relational%20Schema.png)
+- [ER Diagram](docs/diagrams/Attendance_project_db.png) | [Relational schema](docs/diagrams/Attendance_project_db-Relational%20Schema.png)
 - Database: PostgreSQL, initial schema prepared
 
 [Planning](docs/sprint_report/Sprint_2_Planning_report.md) | [Review](docs/sprint_report/Sprint2_Review.md)
 
-## 6. Sprint 3 – UI Implementation & CI
+##  Sprint 3 – UI Implementation & CI
 
-- UI: React with MUI; key screens prototyped:
+- UI: React with MUI, key screens prototyped:
   - Prototypes: [Lecture view](docs/design/lecture_view.png) | [Student dashboard](docs/design/student_dashboard.png) | [Teacher dashboard](docs/design/teacher_dashboard.png)
 - CI/CD: Jenkins pipeline
   - Build: Maven (backend), Vite (frontend)
@@ -65,7 +65,7 @@ Sprint goals overview:
 
 [Planning](docs/sprint_report/Sprint_3_Planning_report.md) | [Review](docs/sprint_report/Sprint3_Review.md)
 
-## 7. Sprint 4 – Docker Containerization
+##  Sprint 4 – Docker Containerization
 
 - Purpose: consistent dev env
 - Services containerized: frontend, backend, PostgreSQL
@@ -73,42 +73,42 @@ Sprint goals overview:
 
 (Planning/report: have not been prepared)
 
-## 8. Sprint 5 – UI Localization & Kubernetes
+##  Sprint 5 – UI Localization & Kubernetes
 
 - UI localized
 - Supported languages: English, Russian, Arabic (RTL), Finnish
-- Approach: i18next/react-i18next with JSON bundles in attendance-frontend/src/languages/; RTL via MUI direction + Emotion RTL plugin
-- Language choice stored in localStorage; single build serves all locales
+- Approach: i18next/react-i18next with JSON bundles in attendance-frontend/src/languages/, RTL via MUI direction + Emotion RTL plugin
+- Language choice stored in localStorage, single build serves all locales
 - Kubernetes: not implemented
 
 [Review](docs/sprint_report/Sprint5_Review.md)
 
-## 9. Sprint 6 – Database Localization
+##  Sprint 6 – Database Localization
 
-- Strategy: separate translation tables per entity; one row per (entity, locale); default locale required, fallbacks supported
-- Schema: [Updated to facilitated localized data](docs/diagrams/ERD%20for%20db%20localization.png); course/user text fields localized via translation tables
+- Strategy: separate translation tables per entity, one row per (entity, locale), default locale required, fallbacks supported
+- Schema: [Updated to facilitated localized data](docs/diagrams/ERD%20for%20db%20localization.png). Course/user text fields localized via translation tables
 
 [Planning](docs/sprint_report/Sprint6_Plan.md) | [Review](docs/sprint_report/Sprint6_Review.md)
 
-## 10. Sprint 7 – Quality Assurance
+## Sprint 7 – Quality Assurance
 
-- Static analysis using SonarQube; key issues captured and fixed: [SonarQube overview](docs/sprint_report/images/sonarqube_overview.png)
-- Functional testing: heuristic/use-case driven; acceptance tests prepared and run
+- Static analysis using SonarQube. Key issues captured and fixed: [SonarQube overview](docs/sprint_report/images/sonarqube_overview.png)
+- Functional testing: heuristic/use-case driven, acceptance tests prepared and run
 - Performance testing: not implemented
 
 [Planning](docs/sprint_report/Sprint7_Acceptance_Test_Plan_Template.md) | [Review](docs/sprint_report/Sprint7_Review.md)
 
-## 11. Sprint 8 – Documentation & Finalization
+##  Sprint 8 – Documentation & Finalization
 
-- Consolidated docs and diagrams; cleaned dead code
+- Consolidated docs and diagrams, cleaned dead code
 - Finalized README
 
 ---
 
-## 12. How to Run the Project
+## 4. How to Run the Project
 
 Prerequisites:
-- Docker and Docker Compose; Node.js 20+; Java 17; Maven; PostgreSQL via Docker
+- Docker and Docker Compose | Node.js 20+ | Java 17 | Maven | PostgreSQL via Docker
 
 Production-like (containers):
 ```sh
@@ -142,7 +142,7 @@ npm run dev
 ```
 Access UI at the Vite dev server URL.
 
-## 13. Testing Instructions
+## 5. Testing Instructions
 
 - Backend unit tests:
 ```sh
@@ -155,7 +155,7 @@ cd attendance-frontend && npm run test
 - Coverage: JaCoCo reports for backend (see Sprint 3 links)
 - Performance testing: not applied
 
-## 14. Repository Structure
+## 6. Repository Structure
 
 - `attendance-frontend/` User interface
 - `attendance-backend/` API
@@ -163,7 +163,7 @@ cd attendance-frontend && npm run test
 - `Jenkinsfile` - CI/CD pipeline
 - `compose.yaml` - Docker Compose orchestration
 
-## 15. Authors
+## 7. Authors
 
 Team 6 - Software Engineering Project 2 TX00EY30-3010
 - Olga Shomarova
