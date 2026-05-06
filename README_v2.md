@@ -264,7 +264,8 @@ npm run test
 
 ## Authors
 
-**Team 6**
+**Team 6**  
+Software Engineering Project 2 TX00EY30-3010
 
 Olga Shomarova
 Sorin
