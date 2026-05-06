@@ -143,4 +143,4 @@ Use this list before a release or Sprint Review.
 
 ---
 
-*Last updated: Sprint 5 — aligns with `attendance-frontend/src/languages/*.json` and [README.md](../README.md) localization section.*
+*Last updated: Sprint 5 — aligns with `attendance-frontend/src/languages/*.json` and [README.md](../README_old.md) localization section.*

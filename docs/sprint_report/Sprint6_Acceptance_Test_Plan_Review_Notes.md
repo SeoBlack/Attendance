@@ -128,5 +128,5 @@ You can explain it like this:
 
 - [Full acceptance plan](Sprint6_Acceptance_Test_Plan.md)
 - [Sprint 6 plan](Sprint6_Plan.md)
-- [README database localization section](../../README.md)
+- [README database localization section](../../README_old.md)
 - [Backlog](https://github.com/users/SeoBlack/projects/7/views/21)
